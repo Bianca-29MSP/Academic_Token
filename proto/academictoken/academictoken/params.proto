@@ -1,0 +1,15 @@
+syntax = "proto3";
+package academictoken.academictoken;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "academictoken/x/academictoken/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (amino.name) = "academictoken/x/academictoken/Params";
+  option (gogoproto.equal) = true;
+
+  
+}
