@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package academictoken.degree;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "academictoken/x/degree/types";
+
+// Params defines the parameters for the degree module
+message Params {
+  option (gogoproto.goproto_stringer) = true;
+  
+  // Address of the CosmWasm contract for degree validation
+  string contract_address = 1;
+  
+  // Version of the contract for upgrade tracking
+  string contract_version = 2;
+}

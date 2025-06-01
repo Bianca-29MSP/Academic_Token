@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "StudentRecord",
+  "description": "Student completion record",
+  "type": "object",
+  "required": [
+    "completed_subjects",
+    "student_id",
+    "total_credits"
+  ],
+  "properties": {
+    "completed_subjects": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/CompletedSubject"
+      }
+    },
+    "student_id": {
+      "type": "string"
+    },
+    "total_credits": {
+      "type": "integer",
+      "format": "uint64",
+      "minimum": 0.0
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "CompletedSubject": {
+      "description": "Completed subject information",
+      "type": "object",
+      "required": [
+        "completion_date",
+        "credits",
+        "grade",
+        "nft_token_id",
+        "subject_id"
+      ],
+      "properties": {
+        "completion_date": {
+          "type": "string"
+        },
+        "credits": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "grade": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "ipfs_link": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "nft_token_id": {
+          "type": "string"
+        },
+        "subject_id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

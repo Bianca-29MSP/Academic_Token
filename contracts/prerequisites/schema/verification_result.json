@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "VerificationResult",
+  "description": "Result of prerequisite verification",
+  "type": "object",
+  "required": [
+    "can_enroll",
+    "details",
+    "missing_prerequisites",
+    "satisfied_groups",
+    "unsatisfied_groups",
+    "used_ipfs_content",
+    "verification_timestamp"
+  ],
+  "properties": {
+    "can_enroll": {
+      "type": "boolean"
+    },
+    "details": {
+      "type": "string"
+    },
+    "missing_prerequisites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "satisfied_groups": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "unsatisfied_groups": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "used_ipfs_content": {
+      "type": "boolean"
+    },
+    "verification_timestamp": {
+      "type": "integer",
+      "format": "uint64",
+      "minimum": 0.0
+    }
+  },
+  "additionalProperties": false
+}

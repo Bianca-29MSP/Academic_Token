@@ -1,0 +1,19 @@
+syntax = "proto3";
+package academictoken.student;
+
+option go_package = "academictoken/x/student/types";
+
+message EquivalenceRequest {
+  string id = 1;
+  string studentId = 2;
+  string sourceSubjectId = 3;
+  string targetSubjectId = 4;
+  string status = 5;              // "pending", "processing", "approved", "rejected"
+  string requestDate = 6;
+  string processedDate = 7;
+  string reason = 8;
+  string createdBy = 9;
+  string equivalenceType = 10;    // "full", "partial", "conditional", "none"
+  uint32 similarityPercentage = 11;
+  string notes = 12;
+}

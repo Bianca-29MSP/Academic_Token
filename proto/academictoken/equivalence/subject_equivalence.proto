@@ -1,0 +1,20 @@
+syntax = "proto3";
+package academictoken.equivalence;
+
+option go_package = "academictoken/x/equivalence/types";
+
+message SubjectEquivalence {
+  string index = 1; 
+  string source_subject_id = 2; 
+  string target_institution = 3; 
+  string target_subject_id = 4; 
+  string equivalence_status = 5; // pending, approved, rejected, error
+  uint64 analysis_count = 6; // Number of times analyzed (for re-analysis tracking)
+  string equivalence_percent = 7; // Percentage determined by smart contract
+  string analysis_metadata = 8; // Complete analysis data from CosmWasm contract
+  string contract_address = 9; // CosmWasm contract address used for analysis
+  string last_update_timestamp = 10; // When last analyzed/updated
+  string request_timestamp = 11; // When equivalence was first requested
+  string analysis_hash = 12; // Hash of the analysis for integrity verification
+  string contract_version = 13; // Version of the contract used (for tracking algorithm changes)
+}

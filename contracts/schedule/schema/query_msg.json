@@ -1,0 +1,456 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "QueryMsg",
+  "description": "Query messages",
+  "oneOf": [
+    {
+      "description": "Get contract state",
+      "type": "object",
+      "required": [
+        "get_state"
+      ],
+      "properties": {
+        "get_state": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Get schedule configuration",
+      "type": "object",
+      "required": [
+        "get_config"
+      ],
+      "properties": {
+        "get_config": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Get student progress",
+      "type": "object",
+      "required": [
+        "get_student_progress"
+      ],
+      "properties": {
+        "get_student_progress": {
+          "type": "object",
+          "required": [
+            "student_id"
+          ],
+          "properties": {
+            "student_id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Get subject schedule information",
+      "type": "object",
+      "required": [
+        "get_subject_schedule_info"
+      ],
+      "properties": {
+        "get_subject_schedule_info": {
+          "type": "object",
+          "required": [
+            "subject_id"
+          ],
+          "properties": {
+            "subject_id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Get schedule recommendation for semester",
+      "type": "object",
+      "required": [
+        "get_schedule_recommendation"
+      ],
+      "properties": {
+        "get_schedule_recommendation": {
+          "type": "object",
+          "required": [
+            "semester",
+            "student_id"
+          ],
+          "properties": {
+            "semester": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "student_id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Get academic path",
+      "type": "object",
+      "required": [
+        "get_academic_path"
+      ],
+      "properties": {
+        "get_academic_path": {
+          "type": "object",
+          "required": [
+            "path_id"
+          ],
+          "properties": {
+            "path_id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "List student's academic paths",
+      "type": "object",
+      "required": [
+        "get_student_paths"
+      ],
+      "properties": {
+        "get_student_paths": {
+          "type": "object",
+          "required": [
+            "student_id"
+          ],
+          "properties": {
+            "include_inactive": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "student_id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Get available subjects for enrollment",
+      "type": "object",
+      "required": [
+        "get_available_subjects"
+      ],
+      "properties": {
+        "get_available_subjects": {
+          "type": "object",
+          "required": [
+            "semester",
+            "student_id"
+          ],
+          "properties": {
+            "include_electives": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "semester": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "student_id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Get optimal academic path recommendations",
+      "type": "object",
+      "required": [
+        "get_optimal_path"
+      ],
+      "properties": {
+        "get_optimal_path": {
+          "type": "object",
+          "required": [
+            "criteria",
+            "student_id"
+          ],
+          "properties": {
+            "criteria": {
+              "$ref": "#/definitions/OptimizationCriteria"
+            },
+            "max_paths": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "student_id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Get graduation timeline analysis",
+      "type": "object",
+      "required": [
+        "get_graduation_timeline"
+      ],
+      "properties": {
+        "get_graduation_timeline": {
+          "type": "object",
+          "required": [
+            "student_id"
+          ],
+          "properties": {
+            "path_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "student_id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Get subject sequence recommendations",
+      "type": "object",
+      "required": [
+        "get_subject_sequence"
+      ],
+      "properties": {
+        "get_subject_sequence": {
+          "type": "object",
+          "required": [
+            "student_id",
+            "target_subjects"
+          ],
+          "properties": {
+            "student_id": {
+              "type": "string"
+            },
+            "target_subjects": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Get workload analysis for semester",
+      "type": "object",
+      "required": [
+        "get_workload_analysis"
+      ],
+      "properties": {
+        "get_workload_analysis": {
+          "type": "object",
+          "required": [
+            "proposed_subjects",
+            "semester",
+            "student_id"
+          ],
+          "properties": {
+            "proposed_subjects": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "semester": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "student_id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Check IPFS cache status",
+      "type": "object",
+      "required": [
+        "get_ipfs_cache_status"
+      ],
+      "properties": {
+        "get_ipfs_cache_status": {
+          "type": "object",
+          "required": [
+            "ipfs_link"
+          ],
+          "properties": {
+            "ipfs_link": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Get cached IPFS content",
+      "type": "object",
+      "required": [
+        "get_cached_content"
+      ],
+      "properties": {
+        "get_cached_content": {
+          "type": "object",
+          "required": [
+            "ipfs_link"
+          ],
+          "properties": {
+            "ipfs_link": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Get schedule statistics",
+      "type": "object",
+      "required": [
+        "get_schedule_statistics"
+      ],
+      "properties": {
+        "get_schedule_statistics": {
+          "type": "object",
+          "properties": {
+            "institution_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "student_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  ],
+  "definitions": {
+    "OptimizationCriteria": {
+      "description": "Optimization criteria for academic path",
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "fastest",
+            "balanced",
+            "easiest_first",
+            "prerequisite_optimal"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "custom"
+          ],
+          "properties": {
+            "custom": {
+              "$ref": "#/definitions/OptimizationWeights"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "OptimizationWeights": {
+      "description": "Weights for optimization criteria",
+      "type": "object",
+      "required": [
+        "difficulty_distribution",
+        "graduation_speed",
+        "student_preferences",
+        "subject_availability",
+        "workload_balance"
+      ],
+      "properties": {
+        "difficulty_distribution": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "graduation_speed": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "student_preferences": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "subject_availability": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "workload_balance": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

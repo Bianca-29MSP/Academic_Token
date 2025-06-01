@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package academictoken.degree;
+
+option go_package = "academictoken/x/degree/types";
+
+message Degree {
+  string index = 1;
+  string degreeId = 2;
+  string student = 3;
+  string institution = 4;
+  string courseId = 5;
+  string curriculumVersion = 6;
+  string issueDate = 7;
+  repeated string tokenInstances = 8;
+  string finalGrade = 9;
+  repeated string signatures = 10;
+  string validationHash = 11;
+  string ipfsLink = 12;
+  
+  // Additional fields for enhanced functionality
+  string status = 13;
+  string nftTokenId = 14;
+  uint64 totalCredits = 15;
+  string validationScore = 16;
+  string contractAddress = 17; // Contract used for validation
+}

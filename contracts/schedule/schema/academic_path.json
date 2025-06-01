@@ -1,0 +1,295 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AcademicPath",
+  "description": "Complete academic path from current state to graduation",
+  "type": "object",
+  "required": [
+    "created_timestamp",
+    "expected_graduation_date",
+    "is_optimized",
+    "last_updated",
+    "optimization_criteria",
+    "path_id",
+    "path_metrics",
+    "path_name",
+    "semesters",
+    "status",
+    "student_id",
+    "total_credits",
+    "total_duration_semesters"
+  ],
+  "properties": {
+    "created_timestamp": {
+      "type": "integer",
+      "format": "uint64",
+      "minimum": 0.0
+    },
+    "expected_graduation_date": {
+      "type": "string"
+    },
+    "is_optimized": {
+      "type": "boolean"
+    },
+    "last_updated": {
+      "type": "integer",
+      "format": "uint64",
+      "minimum": 0.0
+    },
+    "optimization_criteria": {
+      "$ref": "#/definitions/OptimizationCriteria"
+    },
+    "path_id": {
+      "type": "string"
+    },
+    "path_metrics": {
+      "$ref": "#/definitions/PathMetrics"
+    },
+    "path_name": {
+      "type": "string"
+    },
+    "semesters": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/SemesterPlan"
+      }
+    },
+    "status": {
+      "$ref": "#/definitions/PathStatus"
+    },
+    "student_id": {
+      "type": "string"
+    },
+    "total_credits": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0.0
+    },
+    "total_duration_semesters": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0.0
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "OptimizationCriteria": {
+      "description": "Optimization criteria for academic path",
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "fastest",
+            "balanced",
+            "easiest_first",
+            "prerequisite_optimal"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "custom"
+          ],
+          "properties": {
+            "custom": {
+              "$ref": "#/definitions/OptimizationWeights"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "OptimizationWeights": {
+      "description": "Weights for optimization criteria",
+      "type": "object",
+      "required": [
+        "difficulty_distribution",
+        "graduation_speed",
+        "student_preferences",
+        "subject_availability",
+        "workload_balance"
+      ],
+      "properties": {
+        "difficulty_distribution": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "graduation_speed": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "student_preferences": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "subject_availability": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "workload_balance": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        }
+      },
+      "additionalProperties": false
+    },
+    "PathMetrics": {
+      "description": "Metrics for evaluating academic paths",
+      "type": "object",
+      "required": [
+        "average_credits_per_semester",
+        "difficulty_progression_score",
+        "prerequisite_efficiency",
+        "risk_factors",
+        "schedule_flexibility",
+        "total_duration_semesters",
+        "workload_variance"
+      ],
+      "properties": {
+        "average_credits_per_semester": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "difficulty_progression_score": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "prerequisite_efficiency": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "risk_factors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "schedule_flexibility": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "total_duration_semesters": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "workload_variance": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        }
+      },
+      "additionalProperties": false
+    },
+    "PathStatus": {
+      "description": "Status of academic path",
+      "type": "string",
+      "enum": [
+        "draft",
+        "active",
+        "completed",
+        "abandoned",
+        "outdated"
+      ]
+    },
+    "PlannedSubject": {
+      "description": "Subject planned for a specific semester",
+      "type": "object",
+      "required": [
+        "backup_options",
+        "credits",
+        "is_mandatory",
+        "placement_reason",
+        "subject_id",
+        "title"
+      ],
+      "properties": {
+        "backup_options": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "credits": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "is_mandatory": {
+          "type": "boolean"
+        },
+        "placement_reason": {
+          "type": "string"
+        },
+        "subject_id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "SemesterPlan": {
+      "description": "Plan for a specific semester",
+      "type": "object",
+      "required": [
+        "estimated_difficulty",
+        "estimated_workload",
+        "flexibility_score",
+        "notes",
+        "semester_number",
+        "subjects",
+        "total_credits"
+      ],
+      "properties": {
+        "estimated_difficulty": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "estimated_workload": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "flexibility_score": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "semester_number": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PlannedSubject"
+          }
+        },
+        "total_credits": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

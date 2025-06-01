@@ -1,0 +1,196 @@
+syntax = "proto3";
+package academictoken.schedule;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "academictoken/schedule/params.proto";
+import "academictoken/schedule/study_plan.proto";
+import "academictoken/schedule/planned_semester.proto";
+import "academictoken/schedule/subject_recommendation.proto";
+
+option go_package = "academictoken/x/schedule/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/academictoken/schedule/params";
+  }
+
+  // StudyPlan queries a study plan by id
+  rpc StudyPlan(QueryGetStudyPlanRequest) returns (QueryGetStudyPlanResponse) {
+    option (google.api.http).get = "/academictoken/schedule/study_plan/{studyPlanId}";
+  }
+
+  // StudyPlanAll queries all study plans
+  rpc StudyPlanAll(QueryAllStudyPlanRequest) returns (QueryAllStudyPlanResponse) {
+    option (google.api.http).get = "/academictoken/schedule/study_plan";
+  }
+
+  // StudyPlansByStudent queries study plans by student id
+  rpc StudyPlansByStudent(QueryStudyPlansByStudentRequest) returns (QueryStudyPlansByStudentResponse) {
+    option (google.api.http).get = "/academictoken/schedule/study_plan/student/{studentId}";
+  }
+
+  // PlannedSemester queries a planned semester by id
+  rpc PlannedSemester(QueryGetPlannedSemesterRequest) returns (QueryGetPlannedSemesterResponse) {
+    option (google.api.http).get = "/academictoken/schedule/planned_semester/{plannedSemesterId}";
+  }
+
+  // SubjectRecommendation queries a subject recommendation by id
+  rpc SubjectRecommendation(QueryGetSubjectRecommendationRequest) returns (QueryGetSubjectRecommendationResponse) {
+    option (google.api.http).get = "/academictoken/schedule/subject_recommendation/{recommendationId}";
+  }
+
+  // SubjectRecommendationsByStudent queries subject recommendations by student id
+  rpc SubjectRecommendationsByStudent(QuerySubjectRecommendationsByStudentRequest) returns (QuerySubjectRecommendationsByStudentResponse) {
+    option (google.api.http).get = "/academictoken/schedule/subject_recommendation/student/{studentId}";
+  }
+
+  // GenerateRecommendations generates automatic recommendations for a student
+  rpc GenerateRecommendations(QueryGenerateRecommendationsRequest) returns (QueryGenerateRecommendationsResponse) {
+    option (google.api.http).get = "/academictoken/schedule/generate_recommendations/{studentId}";
+  }
+
+  // CheckStudentProgress checks the academic progress of a student
+  rpc CheckStudentProgress(QueryCheckStudentProgressRequest) returns (QueryCheckStudentProgressResponse) {
+    option (google.api.http).get = "/academictoken/schedule/student_progress/{studentId}/{courseId}";
+  }
+
+  // OptimizeSchedule optimizes a student's schedule for better graduation path
+  rpc OptimizeSchedule(QueryOptimizeScheduleRequest) returns (QueryOptimizeScheduleResponse) {
+    option (google.api.http).get = "/academictoken/schedule/optimize/{studyPlanId}";
+  }
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+// QueryGetStudyPlanRequest is request type for the Query/StudyPlan RPC method.
+message QueryGetStudyPlanRequest {
+  string studyPlanId = 1;
+}
+
+// QueryGetStudyPlanResponse is response type for the Query/StudyPlan RPC method.
+message QueryGetStudyPlanResponse {
+  StudyPlan studyPlan = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryAllStudyPlanRequest is request type for the Query/StudyPlanAll RPC method.
+message QueryAllStudyPlanRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAllStudyPlanResponse is response type for the Query/StudyPlanAll RPC method.
+message QueryAllStudyPlanResponse {
+  repeated StudyPlan studyPlan = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryStudyPlansByStudentRequest is request type for the Query/StudyPlansByStudent RPC method.
+message QueryStudyPlansByStudentRequest {
+  string studentId = 1;
+}
+
+// QueryStudyPlansByStudentResponse is response type for the Query/StudyPlansByStudent RPC method.
+message QueryStudyPlansByStudentResponse {
+  repeated StudyPlan studyPlans = 1 [(gogoproto.nullable) = false];
+  string studentId = 2;
+}
+
+// QueryGetPlannedSemesterRequest is request type for the Query/PlannedSemester RPC method.
+message QueryGetPlannedSemesterRequest {
+  string plannedSemesterId = 1;
+}
+
+// QueryGetPlannedSemesterResponse is response type for the Query/PlannedSemester RPC method.
+message QueryGetPlannedSemesterResponse {
+  PlannedSemester plannedSemester = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryGetSubjectRecommendationRequest is request type for the Query/SubjectRecommendation RPC method.
+message QueryGetSubjectRecommendationRequest {
+  string recommendationId = 1;
+}
+
+// QueryGetSubjectRecommendationResponse is response type for the Query/SubjectRecommendation RPC method.
+message QueryGetSubjectRecommendationResponse {
+  SubjectRecommendation subjectRecommendation = 1 [(gogoproto.nullable) = false];
+}
+
+// QuerySubjectRecommendationsByStudentRequest is request type for the Query/SubjectRecommendationsByStudent RPC method.
+message QuerySubjectRecommendationsByStudentRequest {
+  string studentId = 1;
+}
+
+// QuerySubjectRecommendationsByStudentResponse is response type for the Query/SubjectRecommendationsByStudent RPC method.
+message QuerySubjectRecommendationsByStudentResponse {
+  repeated SubjectRecommendation subjectRecommendations = 1 [(gogoproto.nullable) = false];
+  string studentId = 2;
+}
+
+// QueryGenerateRecommendationsRequest is request type for the Query/GenerateRecommendations RPC method.
+message QueryGenerateRecommendationsRequest {
+  string studentId = 1;
+  string semesterCode = 2;
+}
+
+// QueryGenerateRecommendationsResponse is response type for the Query/GenerateRecommendations RPC method.
+message QueryGenerateRecommendationsResponse {
+  repeated SubjectRecommendation recommendations = 1 [(gogoproto.nullable) = false];
+  string studentId = 2;
+  string semesterCode = 3;
+}
+
+// AcademicTree represents a simplified academic tree structure for progress tracking
+message AcademicTree {
+  string studentId = 1;
+  string courseId = 2;
+  string curriculumVersion = 3;
+  uint64 totalCredits = 4;
+  float coefficientGPA = 5;
+  repeated string completedSubjects = 6;
+  repeated string inProgressSubjects = 7;
+}
+
+// QueryCheckStudentProgressRequest is request type for the Query/CheckStudentProgress RPC method.
+message QueryCheckStudentProgressRequest {
+  string studentId = 1;
+  string courseId = 2;
+}
+
+// QueryCheckStudentProgressResponse is response type for the Query/CheckStudentProgress RPC method.
+message QueryCheckStudentProgressResponse {
+  string studentId = 1;
+  string courseId = 2;
+  uint64 completedCredits = 3;
+  uint64 totalRequiredCredits = 4;
+  float completionPercentage = 5;
+  uint64 remainingSemesters = 6;
+  float currentGPA = 7;
+  AcademicTree academicTree = 8 [(gogoproto.nullable) = false];
+}
+
+// QueryOptimizeScheduleRequest is request type for the Query/OptimizeSchedule RPC method.
+message QueryOptimizeScheduleRequest {
+  string studyPlanId = 1;
+}
+
+// QueryOptimizeScheduleResponse is response type for the Query/OptimizeSchedule RPC method.
+message QueryOptimizeScheduleResponse {
+  string studyPlanId = 1;
+  StudyPlan optimizedPlan = 2 [(gogoproto.nullable) = false];
+  repeated string suggestions = 3;
+  string estimatedSavings = 4;
+}

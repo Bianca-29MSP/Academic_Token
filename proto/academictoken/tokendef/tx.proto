@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+package academictoken.tokendef;
+
+import "amino/amino.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "academictoken/tokendef/params.proto";
+import "academictoken/tokendef/tokendef.proto";
+
+option go_package = "academictoken/x/tokendef/types";
+
+// Msg defines the Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+  
+  // UpdateParams defines a (governance) operation for updating the module
+  // parameters. The authority defaults to the x/gov module account.
+  rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
+  
+  // CreateTokenDefinition creates a new token definition for a subject
+  rpc CreateTokenDefinition(MsgCreateTokenDefinition) returns (MsgCreateTokenDefinitionResponse);
+  
+  // UpdateTokenDefinition updates an existing token definition
+  rpc UpdateTokenDefinition(MsgUpdateTokenDefinition) returns (MsgUpdateTokenDefinitionResponse);
+}
+
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) = "authority";
+  option (amino.name) = "academictoken/x/tokendef/MsgUpdateParams";
+  
+  // authority is the address that controls the module (defaults to x/gov unless overwritten).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  
+  // params defines the module parameters to update.
+  // NOTE: All parameters must be supplied.
+  Params params = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+message MsgUpdateParamsResponse {}
+
+// MsgCreateTokenDefinition creates a new token definition
+message MsgCreateTokenDefinition {
+  option (cosmos.msg.v1.signer) = "creator";
+  
+  string creator          = 1;
+  string subjectId        = 2;  // Must reference existing subject
+  string tokenName        = 3;  // Token name (e.g., "CALC1 Completion Token")
+  string tokenSymbol      = 4;  // Token symbol (e.g., "CALC1-TOKEN")
+  string description      = 5;  // Token description
+  string tokenType        = 6;  // "NFT", "FUNGIBLE", "ACHIEVEMENT"
+  bool isTransferable     = 7;  // Can tokens be transferred between students?
+  bool isBurnable         = 8;  // Can tokens be burned?
+  uint64 maxSupply        = 9;  // Maximum tokens that can be minted (0 = unlimited)
+  string imageUri        = 10;  // Token image/badge URI
+  repeated TokenAttributeInput attributes = 11;  // Token attributes
+}
+
+// TokenAttributeInput for creating token attributes
+message TokenAttributeInput {
+  string traitType       = 1;  // Attribute type (e.g., "Grade", "Completion Date")
+  string displayType     = 2;  // How to display ("text", "number", "date")
+  bool isDynamic         = 3;  // Can this attribute change after minting?
+}
+
+// MsgCreateTokenDefinitionResponse defines the response
+message MsgCreateTokenDefinitionResponse {
+  string index = 1;  // Created token definition index
+}
+
+// MsgUpdateTokenDefinition updates a token definition
+message MsgUpdateTokenDefinition {
+  option (cosmos.msg.v1.signer) = "creator";
+  
+  string creator          = 1;
+  string tokenDefId       = 2;  // Token definition to update
+  string tokenName        = 3;  // Updated token name
+  string tokenSymbol      = 4;  // Updated token symbol
+  string description      = 5;  // Updated description
+  bool isTransferable     = 6;  // Updated transferability
+  bool isBurnable         = 7;  // Updated burnability
+  uint64 maxSupply        = 8;  // Updated max supply
+  string imageUri         = 9;  // Updated image URI
+  repeated TokenAttributeInput attributes = 10;  // Updated attributes
+}
+
+// MsgUpdateTokenDefinitionResponse defines the response
+message MsgUpdateTokenDefinitionResponse {}

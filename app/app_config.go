@@ -56,6 +56,20 @@ import (
 	academictokenmodulev1 "academictoken/api/academictoken/academictoken/module"
 	_ "academictoken/x/academictoken/module" // import for side-effects
 	academictokenmoduletypes "academictoken/x/academictoken/types"
+
+	// Manual modules - not using DI
+	academicnftmoduletypes "academictoken/x/academicnft/types"
+	coursemoduletypes "academictoken/x/course/types"
+	curriculummoduletypes "academictoken/x/curriculum/types"
+	degreemoduletypes "academictoken/x/degree/types"
+	equivalencemoduletypes "academictoken/x/equivalence/types"
+	institutionmoduletypes "academictoken/x/institution/types"
+	schedulemoduletypes "academictoken/x/schedule/types"
+	studentmoduletypes "academictoken/x/student/types"
+	subjectmoduletypes "academictoken/x/subject/types"
+	tokendefmoduletypes "academictoken/x/tokendef/types"
+
+	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
@@ -94,6 +108,18 @@ var (
 		circuittypes.ModuleName,
 		// chain modules
 		academictokenmoduletypes.ModuleName,
+		wasmtypes.ModuleName,
+		// Manual modules (following dependency order)
+		institutionmoduletypes.ModuleName,
+		coursemoduletypes.ModuleName,
+		subjectmoduletypes.ModuleName,
+		curriculummoduletypes.ModuleName,
+		tokendefmoduletypes.ModuleName,
+		studentmoduletypes.ModuleName,
+		academicnftmoduletypes.ModuleName,
+		equivalencemoduletypes.ModuleName,
+		degreemoduletypes.ModuleName,
+		schedulemoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
 
@@ -119,6 +145,18 @@ var (
 		ibcfeetypes.ModuleName,
 		// chain modules
 		academictokenmoduletypes.ModuleName,
+		wasmtypes.ModuleName,
+		// Manual modules (following dependency order)
+		institutionmoduletypes.ModuleName,
+		coursemoduletypes.ModuleName,
+		subjectmoduletypes.ModuleName,
+		curriculummoduletypes.ModuleName,
+		tokendefmoduletypes.ModuleName,
+		studentmoduletypes.ModuleName,
+		academicnftmoduletypes.ModuleName,
+		equivalencemoduletypes.ModuleName,
+		degreemoduletypes.ModuleName,
+		schedulemoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	}
 
@@ -138,6 +176,18 @@ var (
 		ibcfeetypes.ModuleName,
 		// chain modules
 		academictokenmoduletypes.ModuleName,
+		wasmtypes.ModuleName,
+		// Manual modules (following dependency order)
+		institutionmoduletypes.ModuleName,
+		coursemoduletypes.ModuleName,
+		subjectmoduletypes.ModuleName,
+		curriculummoduletypes.ModuleName,
+		tokendefmoduletypes.ModuleName,
+		studentmoduletypes.ModuleName,
+		academicnftmoduletypes.ModuleName,
+		equivalencemoduletypes.ModuleName,
+		degreemoduletypes.ModuleName,
+		schedulemoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	}
 
@@ -158,6 +208,7 @@ var (
 		{Account: ibctransfertypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}},
 		{Account: ibcfeetypes.ModuleName},
 		{Account: icatypes.ModuleName},
+		{Account: wasmtypes.ModuleName, Permissions: []string{authtypes.Burner}},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 
@@ -297,6 +348,7 @@ var (
 				Name:   academictokenmoduletypes.ModuleName,
 				Config: appconfig.WrapAny(&academictokenmodulev1.Module{}),
 			},
+			// DO NOT add institution, course, subject, curriculum, tokendef, academicnft, student, equivalence, degree and schedule modules here - they are manual
 			// this line is used by starport scaffolding # stargate/app/moduleConfig
 		},
 	})

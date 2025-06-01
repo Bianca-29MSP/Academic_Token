@@ -1,0 +1,48 @@
+package keeper
+
+import (
+	"context"
+	"fmt"
+	"strconv"
+
+	errorsmod "cosmossdk.io/errors"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+
+	"academictoken/x/curriculum/types"
+)
+
+func (k msgServer) SetGraduationRequirements(goCtx context.Context, req *types.MsgSetGraduationRequirements) (*types.MsgSetGraduationRequirementsResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Validate creator
+	_, err := sdk.AccAddressFromBech32(req.Creator)
+	if err != nil {
+		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidAddress, "invalid creator address")
+	}
+
+	requirements := types.GraduationRequirements{
+		TotalCreditsRequired:    strconv.FormatUint(req.TotalCreditsRequired, 10),
+		MinGpa:                  fmt.Sprintf("%.2f", req.MinGpa),
+		RequiredElectiveCredits: strconv.FormatUint(req.RequiredElectiveCredits, 10),
+		RequiredActivities:      req.RequiredActivities,
+		MinimumTimeYears:        fmt.Sprintf("%.1f", req.MinimumTimeYears),
+		MaximumTimeYears:        fmt.Sprintf("%.1f", req.MaximumTimeYears),
+	}
+
+	err = k.Keeper.SetGraduationRequirements(goCtx, req.CurriculumIndex, requirements)
+	if err != nil {
+		return nil, err
+	}
+
+	// Emit simple event
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			"graduation_requirements_set",
+			sdk.NewAttribute("curriculum_index", req.CurriculumIndex),
+			sdk.NewAttribute("creator", req.Creator),
+		),
+	)
+
+	return &types.MsgSetGraduationRequirementsResponse{}, nil
+}

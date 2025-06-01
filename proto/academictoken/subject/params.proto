@@ -1,0 +1,19 @@
+syntax = "proto3";
+package academictoken.subject;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "academictoken/x/subject/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (amino.name) = "academictoken/x/subject/Params";
+  option (gogoproto.equal) = true;
+
+  string ipfs_gateway = 1 [(gogoproto.moretags) = "yaml:\"ipfs_gateway\""];
+  bool ipfs_enabled = 2 [(gogoproto.moretags) = "yaml:\"ipfs_enabled\""];
+  string prerequisite_validator_contract = 3 [(gogoproto.moretags) = "yaml:\"prerequisite_validator_contract\""];
+  string equivalence_validator_contract = 4 [(gogoproto.moretags) = "yaml:\"equivalence_validator_contract\""];
+  string admin = 5 [(gogoproto.moretags) = "yaml:\"admin\""];
+}

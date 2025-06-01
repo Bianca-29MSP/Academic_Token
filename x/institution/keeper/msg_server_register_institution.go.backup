@@ -1,0 +1,59 @@
+package keeper
+
+import (
+	"context"
+	"fmt"
+
+	"academictoken/x/institution/types"
+
+	errorsmod "cosmossdk.io/errors"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+)
+
+func (k msgServer) RegisterInstitution(goCtx context.Context, msg *types.MsgRegisterInstitution) (*types.MsgRegisterInstitutionResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Check if institution with same name already exists
+	if k.Keeper.InstitutionExistsByName(ctx, msg.Name) {
+		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("institution with name '%s' already exists", msg.Name))
+	}
+
+	// Check if institution with same address already exists
+	if k.Keeper.InstitutionExistsByAddress(ctx, msg.Address) {
+		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidRequest, fmt.Sprintf("institution with address '%s' already exists", msg.Address))
+	}
+
+	// Generate a new index for the institution
+	institutionIndex := k.Keeper.GetNextInstitutionIndex(ctx)
+
+	// Create the institution with initial authorization status as "false"
+	// Store the creator for future authorization checks
+	institution := types.Institution{
+		Index:        institutionIndex,
+		Address:      msg.Address,
+		Name:         msg.Name,
+		IsAuthorized: "false",     // Default to unauthorized - requires approval
+		Creator:      msg.Creator, // Store original creator
+	}
+
+	// Store the institution
+	err := k.Keeper.SetInstitution(ctx, institution)
+	if err != nil {
+		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidRequest, "failed to store institution: "+err.Error())
+	}
+
+	// Emit event for institution registration
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeRegisterInstitution,
+			sdk.NewAttribute(types.AttributeKeyInstitutionIndex, institutionIndex),
+			sdk.NewAttribute(types.AttributeKeyInstitutionName, msg.Name),
+			sdk.NewAttribute(types.AttributeKeyCreator, msg.Creator),
+		),
+	)
+
+	return &types.MsgRegisterInstitutionResponse{
+		Index: institutionIndex, // Return the generated institution ID
+	}, nil
+}

@@ -1,0 +1,74 @@
+package types
+
+// ============================================================================
+// CONTRACT INTEGRATION TYPES FOR DEGREE MODULE
+// ============================================================================
+
+// DegreeValidationRequest represents a request to validate degree requirements
+type DegreeValidationRequest struct {
+	StudentId     string   `json:"student_id"`
+	CurriculumId  string   `json:"curriculum_id"`
+	InstitutionId string   `json:"institution_id"`
+	FinalGPA      string   `json:"final_gpa"`
+	TotalCredits  uint64   `json:"total_credits"`
+	Signatures    []string `json:"signatures"`
+	RequestedDate string   `json:"requested_date"`
+}
+
+// DegreeValidationResult represents the result of degree validation
+type DegreeValidationResult struct {
+	IsValid             bool     `json:"is_valid"`
+	Message             string   `json:"message"`
+	DegreeType          string   `json:"degree_type"`
+	CurriculumVersion   string   `json:"curriculum_version"`
+	ValidationHash      string   `json:"validation_hash"`
+	RequirementsMet     []string `json:"requirements_met"`
+	MissingRequirements []string `json:"missing_requirements"`
+}
+
+// DegreeNFTMintingRequest represents a request to mint degree NFT
+type DegreeNFTMintingRequest struct {
+	StudentId      string                 `json:"student_id"`
+	CurriculumId   string                 `json:"curriculum_id"`
+	InstitutionId  string                 `json:"institution_id"`
+	DegreeType     string                 `json:"degree_type"`
+	FinalGPA       string                 `json:"final_gpa"`
+	TotalCredits   uint64                 `json:"total_credits"`
+	ValidationData DegreeValidationResult `json:"validation_data"`
+	IssueDate      string                 `json:"issue_date"`
+}
+
+// DegreeNFTMintingResult represents the result of degree NFT minting
+type DegreeNFTMintingResult struct {
+	Success          bool   `json:"success"`
+	TokenId          string `json:"token_id"`
+	MetadataIPFSHash string `json:"metadata_ipfs_hash"`
+	Message          string `json:"message"`
+}
+
+// DegreeNFTData represents the NFT data for a degree
+type DegreeNFTData struct {
+	StudentId     string `json:"student_id"`
+	CurriculumId  string `json:"curriculum_id"`
+	InstitutionId string `json:"institution_id"`
+	DegreeType    string `json:"degree_type"`
+	IssueDate     string `json:"issue_date"`
+	GPA           string `json:"gpa"`
+	TotalCredits  uint64 `json:"total_credits"`
+}
+
+// ============================================================================
+// CONTRACT-SPECIFIC CONSTANTS
+// ============================================================================
+// Note: Event types and attribute keys are defined in keys.go to avoid duplication
+
+// Additional degree statuses specific to contract operations
+const (
+	DegreeStatusRevoked   = "revoked"
+	DegreeStatusSuspended = "suspended"
+)
+
+// Additional event types specific to contract operations
+const (
+	EventTypeDegreeVerified = "degree_verified"
+)

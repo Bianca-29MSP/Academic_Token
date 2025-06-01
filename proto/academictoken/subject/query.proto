@@ -1,0 +1,164 @@
+syntax = "proto3";
+package academictoken.subject;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "academictoken/subject/params.proto";
+import "academictoken/subject/subject_content.proto";
+import "academictoken/subject/prerequisite_group.proto";
+import "academictoken/subject/check_messages.proto";
+
+option go_package = "academictoken/x/subject/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/academictoken/subject/params";
+  }
+
+  // GetSubject queries a subject by its ID
+  rpc GetSubject(QueryGetSubjectRequest) returns (QueryGetSubjectResponse) {
+    option (google.api.http).get = "/academictoken/subject/subjects/{index}";
+  }
+
+  // GetSubjectFull queries a subject with full content from IPFS
+  rpc GetSubjectFull(QueryGetSubjectFullRequest) returns (QueryGetSubjectFullResponse) {
+    option (google.api.http).get = "/academictoken/subject/subjects/{index}/full";
+  }
+
+  // GetSubjectWithPrerequisites queries a subject with its prerequisite groups
+  rpc GetSubjectWithPrerequisites(QueryGetSubjectWithPrerequisitesRequest) returns (QueryGetSubjectWithPrerequisitesResponse) {
+    option (google.api.http).get = "/academictoken/subject/subjects/{subject_id}/prerequisites";
+  }
+
+  // ListSubjects lists all subjects with pagination
+  rpc ListSubjects(QueryListSubjectsRequest) returns (QueryListSubjectsResponse) {
+    option (google.api.http).get = "/academictoken/subject/subjects";
+  }
+
+  // SubjectsByCourse lists all subjects for a specific course
+  rpc SubjectsByCourse(QuerySubjectsByCourseRequest) returns (QuerySubjectsByCourseResponse) {
+    option (google.api.http).get = "/academictoken/subject/courses/{course_id}/subjects";
+  }
+
+  // SubjectsByInstitution lists all subjects for a specific institution
+  rpc SubjectsByInstitution(QuerySubjectsByInstitutionRequest) returns (QuerySubjectsByInstitutionResponse) {
+    option (google.api.http).get = "/academictoken/subject/institutions/{institution_id}/subjects";
+  }
+
+  // CheckPrerequisites checks if a student meets the prerequisites for a subject via CosmWasm contract
+  rpc CheckPrerequisites(QueryCheckPrerequisitesRequest) returns (QueryCheckPrerequisitesResponse) {
+    option (google.api.http).get = "/academictoken/subject/check_prerequisites/{student_id}/{subject_id}";
+  }
+
+  // CheckEquivalence checks equivalence between two subjects via CosmWasm contract
+  rpc CheckEquivalence(QueryCheckEquivalenceRequest) returns (QueryCheckEquivalenceResponse) {
+    option (google.api.http).get = "/academictoken/subject/check_equivalence/{source_subject_id}/{target_subject_id}";
+  }
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+// QueryGetSubjectRequest is the request type for the Query/GetSubject RPC method
+message QueryGetSubjectRequest {
+  string index = 1;
+}
+
+// QueryGetSubjectResponse is the response type for the Query/GetSubject RPC method
+message QueryGetSubjectResponse {
+  SubjectContent subject = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryGetSubjectFullRequest is the request type for the Query/GetSubjectFull RPC method
+message QueryGetSubjectFullRequest {
+  string index = 1;
+}
+
+// QueryGetSubjectFullResponse is the response type for the Query/GetSubjectFull RPC method
+message QueryGetSubjectFullResponse {
+  SubjectContent subject = 1 [(gogoproto.nullable) = false];
+  string extended_content_json = 2; // JSON string of extended content from IPFS
+}
+
+// QueryGetSubjectWithPrerequisitesRequest is the request type for the Query/GetSubjectWithPrerequisites RPC method
+message QueryGetSubjectWithPrerequisitesRequest {
+  string subject_id = 1;
+}
+
+// QueryGetSubjectWithPrerequisitesResponse is the response type for the Query/GetSubjectWithPrerequisites RPC method
+message QueryGetSubjectWithPrerequisitesResponse {
+  SubjectWithPrerequisites subject_with_prerequisites = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryListSubjectsRequest is the request type for the Query/ListSubjects RPC method
+message QueryListSubjectsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryListSubjectsResponse is the response type for the Query/ListSubjects RPC method
+message QueryListSubjectsResponse {
+  repeated SubjectContent subjects = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QuerySubjectsByCourseRequest is the request type for the Query/SubjectsByCourse RPC method
+message QuerySubjectsByCourseRequest {
+  string course_id = 1;
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+// QuerySubjectsByCourseResponse is the response type for the Query/SubjectsByCourse RPC method
+message QuerySubjectsByCourseResponse {
+  repeated SubjectContent subjects = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QuerySubjectsByInstitutionRequest is the request type for the Query/SubjectsByInstitution RPC method
+message QuerySubjectsByInstitutionRequest {
+  string institution_id = 1;
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+// QuerySubjectsByInstitutionResponse is the response type for the Query/SubjectsByInstitution RPC method
+message QuerySubjectsByInstitutionResponse {
+  repeated SubjectContent subjects = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryCheckPrerequisitesRequest is the request type for the Query/CheckPrerequisites RPC method
+message QueryCheckPrerequisitesRequest {
+  string student_id = 1;
+  string subject_id = 2;
+}
+
+// QueryCheckPrerequisitesResponse is the response type for the Query/CheckPrerequisites RPC method
+message QueryCheckPrerequisitesResponse {
+  bool is_eligible = 1;
+  repeated string missing_prerequisites = 2;
+}
+
+// QueryCheckEquivalenceRequest is the request type for the Query/CheckEquivalence RPC method
+message QueryCheckEquivalenceRequest {
+  string source_subject_id = 1;
+  string target_subject_id = 2;
+  bool force_recalculate = 3;
+}
+
+// QueryCheckEquivalenceResponse is the response type for the Query/CheckEquivalence RPC method
+message QueryCheckEquivalenceResponse {
+  uint64 equivalence_percent = 1;
+  string status = 2;
+}

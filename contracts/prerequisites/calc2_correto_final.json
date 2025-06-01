@@ -1,0 +1,1 @@
+{"register_prerequisites":{"subject_id":"CALC2","prerequisites":[{"id":"prereq1","subject_id":"CALC2","group_type":"all","minimum_credits":0,"minimum_completed_subjects":1,"subject_ids":["CALC1"],"logic":"and","priority":1,"confidence":1.0}]}}

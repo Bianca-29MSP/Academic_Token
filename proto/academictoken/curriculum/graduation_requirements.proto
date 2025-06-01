@@ -1,0 +1,14 @@
+syntax = "proto3";
+package academictoken.curriculum;
+
+option go_package = "academictoken/x/curriculum/types";
+
+message GraduationRequirements {
+  
+  string totalCreditsRequired = 1; 
+  string minGpa = 2; 
+  string requiredElectiveCredits = 3; 
+  repeated string requiredActivities = 4; 
+  string minimumTimeYears = 5; 
+  string maximumTimeYears = 6; 
+}

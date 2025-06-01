@@ -1,0 +1,114 @@
+use cosmwasm_std::{Deps, StdResult, Order};
+use cw_storage_plus::Bound;
+use crate::msg::{
+    StateResponse, EquivalenceResponse, EquivalencesResponse, 
+    AnalysisResponse, TransferResponse, TransfersResponse,
+    EquivalenceCheckResponse, StatisticsResponse
+};
+use crate::state::{STATE, EQUIVALENCES, EQUIVALENCE_INDEX};
+
+pub fn query_state(deps: Deps) -> StdResult<StateResponse> {
+    let state = STATE.load(deps.storage)?;
+    Ok(StateResponse { state })
+}
+
+pub fn query_equivalence(deps: Deps, equivalence_id: String) -> StdResult<EquivalenceResponse> {
+    let equivalence = EQUIVALENCES.may_load(deps.storage, &equivalence_id)?;
+    Ok(EquivalenceResponse { equivalence })
+}
+
+pub fn query_find_equivalence(
+    deps: Deps, 
+    source_subject_id: String, 
+    target_subject_id: String
+) -> StdResult<EquivalenceResponse> {
+    // Busca por iteração (mais confiável)
+    let equivalences: Result<Vec<_>, _> = EQUIVALENCES
+        .range(deps.storage, None, None, Order::Ascending)
+        .collect();
+    
+    if let Ok(eqs) = equivalences {
+        for (_, equiv) in eqs {
+            if (equiv.source_subject.subject_id == source_subject_id && 
+                equiv.target_subject.subject_id == target_subject_id) ||
+               (equiv.source_subject.subject_id == target_subject_id && 
+                equiv.target_subject.subject_id == source_subject_id) {
+                return Ok(EquivalenceResponse { equivalence: Some(equiv) });
+            }
+        }
+    }
+    
+    Ok(EquivalenceResponse { equivalence: None })
+}
+
+pub fn query_check_equivalence(
+    deps: Deps, 
+    source_subject_id: String, 
+    target_subject_id: String, 
+    minimum_similarity: Option<u32>
+) -> StdResult<EquivalenceCheckResponse> {
+    let result = query_find_equivalence(deps, source_subject_id, target_subject_id)?;
+    
+    if let Some(equivalence) = result.equivalence {
+        let min_sim = minimum_similarity.unwrap_or(70);
+        let is_equivalent = equivalence.similarity_percentage >= min_sim;
+        
+        Ok(EquivalenceCheckResponse {
+            is_equivalent,
+            equivalence_type: Some(equivalence.equivalence_type),
+            similarity_percentage: equivalence.similarity_percentage,
+            equivalence_id: Some(equivalence.id),
+        })
+    } else {
+        Ok(EquivalenceCheckResponse {
+            is_equivalent: false,
+            equivalence_type: None,
+            similarity_percentage: 0,
+            equivalence_id: None,
+        })
+    }
+}
+
+// Debug function
+pub fn query_debug_equivalences(deps: Deps) -> StdResult<Vec<String>> {
+    let equivalences: Result<Vec<_>, _> = EQUIVALENCES
+        .range(deps.storage, None, None, Order::Ascending)
+        .collect();
+    
+    match equivalences {
+        Ok(eqs) => {
+            let ids: Vec<String> = eqs.into_iter().map(|(id, _)| id).collect();
+            Ok(ids)
+        }
+        Err(e) => Err(e)
+    }
+}
+
+// Stub implementations
+pub fn query_list_equivalences_by_institution(_deps: Deps, _institution_id: String, _limit: Option<u32>, _start_after: Option<String>) -> StdResult<EquivalencesResponse> {
+    Ok(EquivalencesResponse { equivalences: vec![], total: 0 })
+}
+
+pub fn query_analysis_result(_deps: Deps, _analysis_id: String) -> StdResult<AnalysisResponse> {
+    Ok(AnalysisResponse { analysis: None })
+}
+
+pub fn query_transfer_request(_deps: Deps, _transfer_id: String) -> StdResult<TransferResponse> {
+    Ok(TransferResponse { transfer: None })
+}
+
+pub fn query_list_student_transfers(_deps: Deps, _student_id: String, _limit: Option<u32>) -> StdResult<TransfersResponse> {
+    Ok(TransfersResponse { transfers: vec![], total: 0 })
+}
+
+pub fn query_statistics(deps: Deps, _institution_id: Option<String>) -> StdResult<StatisticsResponse> {
+    let state = STATE.load(deps.storage)?;
+    Ok(StatisticsResponse {
+        total_equivalences: state.total_equivalences,
+        approved_equivalences: 0,  
+        pending_equivalences: 0,   
+        average_similarity: 0,     
+        total_transfers: 0,        
+        successful_transfers: 0,   
+    })
+}

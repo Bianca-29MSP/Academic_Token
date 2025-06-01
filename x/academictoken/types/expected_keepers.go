@@ -6,20 +6,60 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
-// AccountKeeper defines the expected interface for the Account module.
-type AccountKeeper interface {
-	GetAccount(context.Context, sdk.AccAddress) sdk.AccountI // only used for simulation
-	// Methods imported from account should be defined here
+// SubjectContent defines the locally defined version of Subject content
+// to avoid direct dependency on subject module
+type SubjectContent struct {
+	Index         string
+	SubjectId     string
+	Institution   string
+	Title         string
+	Code          string
+	WorkloadHours uint64
+	Credits       uint64
+	ContentHash   string
+	Description   string
 }
 
-// BankKeeper defines the expected interface for the Bank module.
-type BankKeeper interface {
-	SpendableCoins(context.Context, sdk.AccAddress) sdk.Coins
-	// Methods imported from bank should be defined here
+// SubjectKeeper defines the expected interface for the Subject module
+type SubjectKeeper interface {
+	// GetSubject returns a subject by its ID
+	GetSubject(ctx sdk.Context, subjectID string) (SubjectContent, bool)
+
+	// GetSubjectsByInstitution returns subjects offered by an institution
+	GetSubjectsByInstitution(ctx sdk.Context, institutionID string) []SubjectContent
 }
 
-// ParamSubspace defines the expected Subspace interface for parameters.
+// Institution defines the locally defined version of Institution
+// to avoid direct dependency on institution module
+type Institution struct {
+	Index        string
+	Name         string
+	IsAuthorized bool
+}
+
+// InstitutionKeeper defines the expected interface for the Institution module
+type InstitutionKeeper interface {
+	// GetInstitution returns an institution by its ID
+	GetInstitution(ctx sdk.Context, institutionID string) (Institution, bool)
+
+	// IsInstitutionAuthorized checks if an institution is authorized
+	IsInstitutionAuthorized(ctx sdk.Context, institutionID string) bool
+}
+
+// ParamSubspace defines the expected Subspace interface for parameters
 type ParamSubspace interface {
-	Get(context.Context, []byte, interface{})
-	Set(context.Context, []byte, interface{})
+	Get(ctx context.Context, key []byte, ptr interface{})
+	Set(ctx context.Context, key []byte, param interface{})
+}
+
+// AccountKeeper defines the expected interface for the Account module
+// Kept for compatibility with Cosmos SDK
+type AccountKeeper interface {
+	GetAccount(ctx context.Context, addr sdk.AccAddress) sdk.AccountI
+}
+
+// BankKeeper defines the expected interface for the Bank module
+// Kept for compatibility with Cosmos SDK
+type BankKeeper interface {
+	SpendableCoins(ctx context.Context, addr sdk.AccAddress) sdk.Coins
 }

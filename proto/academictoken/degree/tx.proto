@@ -1,0 +1,141 @@
+syntax = "proto3";
+
+package academictoken.degree;
+
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+import "cosmos/msg/v1/msg.proto";
+import "amino/amino.proto";
+import "academictoken/degree/params.proto";
+
+option go_package = "academictoken/x/degree/types";
+
+// Msg defines the Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+
+  // RequestDegree requests a degree for a student
+  rpc RequestDegree (MsgRequestDegree) returns (MsgRequestDegreeResponse);
+
+  // ValidateDegreeRequirements validates if student meets graduation requirements
+  rpc ValidateDegreeRequirements (MsgValidateDegreeRequirements) returns (MsgValidateDegreeRequirementsResponse);
+
+  // IssueDegree issues a degree after successful validation
+  rpc IssueDegree (MsgIssueDegree) returns (MsgIssueDegreeResponse);
+
+  // UpdateDegreeContract updates the CosmWasm contract address
+  rpc UpdateDegreeContract (MsgUpdateDegreeContract) returns (MsgUpdateDegreeContractResponse);
+
+  // CancelDegreeRequest cancels a pending degree request
+  rpc CancelDegreeRequest (MsgCancelDegreeRequest) returns (MsgCancelDegreeRequestResponse);
+
+  // UpdateParams defines a (governance) operation for updating the module
+  // parameters. The authority defaults to the x/gov module account.
+  rpc UpdateParams (MsgUpdateParams) returns (MsgUpdateParamsResponse);
+}
+
+// MsgRequestDegree requests a degree for a student
+message MsgRequestDegree {
+  option (cosmos.msg.v1.signer) = "creator";
+  option (amino.name) = "academictoken/x/degree/MsgRequestDegree";
+
+  string creator = 1;
+  string student_id = 2;
+  string institution_id = 3;
+  string curriculum_id = 4;
+  string expected_graduation_date = 5;
+}
+
+message MsgRequestDegreeResponse {
+  string degree_request_id = 1;
+  string status = 2;
+}
+
+// MsgValidateDegreeRequirements validates graduation requirements via CosmWasm
+message MsgValidateDegreeRequirements {
+  option (cosmos.msg.v1.signer) = "creator";
+  option (amino.name) = "academictoken/x/degree/MsgValidateDegreeRequirements";
+
+  string creator = 1;
+  string degree_request_id = 2;
+  string contract_address = 3;
+  string validation_parameters = 4; // JSON string with validation params
+}
+
+message MsgValidateDegreeRequirementsResponse {
+  bool validation_passed = 1;
+  string validation_score = 2;
+  string validation_details = 3;
+  repeated string missing_requirements = 4;
+}
+
+// MsgIssueDegree issues a degree after successful validation
+message MsgIssueDegree {
+  option (cosmos.msg.v1.signer) = "creator";
+  option (amino.name) = "academictoken/x/degree/MsgIssueDegree";
+
+  string creator = 1;
+  string degree_request_id = 2;
+  string final_gpa = 3;
+  uint64 total_credits = 4;
+  repeated string signatures = 5; // Digital signatures from authorized personnel
+  string additional_notes = 6;
+}
+
+message MsgIssueDegreeResponse {
+  string degree_id = 1;
+  string nft_token_id = 2;
+  string ipfs_hash = 3;
+  string issue_date = 4;
+}
+
+// MsgUpdateDegreeContract updates the CosmWasm contract address
+message MsgUpdateDegreeContract {
+  option (cosmos.msg.v1.signer) = "authority";
+  option (amino.name) = "academictoken/x/degree/MsgUpdateDegreeContract";
+
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"]; // Authority address (governance or admin)
+  string new_contract_address = 2;
+  string contract_version = 3;
+  string migration_reason = 4;
+}
+
+message MsgUpdateDegreeContractResponse {
+  string old_contract_address = 1;
+  string new_contract_address = 2;
+  string update_date = 3;
+}
+
+// MsgCancelDegreeRequest cancels a pending degree request
+message MsgCancelDegreeRequest {
+  option (cosmos.msg.v1.signer) = "creator";
+  option (amino.name) = "academictoken/x/degree/MsgCancelDegreeRequest";
+
+  string creator = 1;
+  string degree_request_id = 2;
+  string cancellation_reason = 3;
+}
+
+message MsgCancelDegreeRequestResponse {
+  string degree_request_id = 1;
+  string status = 2;
+  string cancellation_date = 3;
+}
+
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) = "authority";
+  option (amino.name) = "academictoken/x/degree/MsgUpdateParams";
+
+  // authority is the address that controls the module (defaults to x/gov unless overwritten).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  
+  // params defines the module parameters to update.
+  
+  // NOTE: All parameters must be supplied.
+  Params params = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+message MsgUpdateParamsResponse {}

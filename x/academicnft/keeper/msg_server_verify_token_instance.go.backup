@@ -1,0 +1,49 @@
+package keeper
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	"academictoken/x/academicnft/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+)
+
+func (k msgServer) VerifyTokenInstance(goCtx context.Context, msg *types.MsgVerifyTokenInstance) (*types.MsgVerifyTokenInstanceResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Validate that token instance exists
+	tokenInstance, found := k.GetSubjectTokenInstance(ctx, msg.TokenInstanceId)
+	if !found {
+		return nil, types.ErrTokenInstanceNotFound
+	}
+
+	// Perform comprehensive validation
+	isValid, err := k.ValidateTokenInstance(ctx, msg.TokenInstanceId)
+	if err != nil {
+		// Token exists but has validation issues
+		k.Logger().Error("token validation failed",
+			"error", err,
+			"token", msg.TokenInstanceId,
+			"student", tokenInstance.Student, // USANDO a variável
+			"institution", tokenInstance.IssuerInstitution, // USANDO a variável
+		)
+	}
+
+	// Emit verification event
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			"token_instance_verified",
+			sdk.NewAttribute("token_instance_id", msg.TokenInstanceId),
+			sdk.NewAttribute("is_valid", fmt.Sprintf("%t", isValid)),
+			sdk.NewAttribute("verifier", msg.Creator),
+			sdk.NewAttribute("student", tokenInstance.Student), // USANDO a variável
+			sdk.NewAttribute("verification_time", time.Now().UTC().Format(time.RFC3339)),
+		),
+	)
+
+	return &types.MsgVerifyTokenInstanceResponse{
+		IsValid: isValid,
+	}, nil
+}

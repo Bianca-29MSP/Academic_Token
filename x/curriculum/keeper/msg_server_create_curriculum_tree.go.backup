@@ -1,0 +1,51 @@
+package keeper
+
+import (
+	"context"
+	"strconv"
+
+	errorsmod "cosmossdk.io/errors"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+
+	"academictoken/x/curriculum/types"
+)
+
+func (k msgServer) CreateCurriculumTree(goCtx context.Context, req *types.MsgCreateCurriculumTree) (*types.MsgCreateCurriculumTreeResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Validate creator
+	_, err := sdk.AccAddressFromBech32(req.Creator)
+	if err != nil {
+		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidAddress, "invalid creator address")
+	}
+
+	// Create curriculum tree
+	var curriculumTree = types.CurriculumTree{
+		CourseId:           req.CourseId,
+		Version:            req.Version,
+		TotalWorkloadHours: strconv.FormatUint(req.TotalWorkloadHours, 10),
+		RequiredSubjects:   req.RequiredSubjects,
+		ElectiveMin:        req.ElectiveMin,
+		ElectiveSubjects:   req.ElectiveSubjects,
+		SemesterStructure:  []*types.CurriculumSemester{},
+		ElectiveGroups:     []*types.ElectiveGroup{},
+	}
+
+	id, err := k.AppendCurriculumTree(goCtx, curriculumTree)
+	if err != nil {
+		return nil, err
+	}
+
+	// Emit simple event
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			"curriculum_tree_created",
+			sdk.NewAttribute("index", strconv.FormatUint(id, 10)),
+			sdk.NewAttribute("course_id", req.CourseId),
+			sdk.NewAttribute("creator", req.Creator),
+		),
+	)
+
+	return &types.MsgCreateCurriculumTreeResponse{}, nil
+}

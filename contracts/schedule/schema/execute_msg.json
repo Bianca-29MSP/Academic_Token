@@ -1,0 +1,1449 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ExecuteMsg",
+  "description": "Execute messages",
+  "oneOf": [
+    {
+      "description": "Update contract configuration",
+      "type": "object",
+      "required": [
+        "update_config"
+      ],
+      "properties": {
+        "update_config": {
+          "type": "object",
+          "properties": {
+            "ipfs_gateway": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "max_subjects_per_semester": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "new_owner": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "recommendation_algorithm": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/RecommendationAlgorithm"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Register or update student progress",
+      "type": "object",
+      "required": [
+        "register_student_progress"
+      ],
+      "properties": {
+        "register_student_progress": {
+          "type": "object",
+          "required": [
+            "student_progress"
+          ],
+          "properties": {
+            "student_progress": {
+              "$ref": "#/definitions/StudentProgress"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Update student's schedule preferences",
+      "type": "object",
+      "required": [
+        "update_student_preferences"
+      ],
+      "properties": {
+        "update_student_preferences": {
+          "type": "object",
+          "required": [
+            "preferences",
+            "student_id"
+          ],
+          "properties": {
+            "preferences": {
+              "$ref": "#/definitions/SchedulePreferences"
+            },
+            "student_id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Register subject schedule information",
+      "type": "object",
+      "required": [
+        "register_subject_schedule_info"
+      ],
+      "properties": {
+        "register_subject_schedule_info": {
+          "type": "object",
+          "required": [
+            "subject_info"
+          ],
+          "properties": {
+            "subject_info": {
+              "$ref": "#/definitions/SubjectScheduleInfo"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Batch register multiple subjects",
+      "type": "object",
+      "required": [
+        "batch_register_subjects"
+      ],
+      "properties": {
+        "batch_register_subjects": {
+          "type": "object",
+          "required": [
+            "subjects"
+          ],
+          "properties": {
+            "subjects": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/SubjectScheduleInfo"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Generate schedule recommendation for next semester",
+      "type": "object",
+      "required": [
+        "generate_schedule_recommendation"
+      ],
+      "properties": {
+        "generate_schedule_recommendation": {
+          "type": "object",
+          "required": [
+            "student_id",
+            "target_semester"
+          ],
+          "properties": {
+            "custom_preferences": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/SchedulePreferences"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "force_refresh": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "student_id": {
+              "type": "string"
+            },
+            "target_semester": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Create complete academic path to graduation",
+      "type": "object",
+      "required": [
+        "create_academic_path"
+      ],
+      "properties": {
+        "create_academic_path": {
+          "type": "object",
+          "required": [
+            "optimization_criteria",
+            "path_name",
+            "student_id"
+          ],
+          "properties": {
+            "optimization_criteria": {
+              "$ref": "#/definitions/OptimizationCriteria"
+            },
+            "path_name": {
+              "type": "string"
+            },
+            "student_id": {
+              "type": "string"
+            },
+            "target_graduation_semester": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "format": "uint32",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Optimize existing academic path",
+      "type": "object",
+      "required": [
+        "optimize_academic_path"
+      ],
+      "properties": {
+        "optimize_academic_path": {
+          "type": "object",
+          "required": [
+            "optimization_criteria",
+            "path_id"
+          ],
+          "properties": {
+            "optimization_criteria": {
+              "$ref": "#/definitions/OptimizationCriteria"
+            },
+            "path_id": {
+              "type": "string"
+            },
+            "preserve_current_semester": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Update academic path (manual modifications)",
+      "type": "object",
+      "required": [
+        "update_academic_path"
+      ],
+      "properties": {
+        "update_academic_path": {
+          "type": "object",
+          "required": [
+            "new_subjects",
+            "path_id",
+            "semester_number"
+          ],
+          "properties": {
+            "new_subjects": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "notes": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "path_id": {
+              "type": "string"
+            },
+            "semester_number": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Activate academic path (set as current)",
+      "type": "object",
+      "required": [
+        "activate_academic_path"
+      ],
+      "properties": {
+        "activate_academic_path": {
+          "type": "object",
+          "required": [
+            "path_id"
+          ],
+          "properties": {
+            "path_id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Mark subject as completed in student progress",
+      "type": "object",
+      "required": [
+        "complete_subject"
+      ],
+      "properties": {
+        "complete_subject": {
+          "type": "object",
+          "required": [
+            "completion_date",
+            "grade",
+            "nft_token_id",
+            "student_id",
+            "subject_id"
+          ],
+          "properties": {
+            "completion_date": {
+              "type": "string"
+            },
+            "difficulty_rating": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "grade": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "nft_token_id": {
+              "type": "string"
+            },
+            "student_id": {
+              "type": "string"
+            },
+            "subject_id": {
+              "type": "string"
+            },
+            "workload_rating": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "format": "uint32",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Enroll student in subject for current semester",
+      "type": "object",
+      "required": [
+        "enroll_in_subject"
+      ],
+      "properties": {
+        "enroll_in_subject": {
+          "type": "object",
+          "required": [
+            "enrollment_date",
+            "expected_completion",
+            "student_id",
+            "subject_id"
+          ],
+          "properties": {
+            "enrollment_date": {
+              "type": "string"
+            },
+            "expected_completion": {
+              "type": "string"
+            },
+            "student_id": {
+              "type": "string"
+            },
+            "subject_id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Cache IPFS content for subject analysis",
+      "type": "object",
+      "required": [
+        "cache_ipfs_content"
+      ],
+      "properties": {
+        "cache_ipfs_content": {
+          "type": "object",
+          "required": [
+            "content",
+            "ipfs_link"
+          ],
+          "properties": {
+            "content": {
+              "$ref": "#/definitions/SubjectContent"
+            },
+            "ipfs_link": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Generate alternative recommendations",
+      "type": "object",
+      "required": [
+        "generate_alternative_recommendations"
+      ],
+      "properties": {
+        "generate_alternative_recommendations": {
+          "type": "object",
+          "required": [
+            "excluded_subjects",
+            "student_id",
+            "target_semester"
+          ],
+          "properties": {
+            "excluded_subjects": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "student_id": {
+              "type": "string"
+            },
+            "target_semester": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Simulate schedule with what-if scenarios",
+      "type": "object",
+      "required": [
+        "simulate_schedule"
+      ],
+      "properties": {
+        "simulate_schedule": {
+          "type": "object",
+          "required": [
+            "hypothetical_completions",
+            "student_id",
+            "target_semester"
+          ],
+          "properties": {
+            "hypothetical_completions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "student_id": {
+              "type": "string"
+            },
+            "target_semester": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  ],
+  "definitions": {
+    "AcademicStanding": {
+      "description": "Academic standing",
+      "type": "string",
+      "enum": [
+        "excellent",
+        "good",
+        "satisfactory",
+        "probation"
+      ]
+    },
+    "ClassSchedule": {
+      "description": "Class schedule information",
+      "type": "object",
+      "required": [
+        "days",
+        "online_option",
+        "time_slots"
+      ],
+      "properties": {
+        "days": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DayOfWeek"
+          }
+        },
+        "location": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "online_option": {
+          "type": "boolean"
+        },
+        "time_slots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeSlot"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "ClassScheduleDetails": {
+      "description": "Detailed class schedule information",
+      "type": "object",
+      "required": [
+        "attendance_policy",
+        "hybrid_format",
+        "location",
+        "makeup_policy",
+        "online_option",
+        "time_slots"
+      ],
+      "properties": {
+        "attendance_policy": {
+          "type": "string"
+        },
+        "hybrid_format": {
+          "type": "boolean"
+        },
+        "location": {
+          "type": "string"
+        },
+        "makeup_policy": {
+          "type": "string"
+        },
+        "online_option": {
+          "type": "boolean"
+        },
+        "time_slots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeSlotDetail"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "CompletedSubject": {
+      "description": "Completed subject with performance data",
+      "type": "object",
+      "required": [
+        "completion_date",
+        "credits",
+        "grade",
+        "nft_token_id",
+        "semester_taken",
+        "subject_id"
+      ],
+      "properties": {
+        "completion_date": {
+          "type": "string"
+        },
+        "credits": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "difficulty_rating": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "grade": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "nft_token_id": {
+          "type": "string"
+        },
+        "semester_taken": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "subject_id": {
+          "type": "string"
+        },
+        "workload_rating": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint32",
+          "minimum": 0.0
+        }
+      },
+      "additionalProperties": false
+    },
+    "DayOfWeek": {
+      "description": "Days of the week",
+      "type": "string",
+      "enum": [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+        "sunday"
+      ]
+    },
+    "DemandMetrics": {
+      "description": "Historical demand metrics for the subject",
+      "type": "object",
+      "required": [
+        "average_demand",
+        "demand_trend",
+        "enrollment_history",
+        "waitlist_frequency"
+      ],
+      "properties": {
+        "average_demand": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "demand_trend": {
+          "$ref": "#/definitions/DemandTrend"
+        },
+        "enrollment_history": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SemesterEnrollment"
+          }
+        },
+        "waitlist_frequency": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        }
+      },
+      "additionalProperties": false
+    },
+    "DemandTrend": {
+      "description": "Trend in demand over time",
+      "type": "string",
+      "enum": [
+        "increasing",
+        "stable",
+        "decreasing",
+        "seasonal",
+        "unpredictable"
+      ]
+    },
+    "EnrolledSubject": {
+      "description": "Currently enrolled subject",
+      "type": "object",
+      "required": [
+        "credits",
+        "enrollment_date",
+        "expected_completion",
+        "subject_id"
+      ],
+      "properties": {
+        "credits": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "current_grade": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "enrollment_date": {
+          "type": "string"
+        },
+        "expected_completion": {
+          "type": "string"
+        },
+        "subject_id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "OptimizationCriteria": {
+      "description": "Optimization criteria for academic path",
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "fastest",
+            "balanced",
+            "easiest_first",
+            "prerequisite_optimal"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "custom"
+          ],
+          "properties": {
+            "custom": {
+              "$ref": "#/definitions/OptimizationWeights"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "OptimizationWeights": {
+      "description": "Weights for optimization criteria",
+      "type": "object",
+      "required": [
+        "difficulty_distribution",
+        "graduation_speed",
+        "student_preferences",
+        "subject_availability",
+        "workload_balance"
+      ],
+      "properties": {
+        "difficulty_distribution": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "graduation_speed": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "student_preferences": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "subject_availability": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "workload_balance": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        }
+      },
+      "additionalProperties": false
+    },
+    "PrerequisiteCorrelation": {
+      "description": "Correlation between prerequisite performance and subject success",
+      "type": "object",
+      "required": [
+        "correlation_strength",
+        "minimum_recommended_grade",
+        "prerequisite_subject_id"
+      ],
+      "properties": {
+        "correlation_strength": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "minimum_recommended_grade": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "prerequisite_subject_id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RecommendationAlgorithm": {
+      "description": "Available recommendation algorithms",
+      "type": "string",
+      "enum": [
+        "basic",
+        "balanced",
+        "optimal_path",
+        "machine_learning"
+      ]
+    },
+    "SchedulePreferences": {
+      "description": "Student's schedule preferences",
+      "type": "object",
+      "required": [
+        "avoid_subjects",
+        "balance_theory_practice",
+        "max_subjects_per_semester",
+        "prefer_prerequisites_early",
+        "preferred_days",
+        "preferred_study_intensity",
+        "preferred_times",
+        "priority_subjects"
+      ],
+      "properties": {
+        "avoid_subjects": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "balance_theory_practice": {
+          "type": "boolean"
+        },
+        "graduation_target": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "max_subjects_per_semester": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "prefer_prerequisites_early": {
+          "type": "boolean"
+        },
+        "preferred_days": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DayOfWeek"
+          }
+        },
+        "preferred_study_intensity": {
+          "$ref": "#/definitions/StudyIntensity"
+        },
+        "preferred_times": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeSlot"
+          }
+        },
+        "priority_subjects": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "SemesterEnrollment": {
+      "description": "Enrollment data for a specific semester",
+      "type": "object",
+      "required": [
+        "capacity",
+        "completion_rate",
+        "enrolled_students",
+        "semester",
+        "waitlisted_students"
+      ],
+      "properties": {
+        "capacity": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "completion_rate": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "enrolled_students": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "semester": {
+          "type": "string"
+        },
+        "waitlisted_students": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        }
+      },
+      "additionalProperties": false
+    },
+    "StudentProgress": {
+      "description": "Student's academic progress and history",
+      "type": "object",
+      "required": [
+        "academic_standing",
+        "completed_subjects",
+        "course_id",
+        "current_semester",
+        "current_subjects",
+        "curriculum_id",
+        "gpa",
+        "institution_id",
+        "preferences",
+        "student_id",
+        "total_credits",
+        "total_credits_required"
+      ],
+      "properties": {
+        "academic_standing": {
+          "$ref": "#/definitions/AcademicStanding"
+        },
+        "completed_subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CompletedSubject"
+          }
+        },
+        "course_id": {
+          "type": "string"
+        },
+        "current_semester": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "current_subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EnrolledSubject"
+          }
+        },
+        "curriculum_id": {
+          "type": "string"
+        },
+        "expected_graduation": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "gpa": {
+          "type": "string"
+        },
+        "institution_id": {
+          "type": "string"
+        },
+        "preferences": {
+          "$ref": "#/definitions/SchedulePreferences"
+        },
+        "student_id": {
+          "type": "string"
+        },
+        "total_credits": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "total_credits_required": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        }
+      },
+      "additionalProperties": false
+    },
+    "StudyIntensity": {
+      "description": "Study intensity levels",
+      "type": "string",
+      "enum": [
+        "light",
+        "moderate",
+        "intensive",
+        "maximum"
+      ]
+    },
+    "SubjectContent": {
+      "description": "Subject content retrieved from IPFS for schedule analysis",
+      "type": "object",
+      "required": [
+        "assessment_methods",
+        "bibliography",
+        "code",
+        "competencies",
+        "content_hash",
+        "credits",
+        "description",
+        "difficulty_level",
+        "institution",
+        "knowledge_areas",
+        "language",
+        "learning_outcomes",
+        "methodology",
+        "objectives",
+        "practical_activities",
+        "practical_hours",
+        "prerequisites_description",
+        "professor",
+        "semester",
+        "supplementary_materials",
+        "theoretical_hours",
+        "title",
+        "topics",
+        "workload_hours",
+        "year"
+      ],
+      "properties": {
+        "assessment_methods": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bibliography": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "class_schedule": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ClassScheduleDetails"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "code": {
+          "type": "string"
+        },
+        "competencies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "content_hash": {
+          "type": "string"
+        },
+        "credits": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "description": {
+          "type": "string"
+        },
+        "difficulty_level": {
+          "type": "string"
+        },
+        "enrollment_capacity": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "historical_demand": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/DemandMetrics"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "institution": {
+          "type": "string"
+        },
+        "knowledge_areas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "language": {
+          "type": "string"
+        },
+        "learning_outcomes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "methodology": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "objectives": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "practical_activities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "practical_hours": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "prerequisites_description": {
+          "type": "string"
+        },
+        "professor": {
+          "type": "string"
+        },
+        "semester": {
+          "type": "string"
+        },
+        "success_metrics": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SubjectSuccessMetrics"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "supplementary_materials": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "theoretical_hours": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "title": {
+          "type": "string"
+        },
+        "topics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TopicUnit"
+          }
+        },
+        "workload_hours": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "year": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "SubjectScheduleInfo": {
+      "description": "Subject information for scheduling",
+      "type": "object",
+      "required": [
+        "corequisites",
+        "credits",
+        "department",
+        "difficulty_level",
+        "is_elective",
+        "prerequisites",
+        "schedule_info",
+        "semester_offered",
+        "subject_id",
+        "title",
+        "workload_hours"
+      ],
+      "properties": {
+        "corequisites": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "credits": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "department": {
+          "type": "string"
+        },
+        "difficulty_level": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "ipfs_link": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "is_elective": {
+          "type": "boolean"
+        },
+        "max_students": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "prerequisites": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "professor": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "schedule_info": {
+          "$ref": "#/definitions/ClassSchedule"
+        },
+        "semester_offered": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "uint32",
+            "minimum": 0.0
+          }
+        },
+        "subject_id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "workload_hours": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        }
+      },
+      "additionalProperties": false
+    },
+    "SubjectSuccessMetrics": {
+      "description": "Success metrics for the subject",
+      "type": "object",
+      "required": [
+        "average_grade",
+        "completion_rate",
+        "difficulty_rating",
+        "prerequisite_success_correlation",
+        "student_satisfaction",
+        "workload_rating"
+      ],
+      "properties": {
+        "average_grade": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "completion_rate": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "difficulty_rating": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "prerequisite_success_correlation": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PrerequisiteCorrelation"
+          }
+        },
+        "student_satisfaction": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "workload_rating": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        }
+      },
+      "additionalProperties": false
+    },
+    "TimeSlot": {
+      "description": "Time slots for classes",
+      "type": "string",
+      "enum": [
+        "early_morning",
+        "morning",
+        "afternoon",
+        "evening",
+        "night"
+      ]
+    },
+    "TimeSlotDetail": {
+      "description": "Specific time slot for classes",
+      "type": "object",
+      "required": [
+        "day",
+        "duration_minutes",
+        "end_time",
+        "frequency",
+        "start_time"
+      ],
+      "properties": {
+        "day": {
+          "type": "string"
+        },
+        "duration_minutes": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "end_time": {
+          "type": "string"
+        },
+        "frequency": {
+          "type": "string"
+        },
+        "start_time": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "TopicUnit": {
+      "description": "Topic or content unit within the subject",
+      "type": "object",
+      "required": [
+        "description",
+        "hours",
+        "keywords",
+        "learning_objectives",
+        "required_knowledge",
+        "subtopics",
+        "title",
+        "unit_number"
+      ],
+      "properties": {
+        "complexity_rating": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "description": {
+          "type": "string"
+        },
+        "hours": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "learning_objectives": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "required_knowledge": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "subtopics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "title": {
+          "type": "string"
+        },
+        "unit_number": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

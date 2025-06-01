@@ -1,0 +1,17 @@
+syntax = "proto3";
+package academictoken.schedule;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "academictoken/schedule/params.proto";
+
+option go_package = "academictoken/x/schedule/types";
+
+// GenesisState defines the schedule module's genesis state.
+message GenesisState {
+  // params defines all the parameters of the module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}

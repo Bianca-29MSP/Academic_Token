@@ -1,0 +1,41 @@
+syntax = "proto3";
+package academictoken.tokendef;
+
+import "gogoproto/gogo.proto";
+import "amino/amino.proto";
+
+option go_package = "academictoken/x/tokendef/types";
+
+// TokenDefinition defines how to tokenize a subject completion
+message TokenDefinition {
+  string index                = 1;  // Unique identifier (e.g., "tokendef-1")
+  string tokenDefId           = 2;  // TokenDef ID (same as index for now)
+  string subjectId            = 3;  // Which subject this tokenizes
+  string institutionId        = 4;  // Reference to institution
+  string courseId             = 5;  // Reference to course
+  string tokenName            = 6;  // Token name (e.g., "CALC1 Completion Token")
+  string tokenSymbol          = 7;  // Token symbol (e.g., "CALC1-TOKEN")
+  string tokenType            = 8;  // "NFT", "FUNGIBLE", "ACHIEVEMENT"
+  bool isTransferable         = 9;  // Can tokens be transferred between students?
+  bool isBurnable             = 10; // Can tokens be burned?
+  uint64 maxSupply            = 11; // Maximum tokens that can be minted (0 = unlimited)
+  TokenMetadata metadata      = 12; // Token metadata template
+  string contentHash          = 13; // IPFS content hash for integrity (OBRIGATÓRIO)
+  string ipfsLink             = 14; // IPFS link to extended content (OBRIGATÓRIO)
+  string creator              = 15; // Creator address
+  string createdAt            = 16; // Creation timestamp
+}
+
+// TokenMetadata defines metadata for minted tokens
+message TokenMetadata {
+  string description          = 1;  // Token description
+  string imageUri             = 2;  // Token image/badge URI
+  repeated TokenAttribute attributes = 3;  // Token attributes
+}
+
+// TokenAttribute represents dynamic attributes for tokens
+message TokenAttribute {
+  string traitType           = 1;  // Attribute type (e.g., "Grade", "Completion Date")
+  string displayType         = 2;  // How to display ("text", "number", "date")
+  bool isDynamic             = 3;  // Can this attribute change after minting?
+}

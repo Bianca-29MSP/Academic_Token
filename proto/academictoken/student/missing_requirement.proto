@@ -1,0 +1,12 @@
+syntax = "proto3";
+package academictoken.student;
+
+option go_package = "academictoken/x/student/types";
+
+message MissingRequirement {
+  string requirementType = 1;
+  string description = 2;
+  repeated string subjectsNeeded = 3;
+  uint64 creditsNeeded = 4;
+  string groupId = 5;
+}

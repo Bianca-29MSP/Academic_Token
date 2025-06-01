@@ -1,0 +1,10 @@
+syntax = "proto3";
+package academictoken.curriculum;
+
+option go_package = "academictoken/x/curriculum/types";
+
+message CurriculumSemester {
+  
+  string semesterNumber = 1; 
+  repeated string subjectIds = 2; 
+}

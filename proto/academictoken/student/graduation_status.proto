@@ -1,0 +1,14 @@
+syntax = "proto3";
+package academictoken.student;
+
+option go_package = "academictoken/x/student/types";
+
+import "academictoken/student/missing_requirement.proto";
+
+message GraduationStatus {
+  bool isEligible = 1;
+  string estimatedGraduationSemester = 2;
+  string gpaStatus = 3;
+  string timeframeStatus = 4;
+  repeated MissingRequirement missingRequirements = 5;
+}

@@ -1,0 +1,541 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ExecuteMsg",
+  "description": "Execute messages",
+  "oneOf": [
+    {
+      "description": "Register prerequisites for a subject",
+      "type": "object",
+      "required": [
+        "register_prerequisites"
+      ],
+      "properties": {
+        "register_prerequisites": {
+          "type": "object",
+          "required": [
+            "prerequisites",
+            "subject_id"
+          ],
+          "properties": {
+            "prerequisites": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PrerequisiteGroup"
+              }
+            },
+            "subject_id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Update student record with completed subjects",
+      "type": "object",
+      "required": [
+        "update_student_record"
+      ],
+      "properties": {
+        "update_student_record": {
+          "type": "object",
+          "required": [
+            "completed_subject",
+            "student_id"
+          ],
+          "properties": {
+            "completed_subject": {
+              "$ref": "#/definitions/CompletedSubjectMsg"
+            },
+            "student_id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Verify if a student can enroll in a subject",
+      "type": "object",
+      "required": [
+        "verify_enrollment"
+      ],
+      "properties": {
+        "verify_enrollment": {
+          "type": "object",
+          "required": [
+            "student_id",
+            "subject_id"
+          ],
+          "properties": {
+            "student_id": {
+              "type": "string"
+            },
+            "subject_id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Batch update prerequisites",
+      "type": "object",
+      "required": [
+        "batch_register_prerequisites"
+      ],
+      "properties": {
+        "batch_register_prerequisites": {
+          "type": "object",
+          "required": [
+            "items"
+          ],
+          "properties": {
+            "items": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PrerequisiteRegistration"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Update contract owner",
+      "type": "object",
+      "required": [
+        "update_owner"
+      ],
+      "properties": {
+        "update_owner": {
+          "type": "object",
+          "required": [
+            "new_owner"
+          ],
+          "properties": {
+            "new_owner": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Cache IPFS content for better prerequisite analysis",
+      "type": "object",
+      "required": [
+        "cache_ipfs_content"
+      ],
+      "properties": {
+        "cache_ipfs_content": {
+          "type": "object",
+          "required": [
+            "content",
+            "ipfs_link"
+          ],
+          "properties": {
+            "content": {
+              "$ref": "#/definitions/SubjectContent"
+            },
+            "ipfs_link": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Analyze prerequisite relationships using IPFS content",
+      "type": "object",
+      "required": [
+        "analyze_prerequisite_relationship"
+      ],
+      "properties": {
+        "analyze_prerequisite_relationship": {
+          "type": "object",
+          "required": [
+            "source_ipfs_link",
+            "source_subject_id",
+            "target_ipfs_link",
+            "target_subject_id"
+          ],
+          "properties": {
+            "source_ipfs_link": {
+              "type": "string"
+            },
+            "source_subject_id": {
+              "type": "string"
+            },
+            "target_ipfs_link": {
+              "type": "string"
+            },
+            "target_subject_id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  ],
+  "definitions": {
+    "CompletedSubjectMsg": {
+      "type": "object",
+      "required": [
+        "completion_date",
+        "credits",
+        "grade",
+        "nft_token_id",
+        "subject_id"
+      ],
+      "properties": {
+        "completion_date": {
+          "type": "string"
+        },
+        "credits": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "grade": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "ipfs_link": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "nft_token_id": {
+          "type": "string"
+        },
+        "subject_id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "GroupType": {
+      "description": "Type of prerequisite group",
+      "type": "string",
+      "enum": [
+        "all",
+        "any",
+        "minimum",
+        "none"
+      ]
+    },
+    "LogicType": {
+      "description": "Logic type for combining groups",
+      "type": "string",
+      "enum": [
+        "and",
+        "or",
+        "xor",
+        "threshold",
+        "none"
+      ]
+    },
+    "PrerequisiteGroup": {
+      "description": "Prerequisite group for a subject",
+      "type": "object",
+      "required": [
+        "confidence",
+        "group_type",
+        "id",
+        "logic",
+        "minimum_completed_subjects",
+        "minimum_credits",
+        "priority",
+        "subject_id",
+        "subject_ids"
+      ],
+      "properties": {
+        "confidence": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "group_type": {
+          "$ref": "#/definitions/GroupType"
+        },
+        "id": {
+          "type": "string"
+        },
+        "ipfs_link": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "logic": {
+          "$ref": "#/definitions/LogicType"
+        },
+        "minimum_completed_subjects": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "minimum_credits": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "priority": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "subject_id": {
+          "type": "string"
+        },
+        "subject_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "PrerequisiteRegistration": {
+      "type": "object",
+      "required": [
+        "prerequisites",
+        "subject_id"
+      ],
+      "properties": {
+        "prerequisites": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PrerequisiteGroup"
+          }
+        },
+        "subject_id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "SubjectContent": {
+      "description": "Complete subject content structure retrieved from IPFS for prerequisites analysis",
+      "type": "object",
+      "required": [
+        "assessment_methods",
+        "bibliography",
+        "code",
+        "competencies",
+        "content_hash",
+        "credits",
+        "description",
+        "difficulty_level",
+        "institution",
+        "knowledge_areas",
+        "language",
+        "learning_outcomes",
+        "methodology",
+        "objectives",
+        "practical_activities",
+        "practical_hours",
+        "prerequisites_description",
+        "professor",
+        "semester",
+        "supplementary_materials",
+        "theoretical_hours",
+        "title",
+        "topics",
+        "workload_hours",
+        "year"
+      ],
+      "properties": {
+        "assessment_methods": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bibliography": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "code": {
+          "type": "string"
+        },
+        "competencies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "content_hash": {
+          "type": "string"
+        },
+        "credits": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "description": {
+          "type": "string"
+        },
+        "difficulty_level": {
+          "type": "string"
+        },
+        "institution": {
+          "type": "string"
+        },
+        "knowledge_areas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "language": {
+          "type": "string"
+        },
+        "learning_outcomes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "methodology": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "objectives": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "practical_activities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "practical_hours": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "prerequisites_description": {
+          "type": "string"
+        },
+        "professor": {
+          "type": "string"
+        },
+        "semester": {
+          "type": "string"
+        },
+        "supplementary_materials": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "theoretical_hours": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "title": {
+          "type": "string"
+        },
+        "topics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TopicUnit"
+          }
+        },
+        "workload_hours": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "year": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "TopicUnit": {
+      "description": "Topic or content unit within the subject",
+      "type": "object",
+      "required": [
+        "description",
+        "hours",
+        "keywords",
+        "learning_objectives",
+        "required_knowledge",
+        "subtopics",
+        "title",
+        "unit_number"
+      ],
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "hours": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "learning_objectives": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "required_knowledge": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "subtopics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "title": {
+          "type": "string"
+        },
+        "unit_number": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

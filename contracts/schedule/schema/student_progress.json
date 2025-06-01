@@ -1,0 +1,274 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "StudentProgress",
+  "description": "Student's academic progress and history",
+  "type": "object",
+  "required": [
+    "academic_standing",
+    "completed_subjects",
+    "course_id",
+    "current_semester",
+    "current_subjects",
+    "curriculum_id",
+    "gpa",
+    "institution_id",
+    "preferences",
+    "student_id",
+    "total_credits",
+    "total_credits_required"
+  ],
+  "properties": {
+    "academic_standing": {
+      "$ref": "#/definitions/AcademicStanding"
+    },
+    "completed_subjects": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/CompletedSubject"
+      }
+    },
+    "course_id": {
+      "type": "string"
+    },
+    "current_semester": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0.0
+    },
+    "current_subjects": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/EnrolledSubject"
+      }
+    },
+    "curriculum_id": {
+      "type": "string"
+    },
+    "expected_graduation": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "gpa": {
+      "type": "string"
+    },
+    "institution_id": {
+      "type": "string"
+    },
+    "preferences": {
+      "$ref": "#/definitions/SchedulePreferences"
+    },
+    "student_id": {
+      "type": "string"
+    },
+    "total_credits": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0.0
+    },
+    "total_credits_required": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0.0
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "AcademicStanding": {
+      "description": "Academic standing",
+      "type": "string",
+      "enum": [
+        "excellent",
+        "good",
+        "satisfactory",
+        "probation"
+      ]
+    },
+    "CompletedSubject": {
+      "description": "Completed subject with performance data",
+      "type": "object",
+      "required": [
+        "completion_date",
+        "credits",
+        "grade",
+        "nft_token_id",
+        "semester_taken",
+        "subject_id"
+      ],
+      "properties": {
+        "completion_date": {
+          "type": "string"
+        },
+        "credits": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "difficulty_rating": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "grade": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "nft_token_id": {
+          "type": "string"
+        },
+        "semester_taken": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "subject_id": {
+          "type": "string"
+        },
+        "workload_rating": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint32",
+          "minimum": 0.0
+        }
+      },
+      "additionalProperties": false
+    },
+    "DayOfWeek": {
+      "description": "Days of the week",
+      "type": "string",
+      "enum": [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+        "sunday"
+      ]
+    },
+    "EnrolledSubject": {
+      "description": "Currently enrolled subject",
+      "type": "object",
+      "required": [
+        "credits",
+        "enrollment_date",
+        "expected_completion",
+        "subject_id"
+      ],
+      "properties": {
+        "credits": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "current_grade": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "enrollment_date": {
+          "type": "string"
+        },
+        "expected_completion": {
+          "type": "string"
+        },
+        "subject_id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "SchedulePreferences": {
+      "description": "Student's schedule preferences",
+      "type": "object",
+      "required": [
+        "avoid_subjects",
+        "balance_theory_practice",
+        "max_subjects_per_semester",
+        "prefer_prerequisites_early",
+        "preferred_days",
+        "preferred_study_intensity",
+        "preferred_times",
+        "priority_subjects"
+      ],
+      "properties": {
+        "avoid_subjects": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "balance_theory_practice": {
+          "type": "boolean"
+        },
+        "graduation_target": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "max_subjects_per_semester": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "prefer_prerequisites_early": {
+          "type": "boolean"
+        },
+        "preferred_days": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DayOfWeek"
+          }
+        },
+        "preferred_study_intensity": {
+          "$ref": "#/definitions/StudyIntensity"
+        },
+        "preferred_times": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeSlot"
+          }
+        },
+        "priority_subjects": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "StudyIntensity": {
+      "description": "Study intensity levels",
+      "type": "string",
+      "enum": [
+        "light",
+        "moderate",
+        "intensive",
+        "maximum"
+      ]
+    },
+    "TimeSlot": {
+      "description": "Time slots for classes",
+      "type": "string",
+      "enum": [
+        "early_morning",
+        "morning",
+        "afternoon",
+        "evening",
+        "night"
+      ]
+    }
+  }
+}

@@ -1,0 +1,195 @@
+syntax = "proto3";
+package academictoken.student;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "academictoken/student/params.proto";
+import "academictoken/student/student.proto";
+import "academictoken/student/student_enrollment.proto";
+import "academictoken/student/student_academic_tree.proto";
+import "academictoken/student/academic_progress.proto";
+import "academictoken/student/graduation_status.proto";
+
+option go_package = "academictoken/x/student/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/academictoken/student/params";
+  }
+
+  // ListStudents queries all students with pagination
+  rpc ListStudents(QueryListStudentsRequest) returns (QueryListStudentsResponse) {
+    option (google.api.http).get = "/academictoken/student/students";
+  }
+
+  // GetStudent queries a student by index
+  rpc GetStudent(QueryGetStudentRequest) returns (QueryGetStudentResponse) {
+    option (google.api.http).get = "/academictoken/student/students/{student_id}";
+  }
+
+  // ListEnrollments queries all enrollments with pagination
+  rpc ListEnrollments(QueryListEnrollmentsRequest) returns (QueryListEnrollmentsResponse) {
+    option (google.api.http).get = "/academictoken/student/enrollments";
+  }
+
+  // GetEnrollment queries an enrollment by index
+  rpc GetEnrollment(QueryGetEnrollmentRequest) returns (QueryGetEnrollmentResponse) {
+    option (google.api.http).get = "/academictoken/student/enrollments/{enrollment_id}";
+  }
+
+  // GetEnrollmentsByStudent queries all enrollments for a specific student
+  rpc GetEnrollmentsByStudent(QueryGetEnrollmentsByStudentRequest) returns (QueryGetEnrollmentsByStudentResponse) {
+    option (google.api.http).get = "/academictoken/student/students/{student_id}/enrollments";
+  }
+
+  // GetStudentProgress queries academic progress for a specific student
+  rpc GetStudentProgress(QueryGetStudentProgressRequest) returns (QueryGetStudentProgressResponse) {
+    option (google.api.http).get = "/academictoken/student/students/{student_id}/progress";
+  }
+
+  // GetStudentsByInstitution queries students enrolled in a specific institution
+  rpc GetStudentsByInstitution(QueryGetStudentsByInstitutionRequest) returns (QueryGetStudentsByInstitutionResponse) {
+    option (google.api.http).get = "/academictoken/student/institutions/{institution_id}/students";
+  }
+
+  // GetStudentsByCourse queries students enrolled in a specific course
+  rpc GetStudentsByCourse(QueryGetStudentsByCourseRequest) returns (QueryGetStudentsByCourseResponse) {
+    option (google.api.http).get = "/academictoken/student/courses/{course_id}/students";
+  }
+
+  // GetStudentAcademicTree queries the academic tree for a specific student
+  rpc GetStudentAcademicTree(QueryGetStudentAcademicTreeRequest) returns (QueryGetStudentAcademicTreeResponse) {
+    option (google.api.http).get = "/academictoken/student/students/{student_id}/academic-tree";
+  }
+
+  // CheckGraduationEligibility checks if a student is eligible for graduation
+  rpc CheckGraduationEligibility(QueryCheckGraduationEligibilityRequest) returns (QueryCheckGraduationEligibilityResponse) {
+    option (google.api.http).get = "/academictoken/student/students/{student_id}/graduation-eligibility";
+  }
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+// QueryListStudentsRequest is request type for the Query/ListStudents RPC method.
+message QueryListStudentsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryListStudentsResponse is response type for the Query/ListStudents RPC method.
+message QueryListStudentsResponse {
+  repeated Student students = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetStudentRequest is request type for the Query/GetStudent RPC method.
+message QueryGetStudentRequest {
+  string student_id = 1;
+}
+
+// QueryGetStudentResponse is response type for the Query/GetStudent RPC method.
+message QueryGetStudentResponse {
+  Student student = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryListEnrollmentsRequest is request type for the Query/ListEnrollments RPC method.
+message QueryListEnrollmentsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryListEnrollmentsResponse is response type for the Query/ListEnrollments RPC method.
+message QueryListEnrollmentsResponse {
+  repeated StudentEnrollment enrollments = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetEnrollmentRequest is request type for the Query/GetEnrollment RPC method.
+message QueryGetEnrollmentRequest {
+  string enrollment_id = 1;
+}
+
+// QueryGetEnrollmentResponse is response type for the Query/GetEnrollment RPC method.
+message QueryGetEnrollmentResponse {
+  StudentEnrollment enrollment = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryGetEnrollmentsByStudentRequest is request type for the Query/GetEnrollmentsByStudent RPC method.
+message QueryGetEnrollmentsByStudentRequest {
+  string student_id = 1;
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+// QueryGetEnrollmentsByStudentResponse is response type for the Query/GetEnrollmentsByStudent RPC method.
+message QueryGetEnrollmentsByStudentResponse {
+  repeated StudentEnrollment enrollments = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetStudentProgressRequest is request type for the Query/GetStudentProgress RPC method.
+message QueryGetStudentProgressRequest {
+  string student_id = 1;
+}
+
+// QueryGetStudentProgressResponse is response type for the Query/GetStudentProgress RPC method.
+message QueryGetStudentProgressResponse {
+  AcademicProgress progress = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryGetStudentsByInstitutionRequest is request type for the Query/GetStudentsByInstitution RPC method.
+message QueryGetStudentsByInstitutionRequest {
+  string institution_id = 1;
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+// QueryGetStudentsByInstitutionResponse is response type for the Query/GetStudentsByInstitution RPC method.
+message QueryGetStudentsByInstitutionResponse {
+  repeated Student students = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetStudentsByCourseRequest is request type for the Query/GetStudentsByCourse RPC method.
+message QueryGetStudentsByCourseRequest {
+  string course_id = 1;
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+// QueryGetStudentsByCourseResponse is response type for the Query/GetStudentsByCourse RPC method.
+message QueryGetStudentsByCourseResponse {
+  repeated Student students = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetStudentAcademicTreeRequest is request type for the Query/GetStudentAcademicTree RPC method.
+message QueryGetStudentAcademicTreeRequest {
+  string student_id = 1;
+}
+
+// QueryGetStudentAcademicTreeResponse is response type for the Query/GetStudentAcademicTree RPC method.
+message QueryGetStudentAcademicTreeResponse {
+  StudentAcademicTree academic_tree = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryCheckGraduationEligibilityRequest is request type for the Query/CheckGraduationEligibility RPC method.
+message QueryCheckGraduationEligibilityRequest {
+  string student_id = 1;
+}
+
+// QueryCheckGraduationEligibilityResponse is response type for the Query/CheckGraduationEligibility RPC method.
+message QueryCheckGraduationEligibilityResponse {
+  GraduationStatus graduation_status = 1 [(gogoproto.nullable) = false];
+  bool is_eligible = 2;
+  string message = 3;
+}

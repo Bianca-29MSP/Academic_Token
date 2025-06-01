@@ -1,0 +1,32 @@
+syntax = "proto3";
+package academictoken.student;
+
+option go_package = "academictoken/x/student/types";
+
+import "academictoken/student/academic_progress.proto";
+import "academictoken/student/graduation_status.proto";
+import "academictoken/student/equivalence_request.proto";
+
+message ElectiveCompletionGroup {
+  string groupId = 1;
+  repeated string completedSubjects = 2;
+}
+
+message StudentAcademicTree {
+  string index = 1; 
+  string student = 2; 
+  string institution = 3; 
+  string courseId = 4; 
+  string curriculumVersion = 5; 
+  uint64 totalCredits = 6; 
+  uint64 totalCompletedHours = 7; 
+  float coefficientGpa = 8;
+  repeated string completedTokens = 9;
+  repeated string inProgressTokens = 10;
+  repeated string availableTokens = 11;
+  AcademicProgress academicProgress = 12;
+  GraduationStatus graduationStatus = 13;
+  repeated string transferredSubjects = 14;
+  repeated ElectiveCompletionGroup completedElectives = 15;
+  repeated EquivalenceRequest equivalenceRequests = 16;
+}

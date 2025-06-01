@@ -1,0 +1,23 @@
+syntax = "proto3";
+package academictoken.subject;
+
+option go_package = "academictoken/x/subject/types";
+
+import "academictoken/subject/prerequisite_group.proto";
+
+message SubjectContent {
+  string index = 1;
+  string subjectId = 2;
+  string institution = 3;
+  string course_id = 4;           
+  string title = 5;               
+  string code = 6;
+  uint64 workloadHours = 7;
+  uint64 credits = 8;
+  string description = 9;
+  string contentHash = 10;
+  string subjectType = 11;
+  string knowledgeArea = 12;
+  string ipfsLink = 13;
+  string creator = 14;            
+}

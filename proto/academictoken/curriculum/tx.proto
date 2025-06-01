@@ -1,0 +1,82 @@
+syntax = "proto3";
+package academictoken.curriculum;
+import "amino/amino.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "academictoken/curriculum/params.proto";
+option go_package = "academictoken/x/curriculum/types";
+// Msg defines the Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+  
+  // UpdateParams defines a (governance) operation for updating the module
+  // parameters. The authority defaults to the x/gov module account.
+  rpc UpdateParams              (MsgUpdateParams             ) returns (MsgUpdateParamsResponse             );
+  rpc CreateCurriculumTree      (MsgCreateCurriculumTree     ) returns (MsgCreateCurriculumTreeResponse     );
+  rpc AddSemesterToCurriculum   (MsgAddSemesterToCurriculum  ) returns (MsgAddSemesterToCurriculumResponse  );
+  rpc AddElectiveGroup          (MsgAddElectiveGroup         ) returns (MsgAddElectiveGroupResponse         );
+  rpc SetGraduationRequirements (MsgSetGraduationRequirements) returns (MsgSetGraduationRequirementsResponse);
+}
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) =                                  "authority";
+  option           (amino.name) = "academictoken/x/curriculum/MsgUpdateParams";
+  
+  // authority is the address that controls the module (defaults to x/gov unless overwritten).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  // params defines the module parameters to update.
+  
+  // NOTE: All parameters must be supplied.
+  Params params = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+message MsgUpdateParamsResponse {}
+
+message MsgCreateCurriculumTree {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator            = 1;
+  string courseId           = 2;
+  string version            = 3;
+  uint64 electiveMin        = 4;  // Changed to uint64
+  uint64 totalWorkloadHours = 5;  // Changed to uint64
+  repeated string requiredSubjects = 6;  // Added
+  repeated string electiveSubjects = 7;  // Added
+}
+message MsgCreateCurriculumTreeResponse {}
+
+message MsgAddSemesterToCurriculum {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator         = 1;
+  string curriculumIndex = 2;
+  uint64 semesterNumber  = 3;  // Changed to uint64
+  repeated string subjectIds = 4;  // Added
+}
+message MsgAddSemesterToCurriculumResponse {}
+
+message MsgAddElectiveGroup {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator             = 1;
+  string curriculumIndex     = 2;
+  string name                = 3;
+  string description         = 4;
+  uint64 minSubjectsRequired = 5;  // Changed to uint64
+  uint64 creditsRequired     = 6;  // Changed to uint64
+  string knowledgeArea       = 7;
+  repeated string subjectIds = 8;  // Added
+}
+message MsgAddElectiveGroupResponse {}
+
+message MsgSetGraduationRequirements {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator                 = 1;
+  string curriculumIndex         = 2;
+  uint64 totalCreditsRequired    = 3;  // Changed to uint64
+  float minGpa                   = 4;  // Changed to float
+  uint64 requiredElectiveCredits = 5;  // Changed to uint64
+  float minimumTimeYears         = 6;  // Changed to float
+  float maximumTimeYears         = 7;  // Changed to float
+  repeated string requiredActivities = 8;  // Added
+}
+message MsgSetGraduationRequirementsResponse {}

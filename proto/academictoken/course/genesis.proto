@@ -1,0 +1,17 @@
+syntax = "proto3";
+package academictoken.course;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "academictoken/course/params.proto";
+
+option go_package = "academictoken/x/course/types";
+
+// GenesisState defines the course module's genesis state.
+message GenesisState {
+  // params defines all the parameters of the module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}

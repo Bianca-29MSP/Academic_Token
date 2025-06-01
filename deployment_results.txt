@@ -1,0 +1,5 @@
+# Academic Token Deployment Results
+# Generated: Sáb 31 Mai 2025 12:51:50 -03
+# Wallet: alice
+# Address: academic1neggrgulsvdmf5aezjh6td2vr95jkg9t7s00mf
+

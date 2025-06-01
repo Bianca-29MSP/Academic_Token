@@ -1,0 +1,151 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SubjectScheduleInfo",
+  "description": "Subject information for scheduling",
+  "type": "object",
+  "required": [
+    "corequisites",
+    "credits",
+    "department",
+    "difficulty_level",
+    "is_elective",
+    "prerequisites",
+    "schedule_info",
+    "semester_offered",
+    "subject_id",
+    "title",
+    "workload_hours"
+  ],
+  "properties": {
+    "corequisites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "credits": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0.0
+    },
+    "department": {
+      "type": "string"
+    },
+    "difficulty_level": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0.0
+    },
+    "ipfs_link": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "is_elective": {
+      "type": "boolean"
+    },
+    "max_students": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "format": "uint32",
+      "minimum": 0.0
+    },
+    "prerequisites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "professor": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "schedule_info": {
+      "$ref": "#/definitions/ClassSchedule"
+    },
+    "semester_offered": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "format": "uint32",
+        "minimum": 0.0
+      }
+    },
+    "subject_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "workload_hours": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0.0
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "ClassSchedule": {
+      "description": "Class schedule information",
+      "type": "object",
+      "required": [
+        "days",
+        "online_option",
+        "time_slots"
+      ],
+      "properties": {
+        "days": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DayOfWeek"
+          }
+        },
+        "location": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "online_option": {
+          "type": "boolean"
+        },
+        "time_slots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeSlot"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "DayOfWeek": {
+      "description": "Days of the week",
+      "type": "string",
+      "enum": [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+        "sunday"
+      ]
+    },
+    "TimeSlot": {
+      "description": "Time slots for classes",
+      "type": "string",
+      "enum": [
+        "early_morning",
+        "morning",
+        "afternoon",
+        "evening",
+        "night"
+      ]
+    }
+  }
+}

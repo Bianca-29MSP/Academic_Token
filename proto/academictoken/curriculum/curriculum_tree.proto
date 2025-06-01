@@ -1,0 +1,23 @@
+syntax = "proto3";
+package academictoken.curriculum;
+
+option go_package = "academictoken/x/curriculum/types";
+
+import "academictoken/curriculum/curriculum_semester.proto";
+import "academictoken/curriculum/graduation_requirements.proto";
+import "academictoken/curriculum/elective_group.proto";
+
+message CurriculumTree {
+  
+  string index = 1; 
+  string courseId = 2; 
+  string version = 3; 
+  string totalWorkloadHours = 4;
+  repeated string requiredSubjects = 5;
+  uint64 electiveMin = 6;
+  repeated string electiveSubjects = 7;
+  repeated CurriculumSemester semesterStructure = 8;
+  GraduationRequirements graduationRequirements = 9;
+  repeated ElectiveGroup electiveGroups = 10;
+ 
+}

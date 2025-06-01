@@ -1,0 +1,15 @@
+syntax = "proto3";
+package academictoken.course;
+
+option go_package = "academictoken/x/course/types";
+
+message Course {
+  
+  string index = 1; 
+  string institution = 2; 
+  string name = 3; 
+  string code = 4; 
+  string description = 5; 
+  string totalCredits = 6; 
+  string degreeLevel = 7; 
+}

@@ -1,0 +1,95 @@
+syntax = "proto3";
+package academictoken.tokendef;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "academictoken/tokendef/params.proto";
+import "academictoken/tokendef/tokendef.proto";
+
+option go_package = "academictoken/x/tokendef/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/academictoken/tokendef/params";
+  }
+  
+  // GetTokenDefinition queries a token definition by index
+  rpc GetTokenDefinition(QueryGetTokenDefinitionRequest) returns (QueryGetTokenDefinitionResponse) {
+    option (google.api.http).get = "/academictoken/tokendef/token/{index}";
+  }
+  
+  // GetTokenDefinitionFull queries a token definition with full content (including IPFS data)
+  rpc GetTokenDefinitionFull(QueryGetTokenDefinitionFullRequest) returns (QueryGetTokenDefinitionFullResponse) {
+    option (google.api.http).get = "/academictoken/tokendef/token/{index}/full";
+  }
+  
+  // ListTokenDefinitions queries all token definitions with pagination
+  rpc ListTokenDefinitions(QueryListTokenDefinitionsRequest) returns (QueryListTokenDefinitionsResponse) {
+    option (google.api.http).get = "/academictoken/tokendef/tokens";
+  }
+  
+  // ListTokenDefinitionsBySubject queries token definitions by subject
+  rpc ListTokenDefinitionsBySubject(QueryListTokenDefinitionsBySubjectRequest) returns (QueryListTokenDefinitionsBySubjectResponse) {
+    option (google.api.http).get = "/academictoken/tokendef/tokens/subject/{subjectId}";
+  }
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+// QueryGetTokenDefinitionRequest is request type for GetTokenDefinition query
+message QueryGetTokenDefinitionRequest {
+  string index = 1;
+}
+
+// QueryGetTokenDefinitionResponse is response type for GetTokenDefinition query
+message QueryGetTokenDefinitionResponse {
+  TokenDefinition tokenDefinition = 1;
+}
+
+// QueryGetTokenDefinitionFullRequest is request type for GetTokenDefinitionFull query
+message QueryGetTokenDefinitionFullRequest {
+  string index = 1;
+}
+
+// QueryGetTokenDefinitionFullResponse is response type for GetTokenDefinitionFull query
+message QueryGetTokenDefinitionFullResponse {
+  TokenDefinition tokenDefinition = 1;
+  string extendedContent = 2;  // IPFS content as JSON string
+}
+
+// QueryListTokenDefinitionsRequest is request type for ListTokenDefinitions query
+message QueryListTokenDefinitionsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryListTokenDefinitionsResponse is response type for ListTokenDefinitions query
+message QueryListTokenDefinitionsResponse {
+  repeated TokenDefinition tokenDefinitions = 1;
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryListTokenDefinitionsBySubjectRequest is request type for ListTokenDefinitionsBySubject query
+message QueryListTokenDefinitionsBySubjectRequest {
+  string subjectId = 1;
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+// QueryListTokenDefinitionsBySubjectResponse is response type for ListTokenDefinitionsBySubject query
+message QueryListTokenDefinitionsBySubjectResponse {
+  repeated TokenDefinition tokenDefinitions = 1;
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}

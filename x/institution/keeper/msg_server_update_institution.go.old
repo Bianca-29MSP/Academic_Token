@@ -1,0 +1,75 @@
+package keeper
+
+import (
+	"context"
+
+	"academictoken/x/institution/types"
+
+	errorsmod "cosmossdk.io/errors"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+)
+
+func (k msgServer) UpdateInstitution(goCtx context.Context, msg *types.MsgUpdateInstitution) (*types.MsgUpdateInstitutionResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Check if the institution exists
+	existingInstitution, found := k.Keeper.GetInstitution(ctx, msg.Index)
+	if !found {
+		return nil, errorsmod.Wrapf(sdkerrors.ErrKeyNotFound, "institution with index %s not found", msg.Index)
+	}
+
+	// Check if authorization status is being changed
+	isAuthorizationChange := msg.IsAuthorized != existingInstitution.IsAuthorized
+
+	if isAuthorizationChange {
+		// Authorization status change - check permissions
+		if !k.Keeper.CanAuthorizeInstitution(ctx, msg.Index, msg.Creator) {
+			return nil, errorsmod.Wrap(sdkerrors.ErrUnauthorized, "only governance or institution creator can change authorization status")
+		}
+	}
+
+	// Check if the updater has permission to update this institution
+	if !k.Keeper.CanUpdateInstitution(ctx, msg.Index, msg.Creator) {
+		return nil, errorsmod.Wrap(sdkerrors.ErrUnauthorized, "you can only update institutions you created or if you are the governance authority")
+	}
+
+	// Update the institution with new data
+	// Preserve the original creator - it should never change
+	updatedInstitution := types.Institution{
+		Index:        msg.Index,
+		Address:      msg.Address,
+		Name:         msg.Name,
+		IsAuthorized: msg.IsAuthorized,
+		Creator:      existingInstitution.Creator, // Preserve original creator
+	}
+
+	// Store the updated institution
+	err := k.Keeper.SetInstitution(ctx, updatedInstitution)
+	if err != nil {
+		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidRequest, "failed to update institution: "+err.Error())
+	}
+
+	// Emit event for institution update
+	eventType := types.EventTypeUpdateInstitution
+	if isAuthorizationChange {
+		if msg.IsAuthorized == "true" {
+			eventType = types.EventTypeAuthorizeInstitution
+		} else {
+			eventType = types.EventTypeUnauthorizeInstitution
+		}
+	}
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			eventType,
+			sdk.NewAttribute(types.AttributeKeyInstitutionIndex, msg.Index),
+			sdk.NewAttribute(types.AttributeKeyInstitutionName, msg.Name),
+			sdk.NewAttribute(types.AttributeKeyIsAuthorized, msg.IsAuthorized),
+			sdk.NewAttribute(types.AttributeKeyCreator, msg.Creator),
+			sdk.NewAttribute(types.AttributeKeyOriginalCreator, existingInstitution.Creator),
+		),
+	)
+
+	return &types.MsgUpdateInstitutionResponse{}, nil
+}

@@ -1,0 +1,41 @@
+syntax = "proto3";
+package academictoken.subject;
+
+import "academictoken/subject/subject_content.proto";
+import "academictoken/subject/prerequisite_group.proto";
+
+option go_package = "academictoken/x/subject/types";
+
+// SubjectWithPrerequisites combines subject content with its prerequisites
+message SubjectWithPrerequisites {
+  SubjectContent subject = 1;
+  repeated PrerequisiteGroup prerequisite_groups = 2;
+}
+
+// CheckPrerequisitesMsg is the message to check if a student meets prerequisites
+message CheckPrerequisitesMsg {
+  string student_id = 1;
+  string subject_id = 2;
+}
+
+// PrerequisiteCheckResponse is the response from checking prerequisites
+message PrerequisiteCheckResponse {
+  bool is_eligible = 1;
+  repeated string missing_prerequisites = 2;
+}
+
+// EquivalenceCheckMsg is the message to check equivalence between subjects
+message EquivalenceCheckMsg {
+  string source_subject_id = 1;
+  string target_subject_id = 2;
+  bool force_recalculate = 3;
+}
+
+// EquivalenceResponse is the response from checking equivalence
+message EquivalenceResponse {
+  string source_subject_id = 1;
+  string target_subject_id = 2;
+  uint64 equivalence_percent = 3;
+  string status = 4;
+  bool from_cache = 5;
+}

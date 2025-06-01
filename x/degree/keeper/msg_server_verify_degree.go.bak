@@ -1,0 +1,124 @@
+package keeper
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+
+	"academictoken/x/degree/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+)
+
+// Mudança: VerifyDegree → ValidateDegreeRequirements
+func (k msgServer) ValidateDegreeRequirements(goCtx context.Context, msg *types.MsgValidateDegreeRequirements) (*types.MsgValidateDegreeRequirementsResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Get the degree request
+	degreeRequest, found := k.GetDegreeRequest(ctx, msg.DegreeRequestId)
+	if !found {
+		return nil, types.ErrDegreeRequestNotFound
+	}
+
+	// Validate degree request status
+	if degreeRequest.Status != types.DegreeRequestStatusPending {
+		return nil, fmt.Errorf("degree request is not in pending status: %s", degreeRequest.Status)
+	}
+
+	// Get contract address from params if not provided
+	contractAddress := msg.ContractAddress
+	if contractAddress == "" {
+		params := k.GetParams(ctx)
+		contractAddress = params.ContractAddress
+		if contractAddress == "" {
+			return nil, types.ErrInvalidContractAddress
+		}
+	}
+
+	// Get student's completed subjects
+	completedSubjects, err := k.studentKeeper.GetCompletedSubjects(ctx, degreeRequest.StudentId)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get completed subjects: %w", err)
+	}
+
+	// Get student GPA and credits
+	gpa, err := k.studentKeeper.GetStudentGPA(ctx, degreeRequest.StudentId)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get student GPA: %w", err)
+	}
+
+	totalCredits, err := k.studentKeeper.GetStudentTotalCredits(ctx, degreeRequest.StudentId)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get student credits: %w", err)
+	}
+
+	// Prepare validation data for CosmWasm contract
+	validationData := map[string]interface{}{
+		"student_id":         degreeRequest.StudentId,
+		"curriculum_id":      degreeRequest.CurriculumId,
+		"completed_subjects": completedSubjects,
+		"gpa":                gpa,
+		"total_credits":      totalCredits,
+		"parameters":         msg.ValidationParameters,
+	}
+
+	// Call CosmWasm contract for validation
+	contractAddr, err := sdk.AccAddressFromBech32(contractAddress)
+	if err != nil {
+		return nil, types.ErrInvalidContractAddress
+	}
+
+	// Execute contract query
+	queryMsg := map[string]interface{}{
+		"validate_graduation_requirements": validationData,
+	}
+	queryJSON, err := json.Marshal(queryMsg)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal query: %w", err)
+	}
+
+	contractResult, err := k.wasmKeeper.QuerySmart(ctx, contractAddr, queryJSON)
+	if err != nil {
+		return nil, types.ErrContractExecutionFailed
+	}
+
+	// Parse contract response
+	var validationResult struct {
+		ValidationPassed    bool     `json:"validation_passed"`
+		ValidationScore     string   `json:"validation_score"`
+		ValidationDetails   string   `json:"validation_details"`
+		MissingRequirements []string `json:"missing_requirements"`
+	}
+
+	if err := json.Unmarshal(contractResult, &validationResult); err != nil {
+		return nil, fmt.Errorf("failed to parse contract result: %w", err)
+	}
+
+	// Update degree request status based on validation result
+	if validationResult.ValidationPassed {
+		degreeRequest.Status = types.DegreeRequestStatusApproved
+	} else {
+		degreeRequest.Status = types.DegreeRequestStatusRejected
+	}
+
+	// Store updated degree request
+	k.SetDegreeRequest(ctx, degreeRequest)
+
+	// Emit validation event
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeDegreeValidated,
+			sdk.NewAttribute(types.AttributeKeyDegreeRequestID, msg.DegreeRequestId),
+			sdk.NewAttribute(types.AttributeKeyDegreeStatus, degreeRequest.Status),
+			sdk.NewAttribute(types.AttributeKeyValidationScore, validationResult.ValidationScore),
+			sdk.NewAttribute(types.AttributeKeyContractAddress, contractAddress),
+		),
+	)
+
+	return &types.MsgValidateDegreeRequirementsResponse{
+		ValidationPassed:    validationResult.ValidationPassed,
+		ValidationScore:     validationResult.ValidationScore,
+		ValidationDetails:   validationResult.ValidationDetails,
+		MissingRequirements: validationResult.MissingRequirements,
+	}, nil
+}

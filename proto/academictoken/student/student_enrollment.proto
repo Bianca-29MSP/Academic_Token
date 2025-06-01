@@ -1,0 +1,14 @@
+syntax = "proto3";
+package academictoken.student;
+
+option go_package = "academictoken/x/student/types";
+
+message StudentEnrollment {
+  string index = 1; 
+  string student = 2; 
+  string institution = 3; 
+  string courseId = 4; 
+  string enrollmentDate = 5; 
+  string status = 6; 
+  string academicTreeId = 7; 
+}

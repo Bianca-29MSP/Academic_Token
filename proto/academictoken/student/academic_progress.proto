@@ -1,0 +1,14 @@
+syntax = "proto3";
+package academictoken.student;
+
+option go_package = "academictoken/x/student/types";
+
+message AcademicProgress {
+  uint64 requiredCreditsCompleted = 1;
+  uint64 electiveCreditsCompleted = 2;
+  float requiredSubjectsPercentage = 3;
+  uint64 currentSemester = 4;
+  uint64 currentYear = 5;
+  float enrollmentYears = 6;
+  map<string, uint64> electivesByAreaCompleted = 7;
+}

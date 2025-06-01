@@ -1,0 +1,118 @@
+syntax = "proto3";
+
+package academictoken.degree;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "academictoken/degree/params.proto";
+import "academictoken/degree/degree.proto";
+import "academictoken/degree/degree_request.proto";
+
+option go_package = "academictoken/x/degree/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  
+  // Parameters queries the parameters of the module.
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/academictoken/degree/params";
+  }
+  
+  // Queries a Degree by index.
+  rpc Degree (QueryGetDegreeRequest) returns (QueryGetDegreeResponse) {
+    option (google.api.http).get = "/academictoken/degree/degree/{index}";
+  }
+
+  // Queries a list of Degree items.
+  rpc DegreeAll (QueryAllDegreeRequest) returns (QueryAllDegreeResponse) {
+    option (google.api.http).get = "/academictoken/degree/degree";
+  }
+
+  // Queries degrees by student ID
+  rpc DegreesByStudent (QueryDegreesByStudentRequest) returns (QueryDegreesByStudentResponse) {
+    option (google.api.http).get = "/academictoken/degree/degrees-by-student/{student_id}";
+  }
+
+  // Queries degrees by institution ID
+  rpc DegreesByInstitution (QueryDegreesByInstitutionRequest) returns (QueryDegreesByInstitutionResponse) {
+    option (google.api.http).get = "/academictoken/degree/degrees-by-institution/{institution_id}";
+  }
+
+  // Queries degree requests (pending degrees)
+  rpc DegreeRequests (QueryDegreeRequestsRequest) returns (QueryDegreeRequestsResponse) {
+    option (google.api.http).get = "/academictoken/degree/requests";
+  }
+
+  // Queries degree validation status
+  rpc DegreeValidationStatus (QueryDegreeValidationStatusRequest) returns (QueryDegreeValidationStatusResponse) {
+    option (google.api.http).get = "/academictoken/degree/validation-status/{degree_id}";
+  }
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetDegreeRequest {
+  string index = 1;
+}
+
+message QueryGetDegreeResponse {
+  Degree degree = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllDegreeRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllDegreeResponse {
+  repeated Degree degree = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryDegreesByStudentRequest {
+  string student_id = 1;
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+message QueryDegreesByStudentResponse {
+  repeated Degree degrees = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryDegreesByInstitutionRequest {
+  string institution_id = 1;
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+message QueryDegreesByInstitutionResponse {
+  repeated Degree degrees = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryDegreeRequestsRequest {
+  string status = 1; // Optional filter by status
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+message QueryDegreeRequestsResponse {
+  repeated DegreeRequest requests = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryDegreeValidationStatusRequest {
+  string degree_id = 1;
+}
+
+message QueryDegreeValidationStatusResponse {
+  string status = 1;
+  string validation_score = 2;
+  string validation_date = 3;
+  string validation_details = 4;
+}

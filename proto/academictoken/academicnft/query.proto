@@ -1,0 +1,89 @@
+syntax = "proto3";
+package academictoken.academicnft;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "academictoken/academicnft/params.proto";
+import "academictoken/academicnft/subject_token_instance.proto";
+
+option go_package = "academictoken/x/academicnft/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/academictoken/academicnft/params";
+  }
+  
+  // Get a specific token instance by ID
+  rpc GetTokenInstance(QueryGetTokenInstanceRequest) returns (QueryGetTokenInstanceResponse) {
+    option (google.api.http).get = "/academictoken/academicnft/token/{tokenInstanceId}";
+  }
+  
+  // Get all token instances for a student
+  rpc GetStudentTokens(QueryGetStudentTokensRequest) returns (QueryGetStudentTokensResponse) {
+    option (google.api.http).get = "/academictoken/academicnft/student/{studentAddress}/tokens";
+  }
+  
+  // Get all instances of a specific TokenDef
+  rpc GetTokenDefInstances(QueryGetTokenDefInstancesRequest) returns (QueryGetTokenDefInstancesResponse) {
+    option (google.api.http).get = "/academictoken/academicnft/tokendef/{tokenDefId}/instances";
+  }
+  
+  // Verify if a token instance exists and is valid
+  rpc VerifyTokenInstance(QueryVerifyTokenInstanceRequest) returns (QueryVerifyTokenInstanceResponse) {
+    option (google.api.http).get = "/academictoken/academicnft/verify/{tokenInstanceId}";
+  }
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+message QueryGetTokenInstanceRequest {
+  string tokenInstanceId = 1;
+}
+
+message QueryGetTokenInstanceResponse {
+  SubjectTokenInstance tokenInstance = 1;
+}
+
+message QueryGetStudentTokensRequest {
+  string studentAddress = 1;
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+message QueryGetStudentTokensResponse {
+  repeated SubjectTokenInstance tokenInstances = 1;
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetTokenDefInstancesRequest {
+  string tokenDefId = 1;
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+message QueryGetTokenDefInstancesResponse {
+  repeated SubjectTokenInstance tokenInstances = 1;
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryVerifyTokenInstanceRequest {
+  string tokenInstanceId = 1;
+}
+
+message QueryVerifyTokenInstanceResponse {
+  bool exists = 1;
+  bool isValid = 2;
+  SubjectTokenInstance tokenInstance = 3;
+}

@@ -1,0 +1,16 @@
+syntax = "proto3";
+package academictoken.academicnft;
+
+option go_package = "academictoken/x/academicnft/types";
+
+message SubjectTokenInstance {
+  
+  string index = 1; 
+  string tokenDefId = 2; 
+  string student = 3; 
+  string completionDate = 4; 
+  string grade = 5; 
+  string issuerInstitution = 6; 
+  string semester = 7; 
+  string professorSignature = 8; 
+}

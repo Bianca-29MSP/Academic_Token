@@ -1,0 +1,26 @@
+package keeper
+
+import (
+	"context"
+
+	"academictoken/x/schedule/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+)
+
+func (k msgServer) UpdateStudyPlanStatus(goCtx context.Context, msg *types.MsgUpdateStudyPlanStatus) (*types.MsgUpdateStudyPlanStatusResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Validate message
+	if err := msg.ValidateBasic(); err != nil {
+		return nil, err
+	}
+
+	// Update study plan status using only available fields
+	err := k.Keeper.UpdateStudyPlanStatus(ctx, msg)
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.MsgUpdateStudyPlanStatusResponse{}, nil
+}

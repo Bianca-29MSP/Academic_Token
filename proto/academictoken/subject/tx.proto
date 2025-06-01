@@ -1,0 +1,116 @@
+syntax = "proto3";
+package academictoken.subject;
+
+import "amino/amino.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "academictoken/subject/params.proto";
+
+option go_package = "academictoken/x/subject/types";
+
+// Msg defines the Msg service.
+service Msg {
+ option (cosmos.msg.v1.service) = true;
+ 
+ // UpdateParams defines a (governance) operation for updating the module
+ // parameters. The authority defaults to the x/gov module account.
+ rpc UpdateParams         (MsgUpdateParams        ) returns (MsgUpdateParamsResponse        );
+ rpc CreateSubject        (MsgCreateSubject       ) returns (MsgCreateSubjectResponse       );
+ rpc CreateSubjectContent (MsgCreateSubjectContent) returns (MsgCreateSubjectContentResponse);
+ rpc AddPrerequisiteGroup (MsgAddPrerequisiteGroup) returns (MsgAddPrerequisiteGroupResponse);
+ rpc UpdateSubjectContent (MsgUpdateSubjectContent) returns (MsgUpdateSubjectContentResponse);
+}
+
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+ option (cosmos.msg.v1.signer) = "authority";
+ option (amino.name) = "academictoken/x/subject/MsgUpdateParams";
+ 
+ // authority is the address that controls the module (defaults to x/gov unless overwritten).
+ string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+ // params defines the module parameters to update.
+ 
+ // NOTE: All parameters must be supplied.
+ Params params = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+message MsgUpdateParamsResponse {}
+
+message MsgCreateSubject {
+ option (cosmos.msg.v1.signer) = "creator";
+ string creator       = 1;
+ string institution   = 2;
+ string course_id     = 3;       
+ string title         = 4;       
+ string code          = 5;
+ uint64 workloadHours = 6;
+ uint64 credits       = 7;
+ string description   = 8;
+ string subjectType   = 9;
+ string knowledgeArea = 10;
+ repeated string objectives = 11;
+ repeated string topicUnits = 12;
+}
+
+message MsgCreateSubjectResponse {
+ string index = 1;
+}
+
+message MsgCreateSubjectContent {
+ option (cosmos.msg.v1.signer) = "creator";
+ option (amino.name) = "academictoken/x/subject/MsgCreateSubjectContent";
+ 
+ string creator       = 1;
+ string institution   = 2;
+ string course_id     = 3;       
+ string title         = 4;       
+ string code          = 5;
+ uint64 workloadHours = 6;
+ uint64 credits       = 7;
+ string description   = 8;
+ string subjectType   = 9;
+ string knowledgeArea = 10;
+ repeated string objectives = 11;
+ repeated string topicUnits = 12;
+}
+
+message MsgCreateSubjectContentResponse {
+ string index = 1;
+}
+
+message MsgAddPrerequisiteGroup {
+ option (cosmos.msg.v1.signer) = "creator";
+ string creator                  = 1;
+ string subjectId                = 2;
+ string groupType                = 3;
+ uint64 minimumCredits           = 4;
+ uint64 minimumCompletedSubjects = 5;
+ repeated string subjectIds = 6;
+}
+
+message MsgAddPrerequisiteGroupResponse {
+ string group_id = 1;
+}
+
+message MsgUpdateSubjectContent {
+ option (cosmos.msg.v1.signer) = "creator";
+ string creator   = 1;
+ string subjectId = 2;
+ repeated string objectives = 3;
+ repeated string topicUnits = 4;
+ repeated string methodologies = 5;
+ repeated string evaluationMethods = 6;
+ repeated string bibliographyBasic = 7;
+ repeated string bibliographyComplementary = 8;
+ repeated string keywords = 9;
+ string contentHash = 10;
+ string ipfsLink = 11;
+}
+
+message MsgUpdateSubjectContentResponse {
+ string content_hash = 1;
+ string ipfs_link = 2;
+}

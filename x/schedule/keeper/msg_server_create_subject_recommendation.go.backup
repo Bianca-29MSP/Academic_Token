@@ -1,0 +1,26 @@
+package keeper
+
+import (
+	"context"
+
+	"academictoken/x/schedule/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+)
+
+func (k msgServer) CreateSubjectRecommendation(goCtx context.Context, msg *types.MsgCreateSubjectRecommendation) (*types.MsgCreateSubjectRecommendationResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Validate message
+	if err := msg.ValidateBasic(); err != nil {
+		return nil, err
+	}
+
+	// Create subject recommendation using only available fields
+	_, err := k.CreateSubjectRecommendation(ctx, msg) // Remove unused variable
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.MsgCreateSubjectRecommendationResponse{}, nil
+}

@@ -1,0 +1,13 @@
+syntax = "proto3";
+package academictoken.subject;
+
+option go_package = "academictoken/x/subject/types";
+
+message PrerequisiteGroup {
+  string id = 1;              
+  string subjectId = 2;       
+  string groupType = 3;       
+  uint64 minimumCredits = 4;  
+  uint64 minimumCompletedSubjects = 5;  
+  repeated string subjectIds = 6;
+}

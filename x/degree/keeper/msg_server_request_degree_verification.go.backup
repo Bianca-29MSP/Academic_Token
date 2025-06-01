@@ -1,0 +1,78 @@
+package keeper
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	"academictoken/x/degree/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+)
+
+func (k msgServer) RequestDegree(goCtx context.Context, msg *types.MsgRequestDegree) (*types.MsgRequestDegreeResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Validate student exists
+	if err := k.studentKeeper.ValidateStudentExists(ctx, msg.StudentId); err != nil {
+		return nil, types.ErrStudentNotFound
+	}
+
+	// Validate institution authorization
+	if err := k.institutionKeeper.ValidateInstitutionAuthorization(ctx, msg.InstitutionId); err != nil {
+		return nil, err
+	}
+
+	// Get curriculum to validate requirements
+	_, found := k.curriculumKeeper.GetCurriculum(ctx, msg.CurriculumId)
+	if !found {
+		return nil, fmt.Errorf("curriculum not found: %s", msg.CurriculumId)
+	}
+
+	// Generate unique degree request ID
+	degreeRequestId := k.generateDegreeRequestId(ctx)
+
+	// Create degree request
+	degreeRequest := types.DegreeRequest{
+		Id:                     degreeRequestId,
+		StudentId:              msg.StudentId,
+		InstitutionId:          msg.InstitutionId,
+		CurriculumId:           msg.CurriculumId,
+		Status:                 types.DegreeRequestStatusPending,
+		RequestDate:            time.Now().UTC().Format(time.RFC3339),
+		ExpectedGraduationDate: msg.ExpectedGraduationDate,
+	}
+
+	// Get student's current academic record
+	academicRecord, found := k.studentKeeper.GetStudentAcademicRecord(ctx, msg.StudentId)
+	if found {
+		degreeRequest.CurrentGpa = academicRecord.GPA
+		degreeRequest.CompletedCredits = academicRecord.CompletedCredits
+	}
+
+	// Store the degree request
+	k.SetDegreeRequest(ctx, degreeRequest)
+
+	// Emit event
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeDegreeRequested,
+			sdk.NewAttribute(types.AttributeKeyDegreeRequestID, degreeRequestId),
+			sdk.NewAttribute(types.AttributeKeyStudentID, msg.StudentId),
+			sdk.NewAttribute(types.AttributeKeyInstitutionID, msg.InstitutionId),
+			sdk.NewAttribute(types.AttributeKeyCurriculumID, msg.CurriculumId),
+			sdk.NewAttribute(types.AttributeKeyDegreeStatus, types.DegreeRequestStatusPending),
+		),
+	)
+
+	return &types.MsgRequestDegreeResponse{
+		DegreeRequestId: degreeRequestId,
+		Status:          types.DegreeRequestStatusPending,
+	}, nil
+}
+
+// Helper function to generate unique degree request ID
+func (k msgServer) generateDegreeRequestId(_ sdk.Context) string {
+	timestamp := time.Now().Unix()
+	return fmt.Sprintf("degree_req_%d", timestamp)
+}

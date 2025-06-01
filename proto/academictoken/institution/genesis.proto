@@ -1,0 +1,17 @@
+syntax = "proto3";
+package academictoken.institution;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "academictoken/institution/params.proto";
+
+option go_package = "academictoken/x/institution/types";
+
+// GenesisState defines the institution module's genesis state.
+message GenesisState {
+  // params defines all the parameters of the module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}

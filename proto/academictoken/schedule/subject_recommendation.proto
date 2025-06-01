@@ -1,0 +1,15 @@
+syntax = "proto3";
+package academictoken.schedule;
+
+option go_package = "academictoken/x/schedule/types";
+
+import "academictoken/schedule/recommended_subject.proto";
+
+message SubjectRecommendation {
+  string index = 1; 
+  string student = 2; 
+  string recommendationSemester = 3; 
+  string recommendationMetadata = 4; 
+  string generatedDate = 5;
+  repeated RecommendedSubject recommendedSubjects = 6;
+}

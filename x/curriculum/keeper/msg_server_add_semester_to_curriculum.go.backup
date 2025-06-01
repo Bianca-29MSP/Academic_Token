@@ -1,0 +1,41 @@
+package keeper
+
+import (
+	"context"
+	"fmt"
+
+	"academictoken/x/curriculum/types"
+
+	errorsmod "cosmossdk.io/errors"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+)
+
+// AddSemesterToCurriculum adds a semester to an existing curriculum
+func (k msgServer) AddSemesterToCurriculum(goCtx context.Context, req *types.MsgAddSemesterToCurriculum) (*types.MsgAddSemesterToCurriculumResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Validate creator
+	_, err := sdk.AccAddressFromBech32(req.Creator)
+	if err != nil {
+		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidAddress, "invalid creator address")
+	}
+
+	// Chamar a função do keeper corretamente
+	err = k.Keeper.AddSemesterToCurriculum(goCtx, req.CurriculumIndex, req.SemesterNumber, req.SubjectIds)
+	if err != nil {
+		return nil, err
+	}
+
+	// Emit event usando SDK events simples
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			"semester_added", // <- USANDO EVENTO SIMPLES
+			sdk.NewAttribute("curriculum_index", req.CurriculumIndex),
+			sdk.NewAttribute("semester_number", fmt.Sprintf("%d", req.SemesterNumber)),
+			sdk.NewAttribute("creator", req.Creator),
+		),
+	)
+
+	return &types.MsgAddSemesterToCurriculumResponse{}, nil
+}

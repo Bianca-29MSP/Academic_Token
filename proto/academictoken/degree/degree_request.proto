@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package academictoken.degree;
+
+option go_package = "academictoken/x/degree/types";
+
+message DegreeRequest {
+  string id = 1;
+  string creator = 2;
+  string student_id = 3;
+  string institution_id = 4;
+  string curriculum_id = 5;
+  string expected_graduation_date = 6;
+  string request_date = 7;
+  string status = 8;
+  string validation_score = 9;
+  string validation_details = 10;
+  repeated string missing_requirements = 11;
+}

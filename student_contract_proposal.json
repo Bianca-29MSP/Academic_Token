@@ -1,0 +1,22 @@
+{
+ "messages": [
+   {
+     "@type": "/academictoken.student.MsgUpdateParams",
+     "authority": "academic10d07y265gmmuvt4z0w9aw880jnsr700j7jka77",
+     "params": {
+       "admin": "academic1yrq6z28t2gxekm74n2xlegfvzzaz2adkyr5ntt",
+       "ipfs_enabled": true,
+       "ipfs_gateway": "http://localhost:5001",
+       "prerequisites_contract_addr": "academic14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sva26tx",
+       "equivalence_contract_addr": "",
+       "nft_minting_contract_addr": "",
+       "academic_progress_contract_addr": "",
+       "degree_contract_addr": ""
+     }
+   }
+ ],
+ "metadata": "",
+ "deposit": "10000000stake",
+ "title": "Update Student Module Contract Address",
+ "summary": "Update the prerequisites contract address in student module parameters"
+}

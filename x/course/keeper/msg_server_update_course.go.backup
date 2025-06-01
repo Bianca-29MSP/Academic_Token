@@ -1,0 +1,55 @@
+package keeper
+
+import (
+	"context"
+
+	"academictoken/x/course/types"
+
+	errorsmod "cosmossdk.io/errors"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+)
+
+func (k msgServer) UpdateCourse(goCtx context.Context, req *types.MsgUpdateCourse) (*types.MsgUpdateCourseResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Check if updater can update this course
+	if !k.CanUpdateCourse(ctx, req.Index, req.Creator) {
+		return nil, errorsmod.Wrapf(sdkerrors.ErrUnauthorized,
+			"creator %s is not authorized to update course %s",
+			req.Creator, req.Index)
+	}
+
+	// Get existing course
+	course, found := k.GetCourse(ctx, req.Index)
+	if !found {
+		return nil, errorsmod.Wrapf(sdkerrors.ErrNotFound, "course %s not found", req.Index)
+	}
+
+	// Update course fields
+	if req.Name != "" {
+		course.Name = req.Name
+	}
+	if req.Description != "" {
+		course.Description = req.Description
+	}
+	if req.TotalCredits != "" {
+		course.TotalCredits = req.TotalCredits
+	}
+
+	// Store the updated course
+	if err := k.SetCourse(ctx, course); err != nil {
+		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "failed to update course: %s", err.Error())
+	}
+
+	// Emit event
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeCourseUpdated,
+			sdk.NewAttribute(types.AttributeKeyCreator, req.Creator),
+			sdk.NewAttribute(types.AttributeKeyCourseIndex, req.Index),
+		),
+	)
+
+	return &types.MsgUpdateCourseResponse{}, nil
+}

@@ -1,0 +1,110 @@
+syntax = "proto3";
+package academictoken.student;
+import "amino/amino.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "academictoken/student/params.proto";
+option go_package = "academictoken/x/student/types";
+// Msg defines the Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+  
+  // UpdateParams defines a (governance) operation for updating the module
+  // parameters. The authority defaults to the x/gov module account.
+  rpc UpdateParams             (MsgUpdateParams            ) returns (MsgUpdateParamsResponse            );
+  rpc RegisterStudent          (MsgRegisterStudent         ) returns (MsgRegisterStudentResponse         );
+  rpc CreateEnrollment         (MsgCreateEnrollment        ) returns (MsgCreateEnrollmentResponse        );
+  rpc UpdateEnrollmentStatus   (MsgUpdateEnrollmentStatus  ) returns (MsgUpdateEnrollmentStatusResponse  );
+  rpc RequestSubjectEnrollment (MsgRequestSubjectEnrollment) returns (MsgRequestSubjectEnrollmentResponse);
+  rpc UpdateAcademicTree       (MsgUpdateAcademicTree      ) returns (MsgUpdateAcademicTreeResponse      );
+  rpc CompleteSubject          (MsgCompleteSubject         ) returns (MsgCompleteSubjectResponse         );
+  rpc RequestEquivalence       (MsgRequestEquivalence      ) returns (MsgRequestEquivalenceResponse      );
+}
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) =                               "authority";
+  option           (amino.name) = "academictoken/x/student/MsgUpdateParams";
+  
+  // authority is the address that controls the module (defaults to x/gov unless overwritten).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  // params defines the module parameters to update.
+  
+  // NOTE: All parameters must be supplied.
+  Params params = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+message MsgUpdateParamsResponse {}
+
+message MsgRegisterStudent {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string name    = 2;
+  string address = 3;
+}
+message MsgRegisterStudentResponse {}
+
+message MsgCreateEnrollment {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator     = 1;
+  string student     = 2;
+  string institution = 3;
+  string courseId    = 4;
+}
+message MsgCreateEnrollmentResponse {}
+
+message MsgUpdateEnrollmentStatus {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator      = 1;
+  string enrollmentId = 2;
+  string status       = 3;
+}
+message MsgUpdateEnrollmentStatusResponse {}
+
+message MsgRequestSubjectEnrollment {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator   = 1;
+  string student   = 2;
+  string subjectId = 3;
+}
+message MsgRequestSubjectEnrollmentResponse {}
+
+message MsgUpdateAcademicTree {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator   = 1;
+  string studentId = 2;
+  repeated string completedTokens = 3;    // Added
+  repeated string inProgressTokens = 4;   // Added
+  repeated string availableTokens = 5;    // Added
+}
+message MsgUpdateAcademicTreeResponse {}
+
+message MsgCompleteSubject {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator             = 1;
+  string studentId           = 2;
+  string subjectId           = 3;
+  uint32 grade               = 4;
+  string completionDate      = 5;
+  string semester            = 6;
+  string professorSignature  = 7;
+}
+message MsgCompleteSubjectResponse {
+  string nftTokenId = 1;
+  double progressPercentage = 2;
+  uint64 creditsCompleted = 3;
+  bool isEligibleForGraduation = 4;
+}
+
+message MsgRequestEquivalence {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator          = 1;
+  string studentId        = 2;
+  string sourceSubjectId  = 3;
+  string targetSubjectId  = 4;
+  string reason           = 5;
+}
+message MsgRequestEquivalenceResponse {
+  string equivalenceId = 1;
+}

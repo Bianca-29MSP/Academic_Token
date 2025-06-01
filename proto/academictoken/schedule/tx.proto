@@ -1,0 +1,79 @@
+syntax = "proto3";
+package academictoken.schedule;
+import "amino/amino.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "academictoken/schedule/params.proto";
+import "academictoken/schedule/recommended_subject.proto";  // Adicionado import
+import "academictoken/schedule/planned_semester.proto";  // Adicionado import
+option go_package = "academictoken/x/schedule/types";
+// Msg defines the Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+  
+  // UpdateParams defines a (governance) operation for updating the module
+  // parameters. The authority defaults to the x/gov module account.
+  rpc UpdateParams                (MsgUpdateParams               ) returns (MsgUpdateParamsResponse               );
+  rpc CreateSubjectRecommendation (MsgCreateSubjectRecommendation) returns (MsgCreateSubjectRecommendationResponse);
+  rpc CreateStudyPlan             (MsgCreateStudyPlan            ) returns (MsgCreateStudyPlanResponse            );
+  rpc AddPlannedSemester          (MsgAddPlannedSemester         ) returns (MsgAddPlannedSemesterResponse         );
+  rpc UpdateStudyPlanStatus       (MsgUpdateStudyPlanStatus      ) returns (MsgUpdateStudyPlanStatusResponse      );
+}
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) =                                "authority";
+  option           (amino.name) = "academictoken/x/schedule/MsgUpdateParams";
+  
+  // authority is the address that controls the module (defaults to x/gov unless overwritten).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  // params defines the module parameters to update.
+  
+  // NOTE: All parameters must be supplied.
+  Params params = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+message MsgUpdateParamsResponse {}
+
+message MsgCreateSubjectRecommendation {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator                = 1;
+  string student                = 2;
+  string recommendationSemester = 3;
+  repeated RecommendedSubject recommendedSubjects = 4;  
+  string recommendationMetadata = 5;  
+  string generatedDate = 6;  
+}
+message MsgCreateSubjectRecommendationResponse {}
+
+message MsgCreateStudyPlan {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator          = 1;
+  string student          = 2;
+  string completionTarget = 3;
+  repeated string semesterCodes = 4;  
+  string additionalNotes = 5;  
+  string status = 6;  
+}
+message MsgCreateStudyPlanResponse {}
+
+message MsgAddPlannedSemester {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator      = 1;
+  string studyPlanId  = 2;
+  string semesterCode = 3;
+  repeated string plannedSubjects = 4;  
+  uint64 totalCredits = 5;  
+  uint64 totalHours = 6;  
+  string status = 7;  
+}
+message MsgAddPlannedSemesterResponse {}
+
+message MsgUpdateStudyPlanStatus {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator     = 1;
+  string studyPlanId = 2;
+  string status      = 3;
+}
+message MsgUpdateStudyPlanStatusResponse {}

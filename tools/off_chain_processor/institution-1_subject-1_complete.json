@@ -1,0 +1,307 @@
+{
+  "extracted_data": {
+    "title": "Cálculo Diferencial e Integral I",
+    "workload_hours": 90,
+    "credits": 6,
+    "description": "Funções de IR em IR. Derivadas. Integrais. Aplicações.",
+    "objectives": null,
+    "methodologies": null,
+    "evaluation_methods": [
+      "A critério do professor, desde que respeitado o §4º do Art. 65 do Regimento Geral da UFMG, que",
+      "determina que nenhuma avaliação parcial do aproveitamento poderá ter valor superior a 40 pontos."
+    ],
+    "basic_bibliography": [
+      "SIMMONS, G.F.",
+      "LEITHOLD, L.",
+      "ÁVILA, G.S.S.",
+      "APOSTOL, T.M.",
+      "SWOKOWSKI, E.W."
+    ],
+    "complementary_bibliography": null,
+    "topics": [
+      "Números reais",
+      "valor absoluto",
+      "desigualdades.",
+      "Números reais, valor absoluto, desigualdades.",
+      "Plano coordenado",
+      "retas no plano",
+      "perpendicularidade e paralelismo.",
+      "Plano coordenado, retas no plano, perpendicularidade e paralelismo.",
+      "Funções reais",
+      "equações e gráficos.",
+      "Funções reais, equações e gráficos.",
+      "Funções trigonométricas.",
+      "Limite e continuidade",
+      "conceito",
+      "definição e propriedades.",
+      "Limite e continuidade: conceito, definição e propriedades.",
+      "Derivadas",
+      "retas tangentes",
+      "coeficiente angular",
+      "definição de derivada"
+    ],
+    "keywords": [
+      "cálculo",
+      "funções",
+      "ed.",
+      "integrais",
+      "valor",
+      "volume",
+      "disciplina",
+      "plano",
+      "geometria",
+      "geometria analítica",
+      "são",
+      "aplicações",
+      "são paulo",
+      "derivadas",
+      "paulo"
+    ],
+    "subject_type": "PRACTICAL",
+    "knowledge_area": "MATHEMATICS",
+    "prerequisites": null,
+    "quality_score": 7,
+    "extraction_confidence": 0.9999999999999999,
+    "detailed_topics": [
+      "Números reais",
+      "valor absoluto",
+      "desigualdades.",
+      "Números reais, valor absoluto, desigualdades.",
+      "Plano coordenado",
+      "retas no plano",
+      "perpendicularidade e paralelismo.",
+      "Plano coordenado, retas no plano, perpendicularidade e paralelismo.",
+      "Funções reais",
+      "equações e gráficos.",
+      "Funções reais, equações e gráficos.",
+      "Funções trigonométricas.",
+      "Limite e continuidade",
+      "conceito",
+      "definição e propriedades.",
+      "Limite e continuidade: conceito, definição e propriedades.",
+      "Derivadas",
+      "retas tangentes",
+      "coeficiente angular",
+      "definição de derivada",
+      "diferenciais.",
+      "Derivadas: retas tangentes, coeficiente angular, definição de derivada, diferenciais.",
+      "Aplicações da derivada",
+      "velocidade",
+      "taxa de variação.",
+      "Aplicações da derivada; velocidade, taxa de variação.",
+      "Regras de derivação",
+      "regra da cadeia",
+      "funções implícitas",
+      "derivação implícita.",
+      "Regras de derivação, regra da cadeia, funções implícitas, derivação implícita.",
+      "Teorema do valor média",
+      "regra de L´Hospital.",
+      "Teorema do valor média, regra de L´Hospital.",
+      "Funções crescentes e decrescentes",
+      "máximos e mínimos",
+      "convexidade",
+      "esboço de gráficos de funções.",
+      "Funções crescentes e decrescentes, máximos e mínimos, convexidade, esboço de gráficos de funções.",
+      "Problemas de máximos e mínimos.",
+      "Funções exponenciais e logarítmicas",
+      "Funções trigonométricas inversas e funções hiperbólicas",
+      "Integrais indefinidas",
+      "integrais definidas e propriedades.",
+      "Integrais indefinidas, integrais definidas e propriedades.",
+      "Teorema do valor médio para integrais e teorema fundamental do Cálculo",
+      "Métodos de integração e aplicações",
+      "área",
+      "volume",
+      "Métodos de integração e aplicações: área, volume",
+      "Integrais impróprias"
+    ],
+    "program_content": [
+      {
+        "week": 1,
+        "content": "Números reais, valor absoluto, desigualdades.",
+        "topics": [
+          "Números reais",
+          "valor absoluto",
+          "desigualdades."
+        ]
+      },
+      {
+        "week": 2,
+        "content": "Plano coordenado, retas no plano, perpendicularidade e paralelismo.",
+        "topics": [
+          "Plano coordenado",
+          "retas no plano",
+          "perpendicularidade e paralelismo."
+        ]
+      },
+      {
+        "week": 3,
+        "content": "Funções reais, equações e gráficos.",
+        "topics": [
+          "Funções reais",
+          "equações e gráficos."
+        ]
+      },
+      {
+        "week": 4,
+        "content": "Funções trigonométricas.",
+        "topics": [
+          "Funções trigonométricas."
+        ]
+      },
+      {
+        "week": 5,
+        "content": "Limite e continuidade: conceito, definição e propriedades.",
+        "topics": [
+          "Limite e continuidade",
+          "conceito",
+          "definição e propriedades."
+        ]
+      },
+      {
+        "week": 6,
+        "content": "Derivadas: retas tangentes, coeficiente angular, definição de derivada, diferenciais.",
+        "topics": [
+          "Derivadas",
+          "retas tangentes",
+          "coeficiente angular",
+          "definição de derivada",
+          "diferenciais."
+        ]
+      },
+      {
+        "week": 7,
+        "content": "Aplicações da derivada; velocidade, taxa de variação.",
+        "topics": [
+          "Aplicações da derivada",
+          "velocidade",
+          "taxa de variação."
+        ]
+      },
+      {
+        "week": 8,
+        "content": "Regras de derivação, regra da cadeia, funções implícitas, derivação implícita.",
+        "topics": [
+          "Regras de derivação",
+          "regra da cadeia",
+          "funções implícitas",
+          "derivação implícita."
+        ]
+      },
+      {
+        "week": 9,
+        "content": "Teorema do valor média, regra de L´Hospital.",
+        "topics": [
+          "Teorema do valor média",
+          "regra de L´Hospital."
+        ]
+      },
+      {
+        "week": 10,
+        "content": "Funções crescentes e decrescentes, máximos e mínimos, convexidade, esboço de gráficos de funções.",
+        "topics": [
+          "Funções crescentes e decrescentes",
+          "máximos e mínimos",
+          "convexidade",
+          "esboço de gráficos de funções."
+        ]
+      },
+      {
+        "week": 11,
+        "content": "Problemas de máximos e mínimos.",
+        "topics": [
+          "Problemas de máximos e mínimos."
+        ]
+      },
+      {
+        "week": 12,
+        "content": "Funções exponenciais e logarítmicas",
+        "topics": [
+          "Funções exponenciais e logarítmicas"
+        ]
+      },
+      {
+        "week": 13,
+        "content": "Funções trigonométricas inversas e funções hiperbólicas",
+        "topics": [
+          "Funções trigonométricas inversas e funções hiperbólicas"
+        ]
+      },
+      {
+        "week": 14,
+        "content": "Integrais indefinidas, integrais definidas e propriedades.",
+        "topics": [
+          "Integrais indefinidas",
+          "integrais definidas e propriedades."
+        ]
+      },
+      {
+        "week": 15,
+        "content": "Teorema do valor médio para integrais e teorema fundamental do Cálculo",
+        "topics": [
+          "Teorema do valor médio para integrais e teorema fundamental do Cálculo"
+        ]
+      },
+      {
+        "week": 16,
+        "content": "Métodos de integração e aplicações: área, volume",
+        "topics": [
+          "Métodos de integração e aplicações",
+          "área",
+          "volume"
+        ]
+      },
+      {
+        "week": 17,
+        "content": "Integrais impróprias",
+        "topics": [
+          "Integrais impróprias"
+        ]
+      }
+    ]
+  },
+  "prerequisites": [
+    {
+      "id": "prereq-institution-1-course-3-subject-1-none",
+      "subject_id": "institution-1-course-3-subject-1",
+      "group_type": "NONE",
+      "minimum_credits": 0,
+      "minimum_completed_subjects": 0,
+      "subject_ids": [],
+      "logic": "NONE",
+      "priority": 0,
+      "confidence": 1
+    }
+  ],
+  "processing_date": "2025-05-28T15:40:42-03:00",
+  "processing_metrics": {
+    "processing_time_ms": 152,
+    "text_length_chars": 2931,
+    "sections_identified": 4,
+    "topics_extracted": 20,
+    "keywords_extracted": 15,
+    "bibliography_entries": 5,
+    "prerequisite_groups": 1,
+    "quality_score": 7,
+    "extraction_confidence": 0.9999999999999999,
+    "weeks_extracted": 17
+  },
+  "processor_version": "2.1.0",
+  "raw_content": "                                     Universidade Federal de Minas Gerais\n                                              Escola de Engenharia\n                           Colegiado do Curso de Graduação em Engenharia Mecânica\n                   Av. Antônio Carlos, 6627 – Pampulha, Belo Horizonte MG CEP: 31.270-901\n                                Fone: (31) 3499 5065        Fax: (31) 3443 3783\n\n\nDisciplina: Cálculo Diferencial e Integral I                                      Código: MAT 001\nDepartamento: Matemática                                   Unidade: Instituto de Ciências Exatas\nCarga Horária Total: 90                  No de créditos: 6                        Período: 1\nTeórica: 90                              Classificação: Obrigatória\nPrática: 0\n\nPré-requisitos:\n       Código:                                                 Disciplina:\n\n\nEmenta:\nFunções de IR em IR. Derivadas. Integrais. Aplicações.\n\nPrograma:\nSemana:                                               Assunto:\n   1      Números reais, valor absoluto, desigualdades.\n   2      Plano coordenado, retas no plano, perpendicularidade e paralelismo.\n   3      Funções reais, equações e gráficos.\n   4      Funções trigonométricas.\n   5      Limite e continuidade: conceito, definição e propriedades.\n   6      Derivadas: retas tangentes, coeficiente angular, definição de derivada, diferenciais.\n   7      Aplicações da derivada; velocidade, taxa de variação.\n   8      Regras de derivação, regra da cadeia, funções implícitas, derivação implícita.\n   9      Teorema do valor média, regra de L´Hospital.\n   10     Funções crescentes e decrescentes, máximos e mínimos, convexidade, esboço de gráficos de\n          funções.\n   11     Problemas de máximos e mínimos.\n   12     Funções exponenciais e logarítmicas\n   13     Funções trigonométricas inversas e funções hiperbólicas\n   14     Integrais indefinidas, integrais definidas e propriedades.\n   15     Teorema do valor médio para integrais e teorema fundamental do Cálculo\n   16     Métodos de integração e aplicações: área, volume\n   17     Integrais impróprias\n\nCritérios de Avaliação:\nA critério do professor, desde que respeitado o §4º do Art. 65 do Regimento Geral da UFMG, que\ndetermina que nenhuma avaliação parcial do aproveitamento poderá ter valor superior a 40 pontos.\n\nBibliografia:\nSIMMONS, G.F. – Cálculo com Geometria Analítica, volume 1 – Ed. McGraw-Hill, 1987. São Paulo.\nLEITHOLD, L. – Cálculo com Geometria Analítica – Ed. Harbra. São Paulo.\nÁVILA, G.S.S. – Cálculo I – Livros Técnicos e Científicos S/A e Ed. Universidade de Brasília.\nAPOSTOL, T.M. - Cálculo, volume 1, Ed. Reverté Ltda.\nLEWIS, K. – Cálculo e Álgebra Linear, vlumes 1 e 2 – Prentice Hall do Brasil.\nSWOKOWSKI, E.W. - Cálculo com Geometria Analítica, volume 1 – Ed. McGraw-Hill. São Paulo.\n\f",
+  "subject_content": {
+    "index": "institution-1-course-3-subject-1",
+    "subject_id": "institution-1-course-3-subject-1",
+    "institution": "institution-1",
+    "course_id": "course-3",
+    "title": "Cálculo Diferencial e Integral I",
+    "code": "subject-1",
+    "workload_hours": 90,
+    "credits": 6,
+    "description": "Funções de IR em IR. Derivadas. Integrais. Aplicações.",
+    "content_hash": "6907eb059eff159ceb66e31a45309c7acd7bd82b49acebcff95a1967efd6009a",
+    "subject_type": "PRACTICAL",
+    "knowledge_area": "MATHEMATICS",
+    "ipfs_link": "",
+    "creator": ""
+  }
+}

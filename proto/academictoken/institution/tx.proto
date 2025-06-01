@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package academictoken.institution;
+
+import "amino/amino.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "academictoken/institution/params.proto";
+
+option go_package = "academictoken/x/institution/types";
+
+// Msg defines the Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+  
+  // UpdateParams defines a (governance) operation for updating the module
+  // parameters. The authority defaults to the x/gov module account.
+  rpc UpdateParams        (MsgUpdateParams       ) returns (MsgUpdateParamsResponse       );
+  rpc RegisterInstitution (MsgRegisterInstitution) returns (MsgRegisterInstitutionResponse);
+  rpc UpdateInstitution   (MsgUpdateInstitution  ) returns (MsgUpdateInstitutionResponse  );
+}
+
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) =                                   "authority";
+  option           (amino.name) = "academictoken/x/institution/MsgUpdateParams";
+  
+  // authority is the address that controls the module (defaults to x/gov unless overwritten).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  
+  // params defines the module parameters to update.
+  
+  // NOTE: All parameters must be supplied.
+  Params params = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+message MsgUpdateParamsResponse {}
+
+message MsgRegisterInstitution {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string name    = 2;
+  string address = 3;
+}
+
+message MsgRegisterInstitutionResponse {
+  string index = 1;  // Return the generated institution ID
+}
+
+message MsgUpdateInstitution {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator      = 1;
+  string index        = 2;
+  string name         = 3;
+  string address      = 4;
+  string isAuthorized = 5;
+}
+
+message MsgUpdateInstitutionResponse {}

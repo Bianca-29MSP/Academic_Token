@@ -1,0 +1,13 @@
+syntax = "proto3";
+package academictoken.institution;
+
+option go_package = "academictoken/x/institution/types";
+
+message Institution {
+  
+  string index = 1; 
+  string address = 2; 
+  string name = 3; 
+  string isAuthorized = 4; 
+  string creator = 5;
+}

@@ -1,0 +1,74 @@
+Universidade Federal de Minas Gerais
+Escola de Engenharia
+Colegiado do Curso de Graduação em Engenharia Mecânica
+Av. Antônio Carlos, 6627 – Pampulha, Belo Horizonte MG CEP: 31.270-901
+Fone: (31) 3499 5065
+Fax: (31) 3443 3783
+
+Disciplina: Cálculo Diferencial e Integral I
+Código: MAT 001
+Departamento: Matemática
+Unidade: Instituto de Ciências Exatas
+Carga Horária Total: 90
+No de créditos: 6
+Período: 1
+Teórica: 90
+Classificação: Obrigatória
+Prática: 0
+Pré-requisitos:
+Código:
+
+Disciplina:
+
+Ementa:
+Funções de IR em IR. Derivadas. Integrais. Aplicações.
+Programa:
+Semana:
+Assunto:
+Números reais, valor absoluto, desigualdades.
+1
+Plano coordenado, retas no plano, perpendicularidade e paralelismo.
+2
+Funções reais, equações e gráficos.
+3
+Funções trigonométricas.
+4
+Limite e continuidade: conceito, definição e propriedades.
+5
+Derivadas: retas tangentes, coeficiente angular, definição de derivada, diferenciais.
+6
+Aplicações da derivada; velocidade, taxa de variação.
+7
+Regras de derivação, regra da cadeia, funções implícitas, derivação implícita.
+8
+Teorema do valor média, regra de L´Hospital.
+9
+Funções crescentes e decrescentes, máximos e mínimos, convexidade, esboço de gráficos de
+10
+funções.
+Problemas de máximos e mínimos.
+11
+Funções exponenciais e logarítmicas
+12
+Funções trigonométricas inversas e funções hiperbólicas
+13
+Integrais indefinidas, integrais definidas e propriedades.
+14
+Teorema do valor médio para integrais e teorema fundamental do Cálculo
+15
+Métodos de integração e aplicações: área, volume
+16
+Integrais impróprias
+17
+Critérios de Avaliação:
+A critério do professor, desde que respeitado o §4º do Art. 65 do Regimento Geral da UFMG, que
+determina que nenhuma avaliação parcial do aproveitamento poderá ter valor superior a 40 pontos.
+Bibliografia:
+SIMMONS, G.F. – Cálculo com Geometria Analítica, volume 1 – Ed. McGraw-Hill, 1987. São Paulo.
+LEITHOLD, L. – Cálculo com Geometria Analítica – Ed. Harbra. São Paulo.
+ÁVILA, G.S.S. – Cálculo I – Livros Técnicos e Científicos S/A e Ed. Universidade de Brasília.
+APOSTOL, T.M. - Cálculo, volume 1, Ed. Reverté Ltda.
+LEWIS, K. – Cálculo e Álgebra Linear, vlumes 1 e 2 – Prentice Hall do Brasil.
+SWOKOWSKI, E.W. - Cálculo com Geometria Analítica, volume 1 – Ed. McGraw-Hill. São Paulo.
+
+

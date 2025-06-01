@@ -1,0 +1,18 @@
+package keeper
+
+import (
+	"context"
+
+	"academictoken/x/tokendef/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+)
+
+func (k msgServer) UpdateTokenDefinition(goCtx context.Context, msg *types.MsgUpdateTokenDefinition) (*types.MsgUpdateTokenDefinitionResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// TODO: Handling the message
+	_ = ctx
+
+	return &types.MsgUpdateTokenDefinitionResponse{}, nil
+}

@@ -1,0 +1,51 @@
+{
+  "equivalence_contract": "academic14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9sva26tx",
+  "progress_contract": "academic1nc5tatafv6eyq7llkr2gv50ff9e22mnf70qgjlv737ktmt4eswrqqg0cfq", 
+  "degree_contract": "academic17p9rzwnnfxcjp32un9ug7yhhzgtkhvl9jfksztgw5uh69wac2pgscn3aqy",
+  "schedule_contract": "academic1ghd753shjuwexxywmgs4xz7x2q732vcnkm6h2pyv9s6ah3hylvrqy9uyq9",
+  "academic_nft_contract": "academic1eyfccmjm6732k7wp4p6gdjwhxjwsvje44j0hfx8nkgrm8fs7vqfsljrz85",
+  "admin_address": "academic1urs658n5ddln24g23gj27wr9y7rnurxfw6rcsc",
+  "chain_id": "academictoken",
+  "ipfs_gateway": "https://ipfs.io",
+  "integration_config": {
+    "nft_minting": {
+      "minter_address": "academic1urs658n5ddln24g23gj27wr9y7rnurxfw6rcsc",
+      "collection_name": "Academic Token NFTs",
+      "collection_symbol": "ATNFT"
+    },
+    "progress_tracking": {
+      "analytics_enabled": true,
+      "update_frequency": "daily",
+      "analytics_depth": "standard"
+    },
+    "schedule_generation": {
+      "max_subjects_per_semester": 6,
+      "recommendation_algorithm": "balanced"
+    },
+    "equivalence_analysis": {
+      "auto_approval_threshold": 85
+    }
+  },
+  "module_integration": {
+    "student_module": {
+      "calls": ["progress_contract", "academic_nft_contract"],
+      "description": "Manages student enrollment and progress updates"
+    },
+    "academic_nft_module": {
+      "calls": ["academic_nft_contract"],
+      "description": "Manages NFT minting for academic achievements"
+    },
+    "degree_module": {
+      "calls": ["degree_contract", "academic_nft_contract"],
+      "description": "Validates graduation requirements and mints diplomas"
+    },
+    "schedule_module": {
+      "calls": ["schedule_contract", "progress_contract"],
+      "description": "Generates academic schedule recommendations"
+    },
+    "equivalence_module": {
+      "calls": ["equivalence_contract"],
+      "description": "Analyzes subject equivalences between institutions"
+    }
+  }
+}

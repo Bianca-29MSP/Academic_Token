@@ -1,0 +1,60 @@
+/// Query messages
+#[cw_serde]
+#[derive(QueryResponses)]
+pub enum QueryMsg {
+    /// Get contract state
+    #[returns(StateResponse)]
+    GetState {},
+    
+    /// Get equivalence by ID
+    #[returns(EquivalenceResponse)]
+    GetEquivalence { equivalence_id: String },
+    
+    /// Find equivalence between two subjects
+    #[returns(EquivalenceResponse)]
+    FindEquivalence {
+        source_subject_id: String,
+        target_subject_id: String,
+    },
+    
+    /// List equivalences for an institution
+    #[returns(EquivalencesResponse)]
+    ListEquivalencesByInstitution {
+        institution_id: String,
+        limit: Option<u32>,
+        start_after: Option<String>,
+    },
+    
+    /// Get analysis result
+    #[returns(AnalysisResponse)]
+    GetAnalysisResult { analysis_id: String },
+    
+    /// Get transfer request
+    #[returns(TransferResponse)]
+    GetTransferRequest { transfer_id: String },
+    
+    /// List student transfers
+    #[returns(TransfersResponse)]
+    ListStudentTransfers {
+        student_id: String,
+        limit: Option<u32>,
+    },
+    
+    /// Check if subjects are equivalent
+    #[returns(EquivalenceCheckResponse)]
+    CheckEquivalence {
+        source_subject_id: String,
+        target_subject_id: String,
+        minimum_similarity: Option<u32>,
+    },
+    
+    /// Get equivalence statistics
+    #[returns(StatisticsResponse)]
+    GetStatistics {
+        institution_id: Option<String>,
+    },
+    
+    /// Debug: List all equivalence IDs
+    #[returns(Vec<String>)]
+    DebugEquivalences {},
+}

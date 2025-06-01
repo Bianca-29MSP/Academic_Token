@@ -1,0 +1,17 @@
+syntax = "proto3";
+package academictoken.tokendef;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "academictoken/tokendef/params.proto";
+
+option go_package = "academictoken/x/tokendef/types";
+
+// GenesisState defines the tokendef module's genesis state.
+message GenesisState {
+  // params defines all the parameters of the module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}

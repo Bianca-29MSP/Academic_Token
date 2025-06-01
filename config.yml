@@ -1,5 +1,11 @@
 version: 1
 validation: sovereign
+build:
+  main: "./cmd/academictokend"
+  binary: "academictokend"
+  exclude:
+    - "tools/**"
+    - "scripts/**"
 accounts: 
 - name: alice
   coins:

@@ -1,0 +1,133 @@
+package keeper
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	"academictoken/x/degree/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+)
+
+func (k msgServer) IssueDegree(goCtx context.Context, msg *types.MsgIssueDegree) (*types.MsgIssueDegreeResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// THIN WRAPPER: Basic validation, then delegate ALL logic to contracts
+	
+	// Validate degree request exists
+	degreeRequest, found := k.GetDegreeRequest(ctx, msg.DegreeRequestId)
+	if !found {
+		return nil, types.ErrDegreeRequestNotFound
+	}
+
+	// Get contract integration from student keeper (where it's centralized)
+	contractIntegration := k.studentKeeper.GetContractIntegration()
+	if contractIntegration == nil {
+		return nil, fmt.Errorf("contract integration not available")
+	}
+
+	// STEP 1: Call Degree Contract - ALL validation logic is in the contract
+	validationResult, err := contractIntegration.ValidateDegreeRequirements(ctx, types.DegreeValidationRequest{
+		StudentId:     degreeRequest.StudentId,
+		CurriculumId:  degreeRequest.CurriculumId,
+		InstitutionId: degreeRequest.InstitutionId,
+		FinalGPA:      msg.FinalGpa,
+		TotalCredits:  msg.TotalCredits,
+		Signatures:    msg.Signatures,
+		RequestedDate: time.Now().UTC().Format(time.RFC3339),
+	})
+	if err != nil {
+		return nil, fmt.Errorf("degree validation contract failed: %w", err)
+	}
+	if !validationResult.IsValid {
+		return nil, fmt.Errorf("degree validation failed: %s", validationResult.Message)
+	}
+
+	// STEP 2: Call Degree NFT Contract - ALL minting authorization is in the contract
+	nftResult, err := contractIntegration.AuthorizeDegreeNFTMinting(ctx, types.DegreeNFTMintingRequest{
+		StudentId:      degreeRequest.StudentId,
+		CurriculumId:   degreeRequest.CurriculumId,
+		InstitutionId:  degreeRequest.InstitutionId,
+		DegreeType:     validationResult.DegreeType,
+		FinalGPA:       msg.FinalGpa,
+		TotalCredits:   msg.TotalCredits,
+		ValidationData: validationResult,
+		IssueDate:      time.Now().UTC().Format(time.RFC3339),
+	})
+	if err != nil {
+		return nil, fmt.Errorf("degree NFT authorization failed: %w", err)
+	}
+	if !nftResult.Success {
+		return nil, fmt.Errorf("degree NFT authorization rejected: %s", nftResult.Message)
+	}
+
+	// STEP 3: Store degree record ONLY with contract-validated data
+	degreeId := k.generateDegreeId(ctx)
+	issueDate := time.Now().UTC().Format(time.RFC3339)
+	degree := types.Degree{
+		Index:             degreeId,
+		DegreeId:          degreeId,
+		Student:           degreeRequest.StudentId,
+		Institution:       degreeRequest.InstitutionId,
+		CourseId:          degreeRequest.CurriculumId,
+		CurriculumVersion: validationResult.CurriculumVersion,
+		IssueDate:         issueDate,
+		FinalGrade:        msg.FinalGpa,
+		Signatures:        msg.Signatures,
+		Status:            types.DegreeStatusIssued,
+		TotalCredits:      msg.TotalCredits,
+		NftTokenId:        nftResult.TokenId,
+		ValidationHash:    validationResult.ValidationHash,
+		IpfsLink:          nftResult.MetadataIPFSHash,
+	}
+
+	// Store the degree
+	k.SetDegree(ctx, degree)
+
+	// Update degree request status
+	degreeRequest.Status = types.DegreeRequestStatusIssued
+	k.SetDegreeRequest(ctx, degreeRequest)
+
+	// Emit event with contract validation results
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeDegreeIssued,
+			sdk.NewAttribute(types.AttributeKeyDegreeID, degreeId),
+			sdk.NewAttribute(types.AttributeKeyDegreeRequestID, msg.DegreeRequestId),
+			sdk.NewAttribute(types.AttributeKeyStudentID, degreeRequest.StudentId),
+			sdk.NewAttribute(types.AttributeKeyInstitutionID, degreeRequest.InstitutionId),
+			sdk.NewAttribute(types.AttributeKeyNFTTokenID, nftResult.TokenId),
+			sdk.NewAttribute(types.AttributeKeyIssueDate, issueDate),
+			sdk.NewAttribute(types.AttributeKeyGPA, msg.FinalGpa),
+			sdk.NewAttribute(types.AttributeKeyTotalCredits, fmt.Sprintf("%d", msg.TotalCredits)),
+			sdk.NewAttribute(types.AttributeKeyIPFSHash, nftResult.MetadataIPFSHash),
+			sdk.NewAttribute("contract_validated", "true"),
+		),
+	)
+
+	k.Logger().Info("Degree issued via contracts",
+		"degree_id", degreeId,
+		"student", degreeRequest.StudentId,
+		"nft_token_id", nftResult.TokenId,
+		"validation_hash", validationResult.ValidationHash,
+	)
+
+	return &types.MsgIssueDegreeResponse{
+		DegreeId:           degreeId,
+		NftTokenId:         nftResult.TokenId,
+		IpfsHash:           nftResult.MetadataIPFSHash,
+		IssueDate:          issueDate,
+		ValidationHash:     validationResult.ValidationHash,
+		ContractValidated:  true,
+	}, nil
+}
+
+// generateDegreeId generates a unique degree ID
+func (k msgServer) generateDegreeId(_ sdk.Context) string {
+	timestamp := time.Now().Unix()
+	return fmt.Sprintf("degree_%d", timestamp)
+}
+
+// NOTE: All complex validation logic has been moved to contracts.
+// This module now acts as a thin wrapper that validates inputs and delegates to contracts.

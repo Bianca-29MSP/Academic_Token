@@ -1,0 +1,180 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ScheduleRecommendation",
+  "description": "Schedule recommendation for a specific semester",
+  "type": "object",
+  "required": [
+    "algorithm_used",
+    "alternative_subjects",
+    "completion_percentage",
+    "confidence_score",
+    "difficulty_score",
+    "estimated_workload",
+    "generated_timestamp",
+    "notes",
+    "recommended_subjects",
+    "student_id",
+    "target_semester",
+    "total_credits"
+  ],
+  "properties": {
+    "algorithm_used": {
+      "$ref": "#/definitions/RecommendationAlgorithm"
+    },
+    "alternative_subjects": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/RecommendedSubject"
+      }
+    },
+    "completion_percentage": {
+      "type": "string"
+    },
+    "confidence_score": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0.0
+    },
+    "difficulty_score": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0.0
+    },
+    "estimated_workload": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0.0
+    },
+    "generated_timestamp": {
+      "type": "integer",
+      "format": "uint64",
+      "minimum": 0.0
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "recommended_subjects": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/RecommendedSubject"
+      }
+    },
+    "student_id": {
+      "type": "string"
+    },
+    "target_semester": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0.0
+    },
+    "total_credits": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0.0
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "Priority": {
+      "description": "Priority levels for subject recommendations",
+      "type": "string",
+      "enum": [
+        "critical",
+        "high",
+        "medium",
+        "low",
+        "optional"
+      ]
+    },
+    "RecommendationAlgorithm": {
+      "description": "Available recommendation algorithms",
+      "type": "string",
+      "enum": [
+        "basic",
+        "balanced",
+        "optimal_path",
+        "machine_learning"
+      ]
+    },
+    "RecommendationReason": {
+      "description": "Reasons for recommending a subject",
+      "type": "string",
+      "enum": [
+        "mandatory_for_graduation",
+        "prerequisite_for_future_subjects",
+        "optimal_sequencing",
+        "workload_balancing",
+        "student_preference",
+        "professor_availability",
+        "schedule_optimization",
+        "graduation_speed_optimization"
+      ]
+    },
+    "RecommendedSubject": {
+      "description": "Individual subject recommendation",
+      "type": "object",
+      "required": [
+        "alternative_semesters",
+        "credits",
+        "estimated_difficulty",
+        "estimated_workload",
+        "prerequisites_met",
+        "priority",
+        "recommendation_reason",
+        "schedule_conflicts",
+        "subject_id",
+        "title"
+      ],
+      "properties": {
+        "alternative_semesters": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "uint32",
+            "minimum": 0.0
+          }
+        },
+        "credits": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "estimated_difficulty": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "estimated_workload": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "prerequisites_met": {
+          "type": "boolean"
+        },
+        "priority": {
+          "$ref": "#/definitions/Priority"
+        },
+        "recommendation_reason": {
+          "$ref": "#/definitions/RecommendationReason"
+        },
+        "schedule_conflicts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "subject_id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

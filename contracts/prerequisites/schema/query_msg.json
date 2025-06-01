@@ -1,0 +1,165 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "QueryMsg",
+  "description": "Query messages",
+  "oneOf": [
+    {
+      "description": "Get prerequisites for a subject",
+      "type": "object",
+      "required": [
+        "get_prerequisites"
+      ],
+      "properties": {
+        "get_prerequisites": {
+          "type": "object",
+          "required": [
+            "subject_id"
+          ],
+          "properties": {
+            "subject_id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Get student record",
+      "type": "object",
+      "required": [
+        "get_student_record"
+      ],
+      "properties": {
+        "get_student_record": {
+          "type": "object",
+          "required": [
+            "student_id"
+          ],
+          "properties": {
+            "student_id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Check enrollment eligibility",
+      "type": "object",
+      "required": [
+        "check_eligibility"
+      ],
+      "properties": {
+        "check_eligibility": {
+          "type": "object",
+          "required": [
+            "student_id",
+            "subject_id"
+          ],
+          "properties": {
+            "student_id": {
+              "type": "string"
+            },
+            "subject_id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Get verification history",
+      "type": "object",
+      "required": [
+        "get_verification_history"
+      ],
+      "properties": {
+        "get_verification_history": {
+          "type": "object",
+          "required": [
+            "student_id"
+          ],
+          "properties": {
+            "limit": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "student_id": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Get contract state",
+      "type": "object",
+      "required": [
+        "get_state"
+      ],
+      "properties": {
+        "get_state": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Check if IPFS content is cached",
+      "type": "object",
+      "required": [
+        "get_ipfs_cache_status"
+      ],
+      "properties": {
+        "get_ipfs_cache_status": {
+          "type": "object",
+          "required": [
+            "ipfs_link"
+          ],
+          "properties": {
+            "ipfs_link": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Get cached IPFS content",
+      "type": "object",
+      "required": [
+        "get_cached_content"
+      ],
+      "properties": {
+        "get_cached_content": {
+          "type": "object",
+          "required": [
+            "ipfs_link"
+          ],
+          "properties": {
+            "ipfs_link": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  ]
+}

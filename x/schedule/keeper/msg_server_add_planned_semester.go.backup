@@ -1,0 +1,26 @@
+package keeper
+
+import (
+	"context"
+
+	"academictoken/x/schedule/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+)
+
+func (k msgServer) AddPlannedSemester(goCtx context.Context, msg *types.MsgAddPlannedSemester) (*types.MsgAddPlannedSemesterResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Validate message
+	if err := msg.ValidateBasic(); err != nil {
+		return nil, err
+	}
+
+	// Add planned semester using the Keeper method
+	err := k.Keeper.AddPlannedSemester(ctx, msg)
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.MsgAddPlannedSemesterResponse{}, nil
+}

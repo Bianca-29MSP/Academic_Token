@@ -1,0 +1,76 @@
+syntax = "proto3";
+package academictoken.curriculum;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "academictoken/curriculum/params.proto";
+import "academictoken/curriculum/curriculum_tree.proto"; 
+
+option go_package = "academictoken/x/curriculum/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/academictoken/curriculum/params";
+  }
+
+  // Queries a list of CurriculumTree items.
+  rpc CurriculumTreeAll(QueryAllCurriculumTreeRequest) returns (QueryAllCurriculumTreeResponse) {
+    option (google.api.http).get = "/academictoken/curriculum/curriculum_tree";
+  }
+
+  // Queries a CurriculumTree by index.
+  rpc CurriculumTree(QueryGetCurriculumTreeRequest) returns (QueryGetCurriculumTreeResponse) {
+    option (google.api.http).get = "/academictoken/curriculum/curriculum_tree/{index}";
+  }
+
+  // Queries curriculum trees by course
+  rpc CurriculumTreesByCourse(QueryCurriculumTreesByCourseRequest) returns (QueryCurriculumTreesByCourseResponse) {
+    option (google.api.http).get = "/academictoken/curriculum/curriculum_tree/course/{courseId}";
+  }
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+// QueryAllCurriculumTreeRequest is request type for the Query/CurriculumTreeAll RPC method.
+message QueryAllCurriculumTreeRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAllCurriculumTreeResponse is response type for the Query/CurriculumTreeAll RPC method.
+message QueryAllCurriculumTreeResponse {
+  repeated CurriculumTree curriculumTree = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetCurriculumTreeRequest is request type for the Query/CurriculumTree RPC method.
+message QueryGetCurriculumTreeRequest {
+  string index = 1;
+}
+
+// QueryGetCurriculumTreeResponse is response type for the Query/CurriculumTree RPC method.
+message QueryGetCurriculumTreeResponse {
+  CurriculumTree curriculumTree = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryCurriculumTreesByCourseRequest is request type for getting curriculum trees by course
+message QueryCurriculumTreesByCourseRequest {
+  string courseId = 1;
+}
+
+// QueryCurriculumTreesByCourseResponse is response type for getting curriculum trees by course
+message QueryCurriculumTreesByCourseResponse {
+  repeated CurriculumTree curriculumTrees = 1 [(gogoproto.nullable) = false];
+}

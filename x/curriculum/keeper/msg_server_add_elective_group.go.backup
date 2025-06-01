@@ -1,0 +1,48 @@
+package keeper
+
+import (
+	"context"
+	"strconv"
+
+	errorsmod "cosmossdk.io/errors"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+
+	"academictoken/x/curriculum/types"
+)
+
+func (k msgServer) AddElectiveGroup(goCtx context.Context, req *types.MsgAddElectiveGroup) (*types.MsgAddElectiveGroupResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Validate creator
+	_, err := sdk.AccAddressFromBech32(req.Creator)
+	if err != nil {
+		return nil, errorsmod.Wrap(sdkerrors.ErrInvalidAddress, "invalid creator address")
+	}
+
+	electiveGroup := types.ElectiveGroup{
+		Name:                req.Name,
+		Description:         req.Description,
+		SubjectIds:          req.SubjectIds,
+		MinSubjectsRequired: strconv.FormatUint(req.MinSubjectsRequired, 10),
+		CreditsRequired:     strconv.FormatUint(req.CreditsRequired, 10),
+		KnowledgeArea:       req.KnowledgeArea,
+	}
+
+	err = k.Keeper.AddElectiveGroupToCurriculum(goCtx, req.CurriculumIndex, electiveGroup)
+	if err != nil {
+		return nil, err
+	}
+
+	// Emit simple event
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			"elective_group_added",
+			sdk.NewAttribute("curriculum_index", req.CurriculumIndex),
+			sdk.NewAttribute("group_name", req.Name),
+			sdk.NewAttribute("creator", req.Creator),
+		),
+	)
+
+	return &types.MsgAddElectiveGroupResponse{}, nil
+}

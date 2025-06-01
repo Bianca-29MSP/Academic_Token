@@ -1,0 +1,234 @@
+package keeper
+
+import (
+	"context"
+
+	"academictoken/x/academicnft/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+)
+
+func (k msgServer) MintSubjectToken(goCtx context.Context, msg *types.MsgMintSubjectToken) (*types.MsgMintSubjectTokenResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// PASSIVE MODULE: Only mint when authorized by contracts
+	// This module does NOT implement business logic - it's purely passive
+	
+	// STEP 1: Check if this is a passive mode operation
+	extMsg, isPassive := types.ConvertToExtended(msg, ctx)
+	
+	// STEP 2: Validate passive mode operation
+	if err := k.ValidatePassiveModeOperation(ctx, "mint_subject_token", msg.Creator); err != nil {
+		return nil, err
+	}
+	
+	// STEP 3: Strict authorization check - ONLY contracts can mint
+	if !k.isAuthorizedContractCall(ctx, msg.Creator) {
+		return nil, types.ErrUnauthorizedMinting
+	}
+
+	// STEP 4: Handle passive mode authorization
+	var subjectId, authHash string
+	if isPassive && extMsg != nil {
+		// Use extended message data
+		subjectId = extMsg.SubjectId
+		authHash = extMsg.ContractAuthorizationHash
+		
+		// Validate contract authorization
+		if err := types.ValidateContractAuthorization(extMsg); err != nil {
+			return nil, err
+		}
+		
+		// Verify cryptographic authorization
+		if !k.verifyContractAuthorizationExtended(ctx, extMsg) {
+			return nil, types.ErrInvalidContractAuthorization
+		}
+	} else {
+		// Check if direct minting is allowed
+		params := k.GetParams(ctx)
+		if !params.AllowDirectMinting {
+			return nil, types.ErrContractCallRequired
+		}
+		
+		k.Logger().Warn("Direct minting allowed for development", 
+			"creator", msg.Creator,
+			"allow_direct_minting", params.AllowDirectMinting,
+		)
+	}
+
+	// STEP 5: Basic existence checks (no complex validation - contracts did that)
+	if k.tokenDefKeeper != nil {
+		tokenDef, found := k.tokenDefKeeper.GetTokenDefinitionByIndex(ctx, msg.TokenDefId)
+		if !found {
+			return nil, types.ErrInvalidTokenDef
+		}
+		// Simple consistency check - subject IDs must match (if provided)
+		if subjectId != "" && tokenDef.SubjectId != subjectId {
+			return nil, types.ErrTokenDefMismatch
+		}
+	}
+
+	// STEP 6: Generate unique token instance ID
+	tokenInstanceId := k.GenerateTokenInstanceID(ctx)
+
+	// STEP 7: Create base token instance with contract-provided data
+	tokenInstance := types.SubjectTokenInstance{
+		Index:              tokenInstanceId,
+		TokenDefId:         msg.TokenDefId,
+		Student:            msg.Student,
+		CompletionDate:     msg.CompletionDate,
+		Grade:              msg.Grade,
+		IssuerInstitution:  msg.IssuerInstitution,
+		Semester:           msg.Semester,
+		ProfessorSignature: msg.ProfessorSignature,
+	}
+
+	// STEP 8: Prevent duplicates
+	if k.HasSubjectTokenInstance(ctx, tokenInstanceId) {
+		return nil, types.ErrDuplicateTokenInstance
+	}
+
+	// STEP 9: Store token instance (contract-authorized)
+	k.SetSubjectTokenInstance(ctx, tokenInstance)
+
+	// STEP 10: Record passive operation for audit trail
+	operationDetails := map[string]string{
+		"token_instance_id":          tokenInstanceId,
+		"token_def_id":              msg.TokenDefId,
+		"student":                   msg.Student,
+		"subject_id":                subjectId,
+		"issuer_institution":        msg.IssuerInstitution,
+		"grade":                     msg.Grade,
+		"semester":                  msg.Semester,
+		"contract_authorized":       getBoolString(isPassive),
+		"authorization_hash":        authHash,
+		"authorized_by":             msg.Creator,
+		"passive_mode":              getBoolString(isPassive),
+	}
+	
+	k.RecordPassiveOperation(ctx, "mint_subject_token", operationDetails)
+
+	// STEP 11: Emit detailed event indicating contract authorization
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			"subject_token_minted",
+			sdk.NewAttribute("token_instance_id", tokenInstanceId),
+			sdk.NewAttribute("token_def_id", msg.TokenDefId),
+			sdk.NewAttribute("student", msg.Student),
+			sdk.NewAttribute("subject_id", subjectId),
+			sdk.NewAttribute("issuer_institution", msg.IssuerInstitution),
+			sdk.NewAttribute("grade", msg.Grade),
+			sdk.NewAttribute("semester", msg.Semester),
+			sdk.NewAttribute("contract_authorized", getBoolString(isPassive)),
+			sdk.NewAttribute("authorization_hash", authHash),
+			sdk.NewAttribute("passive_execution", "true"),
+			sdk.NewAttribute("authorized_by", msg.Creator),
+		),
+	)
+
+	k.Logger().Info("Subject token minted via contract authorization (passive)",
+		"token_id", tokenInstanceId,
+		"student", msg.Student,
+		"subject_id", subjectId,
+		"authorization_hash", authHash,
+		"authorized_by", msg.Creator,
+		"passive_mode", isPassive,
+	)
+
+	// STEP 12: Return response with passive mode indicators
+	return &types.MsgMintSubjectTokenResponse{
+		TokenInstanceId: tokenInstanceId,
+	}, nil
+}
+
+// verifyContractAuthorizationExtended verifies authorization for extended messages
+func (k Keeper) verifyContractAuthorizationExtended(ctx sdk.Context, extMsg *types.ExtendedMsgMintSubjectToken) bool {
+	// STEP 1: Basic validation
+	if !extMsg.IsContractAuthorized() {
+		k.Logger().Error("Extended message missing contract authorization")
+		return false
+	}
+	
+	// STEP 2: Construct authorization data
+	authData := k.constructContractAuthorizationDataExtended(extMsg)
+	
+	// STEP 3: Calculate expected hash
+	expectedHash := k.calculateContractAuthorizationHash(authData)
+	
+	// STEP 4: Compare hashes
+	isValid := expectedHash == extMsg.ContractAuthorizationHash
+	
+	if isValid {
+		k.Logger().Info("Extended contract authorization verified successfully",
+			"token_def_id", extMsg.TokenDefId,
+			"student", extMsg.Student,
+			"subject_id", extMsg.SubjectId,
+			"authorization_hash", extMsg.ContractAuthorizationHash,
+		)
+	} else {
+		k.Logger().Error("Extended contract authorization verification failed",
+			"token_def_id", extMsg.TokenDefId,
+			"student", extMsg.Student,
+			"subject_id", extMsg.SubjectId,
+			"provided_hash", extMsg.ContractAuthorizationHash,
+			"expected_hash", expectedHash,
+		)
+	}
+	
+	return isValid
+}
+
+// constructContractAuthorizationDataExtended creates auth data for extended messages
+func (k Keeper) constructContractAuthorizationDataExtended(extMsg *types.ExtendedMsgMintSubjectToken) string {
+	// Create deterministic string for extended message
+	return k.constructContractAuthorizationDataFromFields(
+		extMsg.TokenDefId,
+		extMsg.Student,
+		extMsg.SubjectId,
+		extMsg.CompletionDate,
+		extMsg.Grade,
+		extMsg.IssuerInstitution,
+		extMsg.Semester,
+		extMsg.Creator,
+	)
+}
+
+// constructContractAuthorizationDataFromFields creates auth data from individual fields
+func (k Keeper) constructContractAuthorizationDataFromFields(
+	tokenDefId, student, subjectId, completionDate, grade, issuerInstitution, semester, creator string,
+) string {
+	// Create deterministic string representation
+	return k.constructContractAuthorizationData(&types.MsgMintSubjectToken{
+		Creator:           creator,
+		TokenDefId:        tokenDefId,
+		Student:           student,
+		CompletionDate:    completionDate,
+		Grade:             grade,
+		IssuerInstitution: issuerInstitution,
+		Semester:          semester,
+	})
+}
+
+// getBoolString converts boolean to string
+func getBoolString(b bool) string {
+	if b {
+		return "true"
+	}
+	return "false"
+}
+
+// GetExtendedMintResponse creates an extended response with passive mode information
+func (k msgServer) GetExtendedMintResponse(
+	tokenInstanceId string,
+	contractAuthorized bool,
+	authorizationHash string,
+	subjectId string,
+) *types.ExtendedMsgMintSubjectTokenResponse {
+	return &types.ExtendedMsgMintSubjectTokenResponse{
+		TokenInstanceId:    tokenInstanceId,
+		ContractAuthorized: contractAuthorized,
+		AuthorizationHash:  authorizationHash,
+		PassiveExecution:   true,
+		SubjectId:          subjectId,
+	}
+}

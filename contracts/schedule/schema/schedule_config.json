@@ -1,0 +1,117 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ScheduleConfig",
+  "description": "Configuration parameters for schedule generation",
+  "type": "object",
+  "required": [
+    "default_preferences",
+    "max_subjects_per_semester",
+    "optimization_weights",
+    "recommendation_algorithm"
+  ],
+  "properties": {
+    "default_preferences": {
+      "$ref": "#/definitions/DefaultSchedulePreferences"
+    },
+    "max_subjects_per_semester": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0.0
+    },
+    "optimization_weights": {
+      "$ref": "#/definitions/OptimizationWeights"
+    },
+    "recommendation_algorithm": {
+      "$ref": "#/definitions/RecommendationAlgorithm"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "DefaultSchedulePreferences": {
+      "description": "Default preferences for new students",
+      "type": "object",
+      "required": [
+        "balance_theory_practice",
+        "max_subjects_per_semester",
+        "prefer_prerequisites_early",
+        "study_intensity"
+      ],
+      "properties": {
+        "balance_theory_practice": {
+          "type": "boolean"
+        },
+        "max_subjects_per_semester": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "prefer_prerequisites_early": {
+          "type": "boolean"
+        },
+        "study_intensity": {
+          "$ref": "#/definitions/StudyIntensity"
+        }
+      },
+      "additionalProperties": false
+    },
+    "OptimizationWeights": {
+      "description": "Weights for optimization criteria",
+      "type": "object",
+      "required": [
+        "difficulty_distribution",
+        "graduation_speed",
+        "student_preferences",
+        "subject_availability",
+        "workload_balance"
+      ],
+      "properties": {
+        "difficulty_distribution": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "graduation_speed": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "student_preferences": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "subject_availability": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "workload_balance": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        }
+      },
+      "additionalProperties": false
+    },
+    "RecommendationAlgorithm": {
+      "description": "Available recommendation algorithms",
+      "type": "string",
+      "enum": [
+        "basic",
+        "balanced",
+        "optimal_path",
+        "machine_learning"
+      ]
+    },
+    "StudyIntensity": {
+      "description": "Study intensity levels",
+      "type": "string",
+      "enum": [
+        "light",
+        "moderate",
+        "intensive",
+        "maximum"
+      ]
+    }
+  }
+}

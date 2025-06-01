@@ -1,0 +1,15 @@
+syntax = "proto3";
+package academictoken.curriculum;
+
+option go_package = "academictoken/x/curriculum/types";
+
+message ElectiveGroup {
+  
+  string groupId = 1; 
+  string name = 2; 
+  string description = 3; 
+  repeated string subjectIds = 4; 
+  string minSubjectsRequired = 5; 
+  string creditsRequired = 6; 
+  string knowledgeArea = 7; 
+}

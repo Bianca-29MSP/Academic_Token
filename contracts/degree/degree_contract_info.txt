@@ -1,0 +1,3 @@
+CODE_ID=5
+CONTRACT_ADDR=academic1ufs3tlq4umljk0qfe8k5ya0x6hpavn897u2cnf9k0en9jr7qarqqj7temq
+ADMIN=academic1kxc8unwj9zrtsvvtu0pys34he5ht5x08t35wln

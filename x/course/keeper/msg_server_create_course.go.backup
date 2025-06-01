@@ -1,0 +1,55 @@
+package keeper
+
+import (
+	"context"
+
+	"academictoken/x/course/types"
+
+	errorsmod "cosmossdk.io/errors"
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+)
+
+func (k msgServer) CreateCourse(goCtx context.Context, req *types.MsgCreateCourse) (*types.MsgCreateCourseResponse, error) {
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Check if creator can create courses for this institution
+	if !k.CanCreateCourse(ctx, req.Creator, req.Institution) {
+		return nil, errorsmod.Wrapf(sdkerrors.ErrUnauthorized,
+			"creator %s is not authorized to create courses for institution %s",
+			req.Creator, req.Institution)
+	}
+
+	// Generate new course index
+	courseIndex := k.GetNextCourseIndex(ctx)
+
+	// Create course object
+	course := types.Course{
+		Index:        courseIndex,
+		Institution:  req.Institution,
+		Name:         req.Name,
+		Code:         req.Code,
+		Description:  req.Description,
+		TotalCredits: req.TotalCredits,
+		DegreeLevel:  req.DegreeLevel,
+	}
+
+	// Store the course
+	if err := k.SetCourse(ctx, course); err != nil {
+		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "failed to create course: %s", err.Error())
+	}
+
+	// Emit event
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeCourseCreated,
+			sdk.NewAttribute(types.AttributeKeyCreator, req.Creator),
+			sdk.NewAttribute(types.AttributeKeyCourseIndex, courseIndex),
+			sdk.NewAttribute(types.AttributeKeyInstitution, req.Institution),
+			sdk.NewAttribute(types.AttributeKeyCourseName, req.Name),
+		),
+	)
+
+	return &types.MsgCreateCourseResponse{}, nil
+}

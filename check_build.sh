@@ -1,0 +1,3 @@
+#!/bin/bash
+cd /Users/biancamsp/Desktop/Academic_Token/academictoken/academictoken
+go build ./...

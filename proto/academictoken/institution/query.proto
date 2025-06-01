@@ -1,0 +1,91 @@
+syntax = "proto3";
+package academictoken.institution;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "academictoken/institution/params.proto";
+import "academictoken/institution/institution.proto";
+
+option go_package = "academictoken/x/institution/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/academictoken/institution/params";
+  }
+  
+  // Queries a list of Institution items.
+  rpc InstitutionAll(QueryAllInstitutionRequest) returns (QueryAllInstitutionResponse) {
+    option (google.api.http).get = "/academictoken/institution/institution";
+  }
+  
+  // Queries a Institution by index.
+  rpc Institution(QueryGetInstitutionRequest) returns (QueryGetInstitutionResponse) {
+    option (google.api.http).get = "/academictoken/institution/institution/{index}";
+  }
+  
+  // Queries authorized institutions only.
+  rpc AuthorizedInstitutions(QueryAuthorizedInstitutionsRequest) returns (QueryAuthorizedInstitutionsResponse) {
+    option (google.api.http).get = "/academictoken/institution/authorized";
+  }
+  
+  // Queries institution count.
+  rpc InstitutionCount(QueryInstitutionCountRequest) returns (QueryInstitutionCountResponse) {
+    option (google.api.http).get = "/academictoken/institution/count";
+  }
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+// QueryGetInstitutionRequest is request type for the Query/Institution RPC method.
+message QueryGetInstitutionRequest {
+  string index = 1;
+}
+
+// QueryGetInstitutionResponse is response type for the Query/Institution RPC method.
+message QueryGetInstitutionResponse {
+  Institution institution = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryAllInstitutionRequest is request type for the Query/InstitutionAll RPC method.
+message QueryAllInstitutionRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAllInstitutionResponse is response type for the Query/InstitutionAll RPC method.
+message QueryAllInstitutionResponse {
+  repeated Institution institution = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryAuthorizedInstitutionsRequest is request type for the Query/AuthorizedInstitutions RPC method.
+message QueryAuthorizedInstitutionsRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAuthorizedInstitutionsResponse is response type for the Query/AuthorizedInstitutions RPC method.
+message QueryAuthorizedInstitutionsResponse {
+  repeated Institution institution = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryInstitutionCountRequest is request type for the Query/InstitutionCount RPC method.
+message QueryInstitutionCountRequest {}
+
+// QueryInstitutionCountResponse is response type for the Query/InstitutionCount RPC method.
+message QueryInstitutionCountResponse {
+  uint64 count = 1;
+}

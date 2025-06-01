@@ -1,0 +1,115 @@
+package keeper
+
+import (
+	"context"
+	"fmt"
+
+	"academictoken/x/tokendef/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+)
+
+func (k msgServer) CreateTokenDefinition(goCtx context.Context, msg *types.MsgCreateTokenDefinition) (*types.MsgCreateTokenDefinitionResponse, error) {
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// Validate subject exists
+	if !k.subjectKeeper.HasSubject(ctx, msg.SubjectId) {
+		return nil, fmt.Errorf("subject %s does not exist", msg.SubjectId)
+	}
+
+	// Get subject details to extract institution and course information
+	subject, found := k.subjectKeeper.GetSubject(ctx, msg.SubjectId)
+	if !found {
+		return nil, fmt.Errorf("subject %s not found", msg.SubjectId)
+	}
+
+	// Validate institution is authorized
+	if !k.institutionKeeper.IsInstitutionAuthorized(ctx, subject.Institution) {
+		return nil, fmt.Errorf("institution %s is not authorized", subject.Institution)
+	}
+
+	// Validate course exists
+	if !k.courseKeeper.HasCourse(ctx, subject.CourseId) {
+		return nil, fmt.Errorf("course %s does not exist", subject.CourseId)
+	}
+
+	// Check if token definition already exists for this subject
+	existingTokenDefs := k.GetTokenDefinitionsBySubject(ctx, msg.SubjectId)
+	if len(existingTokenDefs) > 0 {
+		return nil, fmt.Errorf("token definition already exists for subject %s", msg.SubjectId)
+	}
+
+	// Generate new token definition index
+	index := k.GetNextTokenDefinitionIndex(ctx)
+
+	// Convert TokenAttributeInput to TokenAttribute for storage
+	var attributes []*types.TokenAttribute
+	for _, inputAttr := range msg.Attributes {
+		attributes = append(attributes, &types.TokenAttribute{
+			TraitType:   inputAttr.TraitType,
+			DisplayType: inputAttr.DisplayType,
+			IsDynamic:   inputAttr.IsDynamic,
+		})
+	}
+
+	// Create TokenDefinition
+	tokenDef := &types.TokenDefinition{
+		Index:          index,
+		TokenDefId:     index, // Using same as index for now
+		SubjectId:      msg.SubjectId,
+		InstitutionId:  subject.Institution,
+		CourseId:       subject.CourseId,
+		TokenName:      msg.TokenName,
+		TokenSymbol:    msg.TokenSymbol,
+		TokenType:      msg.TokenType,
+		IsTransferable: msg.IsTransferable,
+		IsBurnable:     msg.IsBurnable,
+		MaxSupply:      msg.MaxSupply,
+		Metadata: &types.TokenMetadata{
+			Description: msg.Description,
+			ImageUri:    msg.ImageUri,
+			Attributes:  attributes,
+		},
+		Creator:   msg.Creator,
+		CreatedAt: ctx.BlockTime().UTC().Format("2006-01-02T15:04:05Z"),
+	}
+
+	// TODO: Implement hybrid storage with IPFS later
+	// For now, just store the basic token definition
+	k.SetTokenDefinition(ctx, *tokenDef)
+
+	// Index by subject
+	err := k.SetTokenDefinitionBySubjectIndex(ctx, msg.SubjectId, index)
+	if err != nil {
+		return nil, fmt.Errorf("error creating subject index: %v", err)
+	}
+
+	// Index by course
+	err = k.SetTokenDefinitionByCourseIndex(ctx, subject.CourseId, index)
+	if err != nil {
+		return nil, fmt.Errorf("error creating course index: %v", err)
+	}
+
+	// Index by institution
+	err = k.SetTokenDefinitionByInstitutionIndex(ctx, subject.Institution, index)
+	if err != nil {
+		return nil, fmt.Errorf("error creating institution index: %v", err)
+	}
+
+	// Emit event
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			"token_definition_created",
+			sdk.NewAttribute("token_def_id", tokenDef.TokenDefId),
+			sdk.NewAttribute("subject_id", tokenDef.SubjectId),
+			sdk.NewAttribute("institution_id", tokenDef.InstitutionId),
+			sdk.NewAttribute("course_id", tokenDef.CourseId),
+			sdk.NewAttribute("creator", msg.Creator),
+			sdk.NewAttribute("index", index),
+		),
+	)
+
+	return &types.MsgCreateTokenDefinitionResponse{
+		Index: index,
+	}, nil
+}

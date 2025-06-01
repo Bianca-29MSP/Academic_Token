@@ -1,0 +1,298 @@
+syntax = "proto3";
+package academictoken.equivalence;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "academictoken/equivalence/params.proto";
+import "academictoken/equivalence/subject_equivalence.proto";
+
+option go_package = "academictoken/x/equivalence/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/academictoken/equivalence/params";
+  }
+
+  // ListEquivalences queries all subject equivalences with pagination
+  rpc ListEquivalences(QueryListEquivalencesRequest) returns (QueryListEquivalencesResponse) {
+    option (google.api.http).get = "/academictoken/equivalence/equivalences";
+  }
+
+  // GetEquivalence queries a specific subject equivalence by index
+  rpc GetEquivalence(QueryGetEquivalenceRequest) returns (QueryGetEquivalenceResponse) {
+    option (google.api.http).get = "/academictoken/equivalence/equivalences/{index}";
+  }
+
+  // GetEquivalencesBySourceSubject queries equivalences by source subject ID
+  rpc GetEquivalencesBySourceSubject(QueryGetEquivalencesBySourceSubjectRequest) returns (QueryGetEquivalencesBySourceSubjectResponse) {
+    option (google.api.http).get = "/academictoken/equivalence/equivalences/source/{source_subject_id}";
+  }
+
+  // GetEquivalencesByTargetSubject queries equivalences by target subject ID  
+  rpc GetEquivalencesByTargetSubject(QueryGetEquivalencesByTargetSubjectRequest) returns (QueryGetEquivalencesByTargetSubjectResponse) {
+    option (google.api.http).get = "/academictoken/equivalence/equivalences/target/{target_subject_id}";
+  }
+
+  // GetEquivalencesByInstitution queries equivalences by target institution
+  rpc GetEquivalencesByInstitution(QueryGetEquivalencesByInstitutionRequest) returns (QueryGetEquivalencesByInstitutionResponse) {
+    option (google.api.http).get = "/academictoken/equivalence/equivalences/institution/{institution_id}";
+  }
+
+  // CheckEquivalenceStatus checks if two subjects have an established equivalence
+  rpc CheckEquivalenceStatus(QueryCheckEquivalenceStatusRequest) returns (QueryCheckEquivalenceStatusResponse) {
+    option (google.api.http).get = "/academictoken/equivalence/check/{source_subject_id}/{target_subject_id}";
+  }
+
+  // GetPendingAnalysis queries equivalences awaiting contract analysis
+  rpc GetPendingAnalysis(QueryGetPendingAnalysisRequest) returns (QueryGetPendingAnalysisResponse) {
+    option (google.api.http).get = "/academictoken/equivalence/equivalences/pending-analysis";
+  }
+
+  // GetApprovedEquivalences queries equivalences with approved status (by contract)
+  rpc GetApprovedEquivalences(QueryGetApprovedEquivalencesRequest) returns (QueryGetApprovedEquivalencesResponse) {
+    option (google.api.http).get = "/academictoken/equivalence/equivalences/approved";
+  }
+
+  // GetRejectedEquivalences queries equivalences rejected by contract analysis
+  rpc GetRejectedEquivalences(QueryGetRejectedEquivalencesRequest) returns (QueryGetRejectedEquivalencesResponse) {
+    option (google.api.http).get = "/academictoken/equivalence/equivalences/rejected";
+  }
+
+  // GetEquivalencesByContract queries equivalences analyzed by a specific contract
+  rpc GetEquivalencesByContract(QueryGetEquivalencesByContractRequest) returns (QueryGetEquivalencesByContractResponse) {
+    option (google.api.http).get = "/academictoken/equivalence/equivalences/contract/{contract_address}";
+  }
+
+  // GetEquivalencesByContractVersion queries equivalences by contract version
+  rpc GetEquivalencesByContractVersion(QueryGetEquivalencesByContractVersionRequest) returns (QueryGetEquivalencesByContractVersionResponse) {
+    option (google.api.http).get = "/academictoken/equivalence/equivalences/contract-version/{contract_version}";
+  }
+
+  // GetEquivalenceHistory queries the analysis history of equivalence requests for a subject
+  rpc GetEquivalenceHistory(QueryGetEquivalenceHistoryRequest) returns (QueryGetEquivalenceHistoryResponse) {
+    option (google.api.http).get = "/academictoken/equivalence/history/{subject_id}";
+  }
+
+  // GetEquivalenceStats queries statistics about automated equivalence analysis
+  rpc GetEquivalenceStats(QueryGetEquivalenceStatsRequest) returns (QueryGetEquivalenceStatsResponse) {
+    option (google.api.http).get = "/academictoken/equivalence/stats";
+  }
+
+  // GetAnalysisMetadata queries detailed analysis metadata for an equivalence
+  rpc GetAnalysisMetadata(QueryGetAnalysisMetadataRequest) returns (QueryGetAnalysisMetadataResponse) {
+    option (google.api.http).get = "/academictoken/equivalence/analysis/{equivalence_id}";
+  }
+
+  // VerifyAnalysisIntegrity verifies the integrity of an equivalence analysis
+  rpc VerifyAnalysisIntegrity(QueryVerifyAnalysisIntegrityRequest) returns (QueryVerifyAnalysisIntegrityResponse) {
+    option (google.api.http).get = "/academictoken/equivalence/verify/{equivalence_id}";
+  }
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+// QueryListEquivalencesRequest is request type for the Query/ListEquivalences RPC method.
+message QueryListEquivalencesRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  string status_filter = 2; // Optional filter by status
+}
+
+// QueryListEquivalencesResponse is response type for the Query/ListEquivalences RPC method.
+message QueryListEquivalencesResponse {
+  repeated SubjectEquivalence equivalences = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetEquivalenceRequest is request type for the Query/GetEquivalence RPC method.
+message QueryGetEquivalenceRequest {
+  string index = 1;
+}
+
+// QueryGetEquivalenceResponse is response type for the Query/GetEquivalence RPC method.
+message QueryGetEquivalenceResponse {
+  SubjectEquivalence equivalence = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryGetEquivalencesBySourceSubjectRequest is request type for the Query/GetEquivalencesBySourceSubject RPC method.
+message QueryGetEquivalencesBySourceSubjectRequest {
+  string source_subject_id = 1;
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
+  string status_filter = 3; // Optional filter by status
+}
+
+// QueryGetEquivalencesBySourceSubjectResponse is response type for the Query/GetEquivalencesBySourceSubject RPC method.
+message QueryGetEquivalencesBySourceSubjectResponse {
+  repeated SubjectEquivalence equivalences = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetEquivalencesByTargetSubjectRequest is request type for the Query/GetEquivalencesByTargetSubject RPC method.
+message QueryGetEquivalencesByTargetSubjectRequest {
+  string target_subject_id = 1;
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
+  string status_filter = 3; // Optional filter by status
+}
+
+// QueryGetEquivalencesByTargetSubjectResponse is response type for the Query/GetEquivalencesByTargetSubject RPC method.
+message QueryGetEquivalencesByTargetSubjectResponse {
+  repeated SubjectEquivalence equivalences = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetEquivalencesByInstitutionRequest is request type for the Query/GetEquivalencesByInstitution RPC method.
+message QueryGetEquivalencesByInstitutionRequest {
+  string institution_id = 1;
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
+  string status_filter = 3; // Optional filter by status
+}
+
+// QueryGetEquivalencesByInstitutionResponse is response type for the Query/GetEquivalencesByInstitution RPC method.
+message QueryGetEquivalencesByInstitutionResponse {
+  repeated SubjectEquivalence equivalences = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryCheckEquivalenceStatusRequest is request type for the Query/CheckEquivalenceStatus RPC method.
+message QueryCheckEquivalenceStatusRequest {
+  string source_subject_id = 1;
+  string target_subject_id = 2;
+}
+
+// QueryCheckEquivalenceStatusResponse is response type for the Query/CheckEquivalenceStatus RPC method.
+message QueryCheckEquivalenceStatusResponse {
+  bool has_equivalence = 1;
+  string status = 2;
+  string equivalence_percent = 3;
+  SubjectEquivalence equivalence = 4;
+  string contract_version = 5; // Version of contract that analyzed
+  string analysis_timestamp = 6; // When analysis was performed
+}
+
+// QueryGetPendingAnalysisRequest is request type for the Query/GetPendingAnalysis RPC method.
+message QueryGetPendingAnalysisRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryGetPendingAnalysisResponse is response type for the Query/GetPendingAnalysis RPC method.
+message QueryGetPendingAnalysisResponse {
+  repeated SubjectEquivalence equivalences = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetApprovedEquivalencesRequest is request type for the Query/GetApprovedEquivalences RPC method.
+message QueryGetApprovedEquivalencesRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  string min_equivalence_percent = 2; // Optional minimum percentage filter
+}
+
+// QueryGetApprovedEquivalencesResponse is response type for the Query/GetApprovedEquivalences RPC method.
+message QueryGetApprovedEquivalencesResponse {
+  repeated SubjectEquivalence equivalences = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetRejectedEquivalencesRequest is request type for the Query/GetRejectedEquivalences RPC method.
+message QueryGetRejectedEquivalencesRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryGetRejectedEquivalencesResponse is response type for the Query/GetRejectedEquivalences RPC method.
+message QueryGetRejectedEquivalencesResponse {
+  repeated SubjectEquivalence equivalences = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetEquivalencesByContractRequest is request type for the Query/GetEquivalencesByContract RPC method.
+message QueryGetEquivalencesByContractRequest {
+  string contract_address = 1;
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+// QueryGetEquivalencesByContractResponse is response type for the Query/GetEquivalencesByContract RPC method.
+message QueryGetEquivalencesByContractResponse {
+  repeated SubjectEquivalence equivalences = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetEquivalencesByContractVersionRequest is request type for the Query/GetEquivalencesByContractVersion RPC method.
+message QueryGetEquivalencesByContractVersionRequest {
+  string contract_version = 1;
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+// QueryGetEquivalencesByContractVersionResponse is response type for the Query/GetEquivalencesByContractVersion RPC method.
+message QueryGetEquivalencesByContractVersionResponse {
+  repeated SubjectEquivalence equivalences = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetEquivalenceHistoryRequest is request type for the Query/GetEquivalenceHistory RPC method.
+message QueryGetEquivalenceHistoryRequest {
+  string subject_id = 1;
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+// QueryGetEquivalenceHistoryResponse is response type for the Query/GetEquivalenceHistory RPC method.
+message QueryGetEquivalenceHistoryResponse {
+  repeated SubjectEquivalence equivalences = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryGetEquivalenceStatsRequest is request type for the Query/GetEquivalenceStats RPC method.
+message QueryGetEquivalenceStatsRequest {}
+
+// QueryGetEquivalenceStatsResponse is response type for the Query/GetEquivalenceStats RPC method.
+message QueryGetEquivalenceStatsResponse {
+  uint64 total_equivalences = 1;
+  uint64 pending_analysis = 2; // Changed from pending_equivalences
+  uint64 approved_equivalences = 3;
+  uint64 rejected_equivalences = 4;
+  uint64 error_equivalences = 5; // Contract analysis errors
+  string average_equivalence_percent = 6;
+  uint64 total_institutions_involved = 7;
+  uint64 total_subjects_with_equivalences = 8;
+  uint64 total_contract_analyses = 9; // Total number of contract executions
+  repeated string active_contract_versions = 10; // Currently used contract versions
+}
+
+// QueryGetAnalysisMetadataRequest is request type for the Query/GetAnalysisMetadata RPC method.
+message QueryGetAnalysisMetadataRequest {
+  string equivalence_id = 1;
+}
+
+// QueryGetAnalysisMetadataResponse is response type for the Query/GetAnalysisMetadata RPC method.
+message QueryGetAnalysisMetadataResponse {
+  string analysis_metadata = 1; // Full JSON metadata from contract
+  string contract_address = 2;
+  string contract_version = 3;
+  string analysis_hash = 4;
+  string analysis_timestamp = 5;
+  uint64 analysis_count = 6; // How many times this equivalence was analyzed
+}
+
+// QueryVerifyAnalysisIntegrityRequest is request type for the Query/VerifyAnalysisIntegrity RPC method.
+message QueryVerifyAnalysisIntegrityRequest {
+  string equivalence_id = 1;
+}
+
+// QueryVerifyAnalysisIntegrityResponse is response type for the Query/VerifyAnalysisIntegrity RPC method.
+message QueryVerifyAnalysisIntegrityResponse {
+  bool integrity_valid = 1;
+  string stored_hash = 2;
+  string calculated_hash = 3;
+  string verification_timestamp = 4;
+}

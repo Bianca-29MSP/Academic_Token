@@ -1,0 +1,92 @@
+syntax = "proto3";
+package academictoken.course;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "academictoken/course/params.proto";
+import "academictoken/course/course.proto";
+
+option go_package = "academictoken/x/course/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/academictoken/course/params";
+  }
+  
+  // Queries a list of Course items.
+  rpc CourseAll(QueryAllCourseRequest) returns (QueryAllCourseResponse) {
+    option (google.api.http).get = "/academictoken/course/course";
+  }
+  
+  // Queries a Course by index.
+  rpc Course(QueryGetCourseRequest) returns (QueryGetCourseResponse) {
+    option (google.api.http).get = "/academictoken/course/course/{index}";
+  }
+  
+  // Queries courses by institution.
+  rpc CoursesByInstitution(QueryCoursesByInstitutionRequest) returns (QueryCoursesByInstitutionResponse) {
+    option (google.api.http).get = "/academictoken/course/courses-by-institution/{institutionIndex}";
+  }
+  
+  // Queries course count.
+  rpc CourseCount(QueryCourseCountRequest) returns (QueryCourseCountResponse) {
+    option (google.api.http).get = "/academictoken/course/count";
+  }
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+// QueryGetCourseRequest is request type for the Query/Course RPC method.
+message QueryGetCourseRequest {
+  string index = 1;
+}
+
+// QueryGetCourseResponse is response type for the Query/Course RPC method.
+message QueryGetCourseResponse {
+  Course course = 1 [(gogoproto.nullable) = false];
+}
+
+// QueryAllCourseRequest is request type for the Query/CourseAll RPC method.
+message QueryAllCourseRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+// QueryAllCourseResponse is response type for the Query/CourseAll RPC method.
+message QueryAllCourseResponse {
+  repeated Course course = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryCoursesByInstitutionRequest is request type for the Query/CoursesByInstitution RPC method.
+message QueryCoursesByInstitutionRequest {
+  string institutionIndex = 1;
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
+}
+
+// QueryCoursesByInstitutionResponse is response type for the Query/CoursesByInstitution RPC method.
+message QueryCoursesByInstitutionResponse {
+  repeated Course course = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryCourseCountRequest is request type for the Query/CourseCount RPC method.
+message QueryCourseCountRequest {}
+
+// QueryCourseCountResponse is response type for the Query/CourseCount RPC method.
+message QueryCourseCountResponse {
+  uint64 count = 1;
+}
