@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { AcademicTokenAPI } from '../lib/api';
+import { config } from '../config';
 import type { 
   Institution, 
   Course, 
@@ -31,13 +32,14 @@ interface UseBlockchainReturn {
   getSubjectsByInstitution: (institutionId: string) => Subject[];
   getCoursesByInstitution: (institutionId: string) => Course[];
   clearErrors: () => void;
+  loadSubjectsByInstitution: (institutionId: string) => Promise<Subject[]>;
 }
 
 export function useBlockchain(): UseBlockchainReturn {
   // Connection state
   const [connection, setConnection] = useState<BlockchainConnection>({
     connected: false,
-    nodeUrl: 'http://localhost:1318',
+    nodeUrl: config.api.baseUrl,
     network: 'disconnected'
   });
   
@@ -154,16 +156,34 @@ export function useBlockchain(): UseBlockchainReturn {
 
   // Helper methods
   const getSubjectsByInstitution = useCallback((institutionId: string): Subject[] => {
-    const filtered = subjects.filter(subject => subject.institutionId === institutionId);
+    // Filter subjects by institution field
+    const filtered = subjects.filter(subject => {
+      // Direct match on institution field
+      return subject.institution === institutionId;
+    });
     console.log(`🔍 Filtering subjects for institution ${institutionId}:`, filtered);
+    console.log(`🔍 Available subjects:`, subjects);
     return filtered;
   }, [subjects]);
 
   const getCoursesByInstitution = useCallback((institutionId: string): Course[] => {
-    const filtered = courses.filter(course => course.institutionId === institutionId);
+    const filtered = courses.filter(course => course.institution === institutionId);
     console.log(`🔍 Filtering courses for institution ${institutionId}:`, filtered);
     return filtered;
   }, [courses]);
+
+  // Load subjects by institution from API
+  const loadSubjectsByInstitution = useCallback(async (institutionId: string): Promise<Subject[]> => {
+    try {
+      console.log(`🌐 Loading subjects from API for institution ${institutionId}`);
+      const subjectsData = await AcademicTokenAPI.getSubjectsByInstitution(institutionId);
+      console.log(`📦 Loaded ${subjectsData.length} subjects from API`);
+      return subjectsData;
+    } catch (error) {
+      console.error('Failed to load subjects by institution:', error);
+      return [];
+    }
+  }, []);
 
   // Initialize connection and data on mount
   useEffect(() => {
@@ -214,5 +234,6 @@ export function useBlockchain(): UseBlockchainReturn {
     getSubjectsByInstitution,
     getCoursesByInstitution,
     clearErrors,
+    loadSubjectsByInstitution,
   };
 }

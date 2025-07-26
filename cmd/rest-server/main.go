@@ -4,12 +4,16 @@
 package main
 
 import (
+    "bytes"
     "encoding/json"
     "fmt"
+    "io"
     "log"
+    "math/rand"
     "net/http"
     "os/exec"
     "strings"
+    "time"
     
     "github.com/gorilla/mux"
     "github.com/gorilla/handlers"
@@ -79,23 +83,38 @@ type DegreeEligibility struct {
 
 // ========== BLOCKCHAIN QUERIES ==========
 
-// Query blockchain for real data
-func queryBlockchain(module string, query string) ([]byte, error) {
-    cmd := exec.Command("academictokend", "query", module, query, "--output", "json", "--node", "tcp://localhost:26657")
-    output, err := cmd.Output()
+// Query blockchain via REST endpoints instead of CLI
+func queryBlockchainREST(endpoint string) ([]byte, error) {
+    url := fmt.Sprintf("http://localhost:1317%s", endpoint)
+    fmt.Printf("📡 Making REST request to: %s\n", url)
+    
+    resp, err := http.Get(url)
     if err != nil {
-        fmt.Printf("❌ Blockchain query failed: %v\n", err)
+        fmt.Printf("❌ REST request failed: %v\n", err)
         return nil, err
     }
-    return output, nil
+    defer resp.Body.Close()
+    
+    if resp.StatusCode != http.StatusOK {
+        fmt.Printf("❌ REST request returned status: %d\n", resp.StatusCode)
+        return nil, fmt.Errorf("HTTP %d", resp.StatusCode)
+    }
+    
+    body, err := io.ReadAll(resp.Body)
+    if err != nil {
+        fmt.Printf("❌ Failed to read response body: %v\n", err)
+        return nil, err
+    }
+    
+    return body, nil
 }
 
 // Query all institutions from blockchain
 func queryInstitutions() ([]Institution, error) {
     fmt.Println("🔍 Querying institutions from blockchain...")
     
-    // Query real blockchain data using the correct command
-    output, err := queryBlockchain("institution", "institution-all")
+    // Query via REST endpoint
+    output, err := queryBlockchainREST("/academictoken/institution/institution")
     if err != nil {
         fmt.Printf("❌ Failed to query institutions from blockchain: %v\n", err)
         return []Institution{}, fmt.Errorf("no institutions found on blockchain")
@@ -119,8 +138,8 @@ func queryInstitutions() ([]Institution, error) {
 func queryCourses() ([]Course, error) {
     fmt.Println("🔍 Querying courses from blockchain...")
     
-    // Query real blockchain data using the correct command
-    output, err := queryBlockchain("course", "course-all")
+    // Query via REST endpoint
+    output, err := queryBlockchainREST("/academictoken/course/course")
     if err != nil {
         fmt.Printf("❌ Failed to query courses from blockchain: %v\n", err)
         return []Course{}, fmt.Errorf("no courses found on blockchain")
@@ -144,8 +163,8 @@ func queryCourses() ([]Course, error) {
 func querySubjects() ([]Subject, error) {
     fmt.Println("🔍 Querying subjects from blockchain...")
     
-    // Query real blockchain data using the correct command
-    output, err := queryBlockchain("subject", "list-subjects")
+    // Query via REST endpoint  
+    output, err := queryBlockchainREST("/academictoken/subject/subjects")
     if err != nil {
         fmt.Printf("❌ Failed to query subjects from blockchain: %v\n", err)
         return []Subject{}, fmt.Errorf("no subjects found on blockchain")
@@ -166,6 +185,136 @@ func querySubjects() ([]Subject, error) {
 }
 
 // ========== HANDLERS ==========
+
+// POST /academic/equivalence/request
+func requestEquivalence(w http.ResponseWriter, r *http.Request) {
+    var req map[string]interface{}
+    if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+        http.Error(w, "Invalid request body", http.StatusBadRequest)
+        return
+    }
+    
+    fmt.Printf("📡 Creating equivalence request: %v\n", req)
+    
+    // Forward the request to the blockchain module using the correct endpoint
+    reqBody, _ := json.Marshal(req)
+    resp, err := http.Post("http://localhost:1317/academictoken.equivalence.Msg/RequestEquivalence", "application/json", bytes.NewReader(reqBody))
+    if err != nil {
+        fmt.Printf("❌ Failed to forward request to blockchain: %v\n", err)
+        http.Error(w, "Failed to create equivalence request", http.StatusInternalServerError)
+        return
+    }
+    defer resp.Body.Close()
+    
+    // Read and forward the response
+    body, _ := io.ReadAll(resp.Body)
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(resp.StatusCode)
+    w.Write(body)
+}
+
+// POST /academic/equivalence/execute-analysis
+func executeEquivalenceAnalysis(w http.ResponseWriter, r *http.Request) {
+    var req map[string]interface{}
+    if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+        http.Error(w, "Invalid request body", http.StatusBadRequest)
+        return
+    }
+    
+    fmt.Printf("📊 Executing equivalence analysis: %v\n", req)
+    
+    // Forward the request to the blockchain module using the correct endpoint
+    reqBody, _ := json.Marshal(req)
+    resp, err := http.Post("http://localhost:1317/academictoken.equivalence.Msg/ExecuteEquivalenceAnalysis", "application/json", bytes.NewReader(reqBody))
+    if err != nil {
+        fmt.Printf("❌ Failed to forward request to blockchain: %v\n", err)
+        http.Error(w, "Failed to execute analysis", http.StatusInternalServerError)
+        return
+    }
+    defer resp.Body.Close()
+    
+    // Read and forward the response
+    body, _ := io.ReadAll(resp.Body)
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(resp.StatusCode)
+    w.Write(body)
+}
+
+// GET /academic/equivalence/equivalences/{id}
+func getEquivalence(w http.ResponseWriter, r *http.Request) {
+    vars := mux.Vars(r)
+    equivalenceID := vars["id"]
+    
+    fmt.Printf("🔍 Getting equivalence details for: %s\n", equivalenceID)
+    
+    // Query blockchain for equivalence details using the correct endpoint
+    output, err := queryBlockchainREST(fmt.Sprintf("/academictoken/equivalence/equivalences/%s", equivalenceID))
+    if err != nil {
+        fmt.Printf("❌ Failed to query equivalence from blockchain: %v\n", err)
+        http.Error(w, "Equivalence not found", http.StatusNotFound)
+        return
+    }
+    
+    w.Header().Set("Content-Type", "application/json")
+    w.Write(output)
+}
+
+// GET /academic/equivalence/check/{source_subject_id}/{target_subject_id}
+func checkEquivalenceStatus(w http.ResponseWriter, r *http.Request) {
+    vars := mux.Vars(r)
+    sourceSubjectID := vars["source_subject_id"]
+    targetSubjectID := vars["target_subject_id"]
+    
+    fmt.Printf("🔍 Checking equivalence status between %s and %s\n", sourceSubjectID, targetSubjectID)
+    
+    output, err := queryBlockchainREST(fmt.Sprintf("/academictoken/equivalence/check/%s/%s", sourceSubjectID, targetSubjectID))
+    if err != nil {
+        fmt.Printf("❌ Failed to check equivalence status: %v\n", err)
+        http.Error(w, "Failed to check equivalence status", http.StatusNotFound)
+        return
+    }
+    
+    w.Header().Set("Content-Type", "application/json")
+    w.Write(output)
+}
+
+// GET /academic/equivalence/equivalences
+func listEquivalences(w http.ResponseWriter, r *http.Request) {
+    fmt.Println("🔍 Listing all equivalences")
+    
+    output, err := queryBlockchainREST("/academictoken/equivalence/equivalences")
+    if err != nil {
+        fmt.Printf("❌ Failed to list equivalences: %v\n", err)
+        // Return empty list instead of error
+        w.Header().Set("Content-Type", "application/json")
+        json.NewEncoder(w).Encode(map[string]interface{}{
+            "equivalences": []interface{}{},
+            "pagination": nil,
+        })
+        return
+    }
+    
+    w.Header().Set("Content-Type", "application/json")
+    w.Write(output)
+}
+
+// GET /academic/equivalence/analysis/{equivalence_id}
+func getAnalysisMetadata(w http.ResponseWriter, r *http.Request) {
+    vars := mux.Vars(r)
+    equivalenceID := vars["equivalence_id"]
+    
+    fmt.Printf("🔍 Getting analysis metadata for: %s\n", equivalenceID)
+    
+    output, err := queryBlockchainREST(fmt.Sprintf("/academictoken/equivalence/analysis/%s", equivalenceID))
+    if err != nil {
+        fmt.Printf("❌ Failed to get analysis metadata: %v\n", err)
+        http.Error(w, "Analysis metadata not found", http.StatusNotFound)
+        return
+    }
+    
+    w.Header().Set("Content-Type", "application/json")
+    w.Write(output)
+}
 
 // GET /academic/institution/list
 func listInstitutions(w http.ResponseWriter, r *http.Request) {
@@ -211,7 +360,7 @@ func getStudent(w http.ResponseWriter, r *http.Request) {
     // Query real student data from blockchain
     fmt.Printf("🔍 Querying student %s from blockchain...\n", studentID)
     
-    output, err := queryBlockchain("student", fmt.Sprintf("show-student %s", studentID))
+    output, err := queryBlockchainREST(fmt.Sprintf("/academictoken/student/student/%s", studentID))
     if err != nil {
         fmt.Printf("❌ Student not found on blockchain: %v\n", err)
         http.Error(w, "Student not found on blockchain", http.StatusNotFound)
@@ -237,7 +386,7 @@ func getStudentNFTs(w http.ResponseWriter, r *http.Request) {
     // Query real NFT data from blockchain
     fmt.Printf("🔍 Querying NFTs for student %s from blockchain...\n", studentID)
     
-    output, err := queryBlockchain("academicnft", fmt.Sprintf("list-token-instance --student %s", studentID))
+    output, err := queryBlockchainREST(fmt.Sprintf("/academictoken/academicnft/student/%s/tokens", studentID))
     if err != nil {
         fmt.Printf("❌ No NFTs found for student on blockchain: %v\n", err)
         // Return empty array instead of error - student might have no completed subjects yet
@@ -322,6 +471,9 @@ func testBlockchainConnection() {
 }
 
 func main() {
+    // Initialize random seed
+    rand.Seed(time.Now().UnixNano())
+    
     // Test blockchain connection on startup
     testBlockchainConnection()
     
@@ -329,7 +481,7 @@ func main() {
     
     // CORS middleware
     headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
-    originsOk := handlers.AllowedOrigins([]string{"http://localhost:3000", "http://localhost:3001"})
+    originsOk := handlers.AllowedOrigins([]string{"http://localhost:3000", "http://localhost:3001", "http://u6s2n-gx777-77774-qaaba-cai.localhost:4943", "http://127.0.0.1:4943"})
     methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"})
     
     // Academic API routes
@@ -341,6 +493,14 @@ func main() {
     api.HandleFunc("/student/{id}/nfts", getStudentNFTs).Methods("GET")
     api.HandleFunc("/degree/{student_id}/eligibility", getDegreeEligibility).Methods("GET")
     api.HandleFunc("/student/{student_id}/prerequisites/{subject_id}", checkPrerequisites).Methods("GET")
+    
+    // Equivalence routes
+    api.HandleFunc("/equivalence/request", requestEquivalence).Methods("POST")
+    api.HandleFunc("/equivalence/execute-analysis", executeEquivalenceAnalysis).Methods("POST")
+    api.HandleFunc("/equivalence/equivalences/{id}", getEquivalence).Methods("GET")
+    api.HandleFunc("/equivalence/check/{source_subject_id}/{target_subject_id}", checkEquivalenceStatus).Methods("GET")
+    api.HandleFunc("/equivalence/equivalences", listEquivalences).Methods("GET")
+    api.HandleFunc("/equivalence/analysis/{equivalence_id}", getAnalysisMetadata).Methods("GET")
     
     // Cosmos compatibility
     r.HandleFunc("/cosmos/base/tendermint/v1beta1/node_info", getNodeInfo).Methods("GET")

@@ -1,0 +1,160 @@
+/* CurriculumGrid.css */
+.curriculum-grid {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  padding: 20px;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.semester-column {
+  flex: 0 0 300px;
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.semester-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.subjects-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* SubjectCard styles */
+.subject-card {
+  background-color: #f9f9f9;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.subject-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.subject-card.completed {
+  background-color: #e8f5e9;
+  border-color: #4caf50;
+}
+
+.subject-card.locked {
+  background-color: #f5f5f5;
+  border-color: #bdbdbd;
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.subject-header {
+  margin-bottom: 12px;
+}
+
+.subject-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 4px 0;
+}
+
+.subject-code {
+  font-size: 0.875rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.subject-info {
+  margin-bottom: 12px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  font-size: 0.875rem;
+}
+
+.info-label {
+  color: #666;
+}
+
+.info-value {
+  font-weight: 500;
+  color: #333;
+}
+
+.prerequisites {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.prereq-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #666;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.prereq-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.prereq-list li {
+  font-size: 0.75rem;
+  color: #666;
+  margin-bottom: 2px;
+  padding-left: 16px;
+  position: relative;
+}
+
+.prereq-list li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+}
+
+.prereq-list li.completed {
+  color: #4caf50;
+}
+
+.prereq-list li.pending {
+  color: #f44336;
+}
+
+.status-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.completed-badge {
+  background-color: #4caf50;
+  color: white;
+}
+
+.locked-badge {
+  background-color: #f44336;
+  color: white;
+}

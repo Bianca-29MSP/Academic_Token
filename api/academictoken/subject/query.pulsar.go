@@ -13,6 +13,7 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	io "io"
 	reflect "reflect"
+	sort "sort"
 	sync "sync"
 )
 
@@ -5517,6 +5518,1602 @@ func (x *fastReflection_QuerySubjectsByCourseResponse) ProtoMethods() *protoifac
 }
 
 var (
+	md_QueryPrerequisitesByCourseRequest           protoreflect.MessageDescriptor
+	fd_QueryPrerequisitesByCourseRequest_course_id protoreflect.FieldDescriptor
+)
+
+func init() {
+	file_academictoken_subject_query_proto_init()
+	md_QueryPrerequisitesByCourseRequest = File_academictoken_subject_query_proto.Messages().ByName("QueryPrerequisitesByCourseRequest")
+	fd_QueryPrerequisitesByCourseRequest_course_id = md_QueryPrerequisitesByCourseRequest.Fields().ByName("course_id")
+}
+
+var _ protoreflect.Message = (*fastReflection_QueryPrerequisitesByCourseRequest)(nil)
+
+type fastReflection_QueryPrerequisitesByCourseRequest QueryPrerequisitesByCourseRequest
+
+func (x *QueryPrerequisitesByCourseRequest) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_QueryPrerequisitesByCourseRequest)(x)
+}
+
+func (x *QueryPrerequisitesByCourseRequest) slowProtoReflect() protoreflect.Message {
+	mi := &file_academictoken_subject_query_proto_msgTypes[12]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_QueryPrerequisitesByCourseRequest_messageType fastReflection_QueryPrerequisitesByCourseRequest_messageType
+var _ protoreflect.MessageType = fastReflection_QueryPrerequisitesByCourseRequest_messageType{}
+
+type fastReflection_QueryPrerequisitesByCourseRequest_messageType struct{}
+
+func (x fastReflection_QueryPrerequisitesByCourseRequest_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_QueryPrerequisitesByCourseRequest)(nil)
+}
+func (x fastReflection_QueryPrerequisitesByCourseRequest_messageType) New() protoreflect.Message {
+	return new(fastReflection_QueryPrerequisitesByCourseRequest)
+}
+func (x fastReflection_QueryPrerequisitesByCourseRequest_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryPrerequisitesByCourseRequest
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_QueryPrerequisitesByCourseRequest) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryPrerequisitesByCourseRequest
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_QueryPrerequisitesByCourseRequest) Type() protoreflect.MessageType {
+	return _fastReflection_QueryPrerequisitesByCourseRequest_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_QueryPrerequisitesByCourseRequest) New() protoreflect.Message {
+	return new(fastReflection_QueryPrerequisitesByCourseRequest)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_QueryPrerequisitesByCourseRequest) Interface() protoreflect.ProtoMessage {
+	return (*QueryPrerequisitesByCourseRequest)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_QueryPrerequisitesByCourseRequest) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if x.CourseId != "" {
+		value := protoreflect.ValueOfString(x.CourseId)
+		if !f(fd_QueryPrerequisitesByCourseRequest_course_id, value) {
+			return
+		}
+	}
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_QueryPrerequisitesByCourseRequest) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	case "academictoken.subject.QueryPrerequisitesByCourseRequest.course_id":
+		return x.CourseId != ""
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: academictoken.subject.QueryPrerequisitesByCourseRequest"))
+		}
+		panic(fmt.Errorf("message academictoken.subject.QueryPrerequisitesByCourseRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueryPrerequisitesByCourseRequest) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	case "academictoken.subject.QueryPrerequisitesByCourseRequest.course_id":
+		x.CourseId = ""
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: academictoken.subject.QueryPrerequisitesByCourseRequest"))
+		}
+		panic(fmt.Errorf("message academictoken.subject.QueryPrerequisitesByCourseRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_QueryPrerequisitesByCourseRequest) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	case "academictoken.subject.QueryPrerequisitesByCourseRequest.course_id":
+		value := x.CourseId
+		return protoreflect.ValueOfString(value)
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: academictoken.subject.QueryPrerequisitesByCourseRequest"))
+		}
+		panic(fmt.Errorf("message academictoken.subject.QueryPrerequisitesByCourseRequest does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueryPrerequisitesByCourseRequest) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	case "academictoken.subject.QueryPrerequisitesByCourseRequest.course_id":
+		x.CourseId = value.Interface().(string)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: academictoken.subject.QueryPrerequisitesByCourseRequest"))
+		}
+		panic(fmt.Errorf("message academictoken.subject.QueryPrerequisitesByCourseRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueryPrerequisitesByCourseRequest) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "academictoken.subject.QueryPrerequisitesByCourseRequest.course_id":
+		panic(fmt.Errorf("field course_id of message academictoken.subject.QueryPrerequisitesByCourseRequest is not mutable"))
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: academictoken.subject.QueryPrerequisitesByCourseRequest"))
+		}
+		panic(fmt.Errorf("message academictoken.subject.QueryPrerequisitesByCourseRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_QueryPrerequisitesByCourseRequest) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "academictoken.subject.QueryPrerequisitesByCourseRequest.course_id":
+		return protoreflect.ValueOfString("")
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: academictoken.subject.QueryPrerequisitesByCourseRequest"))
+		}
+		panic(fmt.Errorf("message academictoken.subject.QueryPrerequisitesByCourseRequest does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_QueryPrerequisitesByCourseRequest) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in academictoken.subject.QueryPrerequisitesByCourseRequest", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_QueryPrerequisitesByCourseRequest) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueryPrerequisitesByCourseRequest) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_QueryPrerequisitesByCourseRequest) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_QueryPrerequisitesByCourseRequest) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*QueryPrerequisitesByCourseRequest)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		l = len(x.CourseId)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*QueryPrerequisitesByCourseRequest)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if len(x.CourseId) > 0 {
+			i -= len(x.CourseId)
+			copy(dAtA[i:], x.CourseId)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.CourseId)))
+			i--
+			dAtA[i] = 0xa
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*QueryPrerequisitesByCourseRequest)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPrerequisitesByCourseRequest: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPrerequisitesByCourseRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field CourseId", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.CourseId = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
+var _ protoreflect.Map = (*_QueryPrerequisitesByCourseResponse_1_map)(nil)
+
+type _QueryPrerequisitesByCourseResponse_1_map struct {
+	m *map[string]*PrerequisiteGroups
+}
+
+func (x *_QueryPrerequisitesByCourseResponse_1_map) Len() int {
+	if x.m == nil {
+		return 0
+	}
+	return len(*x.m)
+}
+
+func (x *_QueryPrerequisitesByCourseResponse_1_map) Range(f func(protoreflect.MapKey, protoreflect.Value) bool) {
+	if x.m == nil {
+		return
+	}
+	for k, v := range *x.m {
+		mapKey := (protoreflect.MapKey)(protoreflect.ValueOfString(k))
+		mapValue := protoreflect.ValueOfMessage(v.ProtoReflect())
+		if !f(mapKey, mapValue) {
+			break
+		}
+	}
+}
+
+func (x *_QueryPrerequisitesByCourseResponse_1_map) Has(key protoreflect.MapKey) bool {
+	if x.m == nil {
+		return false
+	}
+	keyUnwrapped := key.String()
+	concreteValue := keyUnwrapped
+	_, ok := (*x.m)[concreteValue]
+	return ok
+}
+
+func (x *_QueryPrerequisitesByCourseResponse_1_map) Clear(key protoreflect.MapKey) {
+	if x.m == nil {
+		return
+	}
+	keyUnwrapped := key.String()
+	concreteKey := keyUnwrapped
+	delete(*x.m, concreteKey)
+}
+
+func (x *_QueryPrerequisitesByCourseResponse_1_map) Get(key protoreflect.MapKey) protoreflect.Value {
+	if x.m == nil {
+		return protoreflect.Value{}
+	}
+	keyUnwrapped := key.String()
+	concreteKey := keyUnwrapped
+	v, ok := (*x.m)[concreteKey]
+	if !ok {
+		return protoreflect.Value{}
+	}
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_QueryPrerequisitesByCourseResponse_1_map) Set(key protoreflect.MapKey, value protoreflect.Value) {
+	if !key.IsValid() || !value.IsValid() {
+		panic("invalid key or value provided")
+	}
+	keyUnwrapped := key.String()
+	concreteKey := keyUnwrapped
+	valueUnwrapped := value.Message()
+	concreteValue := valueUnwrapped.Interface().(*PrerequisiteGroups)
+	(*x.m)[concreteKey] = concreteValue
+}
+
+func (x *_QueryPrerequisitesByCourseResponse_1_map) Mutable(key protoreflect.MapKey) protoreflect.Value {
+	keyUnwrapped := key.String()
+	concreteKey := keyUnwrapped
+	v, ok := (*x.m)[concreteKey]
+	if ok {
+		return protoreflect.ValueOfMessage(v.ProtoReflect())
+	}
+	newValue := new(PrerequisiteGroups)
+	(*x.m)[concreteKey] = newValue
+	return protoreflect.ValueOfMessage(newValue.ProtoReflect())
+}
+
+func (x *_QueryPrerequisitesByCourseResponse_1_map) NewValue() protoreflect.Value {
+	v := new(PrerequisiteGroups)
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_QueryPrerequisitesByCourseResponse_1_map) IsValid() bool {
+	return x.m != nil
+}
+
+var (
+	md_QueryPrerequisitesByCourseResponse               protoreflect.MessageDescriptor
+	fd_QueryPrerequisitesByCourseResponse_prerequisites protoreflect.FieldDescriptor
+)
+
+func init() {
+	file_academictoken_subject_query_proto_init()
+	md_QueryPrerequisitesByCourseResponse = File_academictoken_subject_query_proto.Messages().ByName("QueryPrerequisitesByCourseResponse")
+	fd_QueryPrerequisitesByCourseResponse_prerequisites = md_QueryPrerequisitesByCourseResponse.Fields().ByName("prerequisites")
+}
+
+var _ protoreflect.Message = (*fastReflection_QueryPrerequisitesByCourseResponse)(nil)
+
+type fastReflection_QueryPrerequisitesByCourseResponse QueryPrerequisitesByCourseResponse
+
+func (x *QueryPrerequisitesByCourseResponse) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_QueryPrerequisitesByCourseResponse)(x)
+}
+
+func (x *QueryPrerequisitesByCourseResponse) slowProtoReflect() protoreflect.Message {
+	mi := &file_academictoken_subject_query_proto_msgTypes[13]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_QueryPrerequisitesByCourseResponse_messageType fastReflection_QueryPrerequisitesByCourseResponse_messageType
+var _ protoreflect.MessageType = fastReflection_QueryPrerequisitesByCourseResponse_messageType{}
+
+type fastReflection_QueryPrerequisitesByCourseResponse_messageType struct{}
+
+func (x fastReflection_QueryPrerequisitesByCourseResponse_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_QueryPrerequisitesByCourseResponse)(nil)
+}
+func (x fastReflection_QueryPrerequisitesByCourseResponse_messageType) New() protoreflect.Message {
+	return new(fastReflection_QueryPrerequisitesByCourseResponse)
+}
+func (x fastReflection_QueryPrerequisitesByCourseResponse_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryPrerequisitesByCourseResponse
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_QueryPrerequisitesByCourseResponse) Descriptor() protoreflect.MessageDescriptor {
+	return md_QueryPrerequisitesByCourseResponse
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_QueryPrerequisitesByCourseResponse) Type() protoreflect.MessageType {
+	return _fastReflection_QueryPrerequisitesByCourseResponse_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_QueryPrerequisitesByCourseResponse) New() protoreflect.Message {
+	return new(fastReflection_QueryPrerequisitesByCourseResponse)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_QueryPrerequisitesByCourseResponse) Interface() protoreflect.ProtoMessage {
+	return (*QueryPrerequisitesByCourseResponse)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_QueryPrerequisitesByCourseResponse) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if len(x.Prerequisites) != 0 {
+		value := protoreflect.ValueOfMap(&_QueryPrerequisitesByCourseResponse_1_map{m: &x.Prerequisites})
+		if !f(fd_QueryPrerequisitesByCourseResponse_prerequisites, value) {
+			return
+		}
+	}
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_QueryPrerequisitesByCourseResponse) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	case "academictoken.subject.QueryPrerequisitesByCourseResponse.prerequisites":
+		return len(x.Prerequisites) != 0
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: academictoken.subject.QueryPrerequisitesByCourseResponse"))
+		}
+		panic(fmt.Errorf("message academictoken.subject.QueryPrerequisitesByCourseResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueryPrerequisitesByCourseResponse) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	case "academictoken.subject.QueryPrerequisitesByCourseResponse.prerequisites":
+		x.Prerequisites = nil
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: academictoken.subject.QueryPrerequisitesByCourseResponse"))
+		}
+		panic(fmt.Errorf("message academictoken.subject.QueryPrerequisitesByCourseResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_QueryPrerequisitesByCourseResponse) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	case "academictoken.subject.QueryPrerequisitesByCourseResponse.prerequisites":
+		if len(x.Prerequisites) == 0 {
+			return protoreflect.ValueOfMap(&_QueryPrerequisitesByCourseResponse_1_map{})
+		}
+		mapValue := &_QueryPrerequisitesByCourseResponse_1_map{m: &x.Prerequisites}
+		return protoreflect.ValueOfMap(mapValue)
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: academictoken.subject.QueryPrerequisitesByCourseResponse"))
+		}
+		panic(fmt.Errorf("message academictoken.subject.QueryPrerequisitesByCourseResponse does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueryPrerequisitesByCourseResponse) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	case "academictoken.subject.QueryPrerequisitesByCourseResponse.prerequisites":
+		mv := value.Map()
+		cmv := mv.(*_QueryPrerequisitesByCourseResponse_1_map)
+		x.Prerequisites = *cmv.m
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: academictoken.subject.QueryPrerequisitesByCourseResponse"))
+		}
+		panic(fmt.Errorf("message academictoken.subject.QueryPrerequisitesByCourseResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueryPrerequisitesByCourseResponse) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "academictoken.subject.QueryPrerequisitesByCourseResponse.prerequisites":
+		if x.Prerequisites == nil {
+			x.Prerequisites = make(map[string]*PrerequisiteGroups)
+		}
+		value := &_QueryPrerequisitesByCourseResponse_1_map{m: &x.Prerequisites}
+		return protoreflect.ValueOfMap(value)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: academictoken.subject.QueryPrerequisitesByCourseResponse"))
+		}
+		panic(fmt.Errorf("message academictoken.subject.QueryPrerequisitesByCourseResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_QueryPrerequisitesByCourseResponse) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "academictoken.subject.QueryPrerequisitesByCourseResponse.prerequisites":
+		m := make(map[string]*PrerequisiteGroups)
+		return protoreflect.ValueOfMap(&_QueryPrerequisitesByCourseResponse_1_map{m: &m})
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: academictoken.subject.QueryPrerequisitesByCourseResponse"))
+		}
+		panic(fmt.Errorf("message academictoken.subject.QueryPrerequisitesByCourseResponse does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_QueryPrerequisitesByCourseResponse) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in academictoken.subject.QueryPrerequisitesByCourseResponse", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_QueryPrerequisitesByCourseResponse) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_QueryPrerequisitesByCourseResponse) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_QueryPrerequisitesByCourseResponse) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_QueryPrerequisitesByCourseResponse) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*QueryPrerequisitesByCourseResponse)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		if len(x.Prerequisites) > 0 {
+			SiZeMaP := func(k string, v *PrerequisiteGroups) {
+				l := 0
+				if v != nil {
+					l = options.Size(v)
+				}
+				l += 1 + runtime.Sov(uint64(l))
+				mapEntrySize := 1 + len(k) + runtime.Sov(uint64(len(k))) + l
+				n += mapEntrySize + 1 + runtime.Sov(uint64(mapEntrySize))
+			}
+			if options.Deterministic {
+				sortme := make([]string, 0, len(x.Prerequisites))
+				for k := range x.Prerequisites {
+					sortme = append(sortme, k)
+				}
+				sort.Strings(sortme)
+				for _, k := range sortme {
+					v := x.Prerequisites[k]
+					SiZeMaP(k, v)
+				}
+			} else {
+				for k, v := range x.Prerequisites {
+					SiZeMaP(k, v)
+				}
+			}
+		}
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*QueryPrerequisitesByCourseResponse)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if len(x.Prerequisites) > 0 {
+			MaRsHaLmAp := func(k string, v *PrerequisiteGroups) (protoiface.MarshalOutput, error) {
+				baseI := i
+				encoded, err := options.Marshal(v)
+				if err != nil {
+					return protoiface.MarshalOutput{
+						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+						Buf:               input.Buf,
+					}, err
+				}
+				i -= len(encoded)
+				copy(dAtA[i:], encoded)
+				i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+				i--
+				dAtA[i] = 0x12
+				i -= len(k)
+				copy(dAtA[i:], k)
+				i = runtime.EncodeVarint(dAtA, i, uint64(len(k)))
+				i--
+				dAtA[i] = 0xa
+				i = runtime.EncodeVarint(dAtA, i, uint64(baseI-i))
+				i--
+				dAtA[i] = 0xa
+				return protoiface.MarshalOutput{}, nil
+			}
+			if options.Deterministic {
+				keysForPrerequisites := make([]string, 0, len(x.Prerequisites))
+				for k := range x.Prerequisites {
+					keysForPrerequisites = append(keysForPrerequisites, string(k))
+				}
+				sort.Slice(keysForPrerequisites, func(i, j int) bool {
+					return keysForPrerequisites[i] < keysForPrerequisites[j]
+				})
+				for iNdEx := len(keysForPrerequisites) - 1; iNdEx >= 0; iNdEx-- {
+					v := x.Prerequisites[string(keysForPrerequisites[iNdEx])]
+					out, err := MaRsHaLmAp(keysForPrerequisites[iNdEx], v)
+					if err != nil {
+						return out, err
+					}
+				}
+			} else {
+				for k := range x.Prerequisites {
+					v := x.Prerequisites[k]
+					out, err := MaRsHaLmAp(k, v)
+					if err != nil {
+						return out, err
+					}
+				}
+			}
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*QueryPrerequisitesByCourseResponse)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPrerequisitesByCourseResponse: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: QueryPrerequisitesByCourseResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Prerequisites", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if x.Prerequisites == nil {
+					x.Prerequisites = make(map[string]*PrerequisiteGroups)
+				}
+				var mapkey string
+				var mapvalue *PrerequisiteGroups
+				for iNdEx < postIndex {
+					entryPreIndex := iNdEx
+					var wire uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+						}
+						if iNdEx >= l {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						wire |= uint64(b&0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					fieldNum := int32(wire >> 3)
+					if fieldNum == 1 {
+						var stringLenmapkey uint64
+						for shift := uint(0); ; shift += 7 {
+							if shift >= 64 {
+								return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+							}
+							if iNdEx >= l {
+								return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+							}
+							b := dAtA[iNdEx]
+							iNdEx++
+							stringLenmapkey |= uint64(b&0x7F) << shift
+							if b < 0x80 {
+								break
+							}
+						}
+						intStringLenmapkey := int(stringLenmapkey)
+						if intStringLenmapkey < 0 {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+						}
+						postStringIndexmapkey := iNdEx + intStringLenmapkey
+						if postStringIndexmapkey < 0 {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+						}
+						if postStringIndexmapkey > l {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+						}
+						mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
+						iNdEx = postStringIndexmapkey
+					} else if fieldNum == 2 {
+						var mapmsglen int
+						for shift := uint(0); ; shift += 7 {
+							if shift >= 64 {
+								return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+							}
+							if iNdEx >= l {
+								return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+							}
+							b := dAtA[iNdEx]
+							iNdEx++
+							mapmsglen |= int(b&0x7F) << shift
+							if b < 0x80 {
+								break
+							}
+						}
+						if mapmsglen < 0 {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+						}
+						postmsgIndex := iNdEx + mapmsglen
+						if postmsgIndex < 0 {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+						}
+						if postmsgIndex > l {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+						}
+						mapvalue = &PrerequisiteGroups{}
+						if err := options.Unmarshal(dAtA[iNdEx:postmsgIndex], mapvalue); err != nil {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+						}
+						iNdEx = postmsgIndex
+					} else {
+						iNdEx = entryPreIndex
+						skippy, err := runtime.Skip(dAtA[iNdEx:])
+						if err != nil {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+						}
+						if (skippy < 0) || (iNdEx+skippy) < 0 {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+						}
+						if (iNdEx + skippy) > postIndex {
+							return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+						}
+						iNdEx += skippy
+					}
+				}
+				x.Prerequisites[mapkey] = mapvalue
+				iNdEx = postIndex
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
+var _ protoreflect.List = (*_PrerequisiteGroups_1_list)(nil)
+
+type _PrerequisiteGroups_1_list struct {
+	list *[]*PrerequisiteGroup
+}
+
+func (x *_PrerequisiteGroups_1_list) Len() int {
+	if x.list == nil {
+		return 0
+	}
+	return len(*x.list)
+}
+
+func (x *_PrerequisiteGroups_1_list) Get(i int) protoreflect.Value {
+	return protoreflect.ValueOfMessage((*x.list)[i].ProtoReflect())
+}
+
+func (x *_PrerequisiteGroups_1_list) Set(i int, value protoreflect.Value) {
+	valueUnwrapped := value.Message()
+	concreteValue := valueUnwrapped.Interface().(*PrerequisiteGroup)
+	(*x.list)[i] = concreteValue
+}
+
+func (x *_PrerequisiteGroups_1_list) Append(value protoreflect.Value) {
+	valueUnwrapped := value.Message()
+	concreteValue := valueUnwrapped.Interface().(*PrerequisiteGroup)
+	*x.list = append(*x.list, concreteValue)
+}
+
+func (x *_PrerequisiteGroups_1_list) AppendMutable() protoreflect.Value {
+	v := new(PrerequisiteGroup)
+	*x.list = append(*x.list, v)
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_PrerequisiteGroups_1_list) Truncate(n int) {
+	for i := n; i < len(*x.list); i++ {
+		(*x.list)[i] = nil
+	}
+	*x.list = (*x.list)[:n]
+}
+
+func (x *_PrerequisiteGroups_1_list) NewElement() protoreflect.Value {
+	v := new(PrerequisiteGroup)
+	return protoreflect.ValueOfMessage(v.ProtoReflect())
+}
+
+func (x *_PrerequisiteGroups_1_list) IsValid() bool {
+	return x.list != nil
+}
+
+var (
+	md_PrerequisiteGroups        protoreflect.MessageDescriptor
+	fd_PrerequisiteGroups_groups protoreflect.FieldDescriptor
+)
+
+func init() {
+	file_academictoken_subject_query_proto_init()
+	md_PrerequisiteGroups = File_academictoken_subject_query_proto.Messages().ByName("PrerequisiteGroups")
+	fd_PrerequisiteGroups_groups = md_PrerequisiteGroups.Fields().ByName("groups")
+}
+
+var _ protoreflect.Message = (*fastReflection_PrerequisiteGroups)(nil)
+
+type fastReflection_PrerequisiteGroups PrerequisiteGroups
+
+func (x *PrerequisiteGroups) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_PrerequisiteGroups)(x)
+}
+
+func (x *PrerequisiteGroups) slowProtoReflect() protoreflect.Message {
+	mi := &file_academictoken_subject_query_proto_msgTypes[14]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+var _fastReflection_PrerequisiteGroups_messageType fastReflection_PrerequisiteGroups_messageType
+var _ protoreflect.MessageType = fastReflection_PrerequisiteGroups_messageType{}
+
+type fastReflection_PrerequisiteGroups_messageType struct{}
+
+func (x fastReflection_PrerequisiteGroups_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_PrerequisiteGroups)(nil)
+}
+func (x fastReflection_PrerequisiteGroups_messageType) New() protoreflect.Message {
+	return new(fastReflection_PrerequisiteGroups)
+}
+func (x fastReflection_PrerequisiteGroups_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_PrerequisiteGroups
+}
+
+// Descriptor returns message descriptor, which contains only the protobuf
+// type information for the message.
+func (x *fastReflection_PrerequisiteGroups) Descriptor() protoreflect.MessageDescriptor {
+	return md_PrerequisiteGroups
+}
+
+// Type returns the message type, which encapsulates both Go and protobuf
+// type information. If the Go type information is not needed,
+// it is recommended that the message descriptor be used instead.
+func (x *fastReflection_PrerequisiteGroups) Type() protoreflect.MessageType {
+	return _fastReflection_PrerequisiteGroups_messageType
+}
+
+// New returns a newly allocated and mutable empty message.
+func (x *fastReflection_PrerequisiteGroups) New() protoreflect.Message {
+	return new(fastReflection_PrerequisiteGroups)
+}
+
+// Interface unwraps the message reflection interface and
+// returns the underlying ProtoMessage interface.
+func (x *fastReflection_PrerequisiteGroups) Interface() protoreflect.ProtoMessage {
+	return (*PrerequisiteGroups)(x)
+}
+
+// Range iterates over every populated field in an undefined order,
+// calling f for each field descriptor and value encountered.
+// Range returns immediately if f returns false.
+// While iterating, mutating operations may only be performed
+// on the current field descriptor.
+func (x *fastReflection_PrerequisiteGroups) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+	if len(x.Groups) != 0 {
+		value := protoreflect.ValueOfList(&_PrerequisiteGroups_1_list{list: &x.Groups})
+		if !f(fd_PrerequisiteGroups_groups, value) {
+			return
+		}
+	}
+}
+
+// Has reports whether a field is populated.
+//
+// Some fields have the property of nullability where it is possible to
+// distinguish between the default value of a field and whether the field
+// was explicitly populated with the default value. Singular message fields,
+// member fields of a oneof, and proto2 scalar fields are nullable. Such
+// fields are populated only if explicitly set.
+//
+// In other cases (aside from the nullable cases above),
+// a proto3 scalar field is populated if it contains a non-zero value, and
+// a repeated field is populated if it is non-empty.
+func (x *fastReflection_PrerequisiteGroups) Has(fd protoreflect.FieldDescriptor) bool {
+	switch fd.FullName() {
+	case "academictoken.subject.PrerequisiteGroups.groups":
+		return len(x.Groups) != 0
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: academictoken.subject.PrerequisiteGroups"))
+		}
+		panic(fmt.Errorf("message academictoken.subject.PrerequisiteGroups does not contain field %s", fd.FullName()))
+	}
+}
+
+// Clear clears the field such that a subsequent Has call reports false.
+//
+// Clearing an extension field clears both the extension type and value
+// associated with the given field number.
+//
+// Clear is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_PrerequisiteGroups) Clear(fd protoreflect.FieldDescriptor) {
+	switch fd.FullName() {
+	case "academictoken.subject.PrerequisiteGroups.groups":
+		x.Groups = nil
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: academictoken.subject.PrerequisiteGroups"))
+		}
+		panic(fmt.Errorf("message academictoken.subject.PrerequisiteGroups does not contain field %s", fd.FullName()))
+	}
+}
+
+// Get retrieves the value for a field.
+//
+// For unpopulated scalars, it returns the default value, where
+// the default value of a bytes scalar is guaranteed to be a copy.
+// For unpopulated composite types, it returns an empty, read-only view
+// of the value; to obtain a mutable reference, use Mutable.
+func (x *fastReflection_PrerequisiteGroups) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+	switch descriptor.FullName() {
+	case "academictoken.subject.PrerequisiteGroups.groups":
+		if len(x.Groups) == 0 {
+			return protoreflect.ValueOfList(&_PrerequisiteGroups_1_list{})
+		}
+		listValue := &_PrerequisiteGroups_1_list{list: &x.Groups}
+		return protoreflect.ValueOfList(listValue)
+	default:
+		if descriptor.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: academictoken.subject.PrerequisiteGroups"))
+		}
+		panic(fmt.Errorf("message academictoken.subject.PrerequisiteGroups does not contain field %s", descriptor.FullName()))
+	}
+}
+
+// Set stores the value for a field.
+//
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType.
+// When setting a composite type, it is unspecified whether the stored value
+// aliases the source's memory in any way. If the composite value is an
+// empty, read-only value, then it panics.
+//
+// Set is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_PrerequisiteGroups) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+	switch fd.FullName() {
+	case "academictoken.subject.PrerequisiteGroups.groups":
+		lv := value.List()
+		clv := lv.(*_PrerequisiteGroups_1_list)
+		x.Groups = *clv.list
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: academictoken.subject.PrerequisiteGroups"))
+		}
+		panic(fmt.Errorf("message academictoken.subject.PrerequisiteGroups does not contain field %s", fd.FullName()))
+	}
+}
+
+// Mutable returns a mutable reference to a composite type.
+//
+// If the field is unpopulated, it may allocate a composite value.
+// For a field belonging to a oneof, it implicitly clears any other field
+// that may be currently set within the same oneof.
+// For extension fields, it implicitly stores the provided ExtensionType
+// if not already stored.
+// It panics if the field does not contain a composite type.
+//
+// Mutable is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_PrerequisiteGroups) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "academictoken.subject.PrerequisiteGroups.groups":
+		if x.Groups == nil {
+			x.Groups = []*PrerequisiteGroup{}
+		}
+		value := &_PrerequisiteGroups_1_list{list: &x.Groups}
+		return protoreflect.ValueOfList(value)
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: academictoken.subject.PrerequisiteGroups"))
+		}
+		panic(fmt.Errorf("message academictoken.subject.PrerequisiteGroups does not contain field %s", fd.FullName()))
+	}
+}
+
+// NewField returns a new value that is assignable to the field
+// for the given descriptor. For scalars, this returns the default value.
+// For lists, maps, and messages, this returns a new, empty, mutable value.
+func (x *fastReflection_PrerequisiteGroups) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+	switch fd.FullName() {
+	case "academictoken.subject.PrerequisiteGroups.groups":
+		list := []*PrerequisiteGroup{}
+		return protoreflect.ValueOfList(&_PrerequisiteGroups_1_list{list: &list})
+	default:
+		if fd.IsExtension() {
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: academictoken.subject.PrerequisiteGroups"))
+		}
+		panic(fmt.Errorf("message academictoken.subject.PrerequisiteGroups does not contain field %s", fd.FullName()))
+	}
+}
+
+// WhichOneof reports which field within the oneof is populated,
+// returning nil if none are populated.
+// It panics if the oneof descriptor does not belong to this message.
+func (x *fastReflection_PrerequisiteGroups) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+	switch d.FullName() {
+	default:
+		panic(fmt.Errorf("%s is not a oneof field in academictoken.subject.PrerequisiteGroups", d.FullName()))
+	}
+	panic("unreachable")
+}
+
+// GetUnknown retrieves the entire list of unknown fields.
+// The caller may only mutate the contents of the RawFields
+// if the mutated bytes are stored back into the message with SetUnknown.
+func (x *fastReflection_PrerequisiteGroups) GetUnknown() protoreflect.RawFields {
+	return x.unknownFields
+}
+
+// SetUnknown stores an entire list of unknown fields.
+// The raw fields must be syntactically valid according to the wire format.
+// An implementation may panic if this is not the case.
+// Once stored, the caller must not mutate the content of the RawFields.
+// An empty RawFields may be passed to clear the fields.
+//
+// SetUnknown is a mutating operation and unsafe for concurrent use.
+func (x *fastReflection_PrerequisiteGroups) SetUnknown(fields protoreflect.RawFields) {
+	x.unknownFields = fields
+}
+
+// IsValid reports whether the message is valid.
+//
+// An invalid message is an empty, read-only value.
+//
+// An invalid message often corresponds to a nil pointer of the concrete
+// message type, but the details are implementation dependent.
+// Validity is not part of the protobuf data model, and may not
+// be preserved in marshaling or other operations.
+func (x *fastReflection_PrerequisiteGroups) IsValid() bool {
+	return x != nil
+}
+
+// ProtoMethods returns optional fastReflectionFeature-path implementations of various operations.
+// This method may return nil.
+//
+// The returned methods type is identical to
+// "google.golang.org/protobuf/runtime/protoiface".Methods.
+// Consult the protoiface package documentation for details.
+func (x *fastReflection_PrerequisiteGroups) ProtoMethods() *protoiface.Methods {
+	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
+		x := input.Message.Interface().(*PrerequisiteGroups)
+		if x == nil {
+			return protoiface.SizeOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Size:              0,
+			}
+		}
+		options := runtime.SizeInputToOptions(input)
+		_ = options
+		var n int
+		var l int
+		_ = l
+		if len(x.Groups) > 0 {
+			for _, e := range x.Groups {
+				l = options.Size(e)
+				n += 1 + l + runtime.Sov(uint64(l))
+			}
+		}
+		if x.unknownFields != nil {
+			n += len(x.unknownFields)
+		}
+		return protoiface.SizeOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Size:              n,
+		}
+	}
+
+	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
+		x := input.Message.Interface().(*PrerequisiteGroups)
+		if x == nil {
+			return protoiface.MarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Buf:               input.Buf,
+			}, nil
+		}
+		options := runtime.MarshalInputToOptions(input)
+		_ = options
+		size := options.Size(x)
+		dAtA := make([]byte, size)
+		i := len(dAtA)
+		_ = i
+		var l int
+		_ = l
+		if x.unknownFields != nil {
+			i -= len(x.unknownFields)
+			copy(dAtA[i:], x.unknownFields)
+		}
+		if len(x.Groups) > 0 {
+			for iNdEx := len(x.Groups) - 1; iNdEx >= 0; iNdEx-- {
+				encoded, err := options.Marshal(x.Groups[iNdEx])
+				if err != nil {
+					return protoiface.MarshalOutput{
+						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+						Buf:               input.Buf,
+					}, err
+				}
+				i -= len(encoded)
+				copy(dAtA[i:], encoded)
+				i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
+				i--
+				dAtA[i] = 0xa
+			}
+		}
+		if input.Buf != nil {
+			input.Buf = append(input.Buf, dAtA...)
+		} else {
+			input.Buf = dAtA
+		}
+		return protoiface.MarshalOutput{
+			NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+			Buf:               input.Buf,
+		}, nil
+	}
+	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
+		x := input.Message.Interface().(*PrerequisiteGroups)
+		if x == nil {
+			return protoiface.UnmarshalOutput{
+				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
+				Flags:             input.Flags,
+			}, nil
+		}
+		options := runtime.UnmarshalInputToOptions(input)
+		_ = options
+		dAtA := input.Buf
+		l := len(dAtA)
+		iNdEx := 0
+		for iNdEx < l {
+			preIndex := iNdEx
+			var wire uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				wire |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			fieldNum := int32(wire >> 3)
+			wireType := int(wire & 0x7)
+			if wireType == 4 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: PrerequisiteGroups: wiretype end group for non-group")
+			}
+			if fieldNum <= 0 {
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: PrerequisiteGroups: illegal tag %d (wire type %d)", fieldNum, wire)
+			}
+			switch fieldNum {
+			case 1:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Groups", wireType)
+				}
+				var msglen int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					msglen |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				if msglen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + msglen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Groups = append(x.Groups, &PrerequisiteGroup{})
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Groups[len(x.Groups)-1]); err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				iNdEx = postIndex
+			default:
+				iNdEx = preIndex
+				skippy, err := runtime.Skip(dAtA[iNdEx:])
+				if err != nil {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
+				}
+				if (skippy < 0) || (iNdEx+skippy) < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if (iNdEx + skippy) > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				if !options.DiscardUnknown {
+					x.unknownFields = append(x.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+				}
+				iNdEx += skippy
+			}
+		}
+
+		if iNdEx > l {
+			return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+		}
+		return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, nil
+	}
+	return &protoiface.Methods{
+		NoUnkeyedLiterals: struct{}{},
+		Flags:             protoiface.SupportMarshalDeterministic | protoiface.SupportUnmarshalDiscardUnknown,
+		Size:              size,
+		Marshal:           marshal,
+		Unmarshal:         unmarshal,
+		Merge:             nil,
+		CheckInitialized:  nil,
+	}
+}
+
+var (
 	md_QuerySubjectsByInstitutionRequest                protoreflect.MessageDescriptor
 	fd_QuerySubjectsByInstitutionRequest_institution_id protoreflect.FieldDescriptor
 	fd_QuerySubjectsByInstitutionRequest_pagination     protoreflect.FieldDescriptor
@@ -5538,7 +7135,7 @@ func (x *QuerySubjectsByInstitutionRequest) ProtoReflect() protoreflect.Message 
 }
 
 func (x *QuerySubjectsByInstitutionRequest) slowProtoReflect() protoreflect.Message {
-	mi := &file_academictoken_subject_query_proto_msgTypes[12]
+	mi := &file_academictoken_subject_query_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6088,7 +7685,7 @@ func (x *QuerySubjectsByInstitutionResponse) ProtoReflect() protoreflect.Message
 }
 
 func (x *QuerySubjectsByInstitutionResponse) slowProtoReflect() protoreflect.Message {
-	mi := &file_academictoken_subject_query_proto_msgTypes[13]
+	mi := &file_academictoken_subject_query_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6610,7 +8207,7 @@ func (x *QueryCheckPrerequisitesRequest) ProtoReflect() protoreflect.Message {
 }
 
 func (x *QueryCheckPrerequisitesRequest) slowProtoReflect() protoreflect.Message {
-	mi := &file_academictoken_subject_query_proto_msgTypes[14]
+	mi := &file_academictoken_subject_query_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7140,7 +8737,7 @@ func (x *QueryCheckPrerequisitesResponse) ProtoReflect() protoreflect.Message {
 }
 
 func (x *QueryCheckPrerequisitesResponse) slowProtoReflect() protoreflect.Message {
-	mi := &file_academictoken_subject_query_proto_msgTypes[15]
+	mi := &file_academictoken_subject_query_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7630,7 +9227,7 @@ func (x *QueryCheckEquivalenceRequest) ProtoReflect() protoreflect.Message {
 }
 
 func (x *QueryCheckEquivalenceRequest) slowProtoReflect() protoreflect.Message {
-	mi := &file_academictoken_subject_query_proto_msgTypes[16]
+	mi := &file_academictoken_subject_query_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8166,7 +9763,7 @@ func (x *QueryCheckEquivalenceResponse) ProtoReflect() protoreflect.Message {
 }
 
 func (x *QueryCheckEquivalenceResponse) slowProtoReflect() protoreflect.Message {
-	mi := &file_academictoken_subject_query_proto_msgTypes[17]
+	mi := &file_academictoken_subject_query_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9081,6 +10678,115 @@ func (x *QuerySubjectsByCourseResponse) GetPagination() *v1beta1.PageResponse {
 	return nil
 }
 
+// QueryPrerequisitesByCourseRequest is the request type for the Query/PrerequisitesByCourse RPC method
+type QueryPrerequisitesByCourseRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	CourseId string `protobuf:"bytes,1,opt,name=course_id,json=courseId,proto3" json:"course_id,omitempty"`
+}
+
+func (x *QueryPrerequisitesByCourseRequest) Reset() {
+	*x = QueryPrerequisitesByCourseRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_academictoken_subject_query_proto_msgTypes[12]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryPrerequisitesByCourseRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryPrerequisitesByCourseRequest) ProtoMessage() {}
+
+// Deprecated: Use QueryPrerequisitesByCourseRequest.ProtoReflect.Descriptor instead.
+func (*QueryPrerequisitesByCourseRequest) Descriptor() ([]byte, []int) {
+	return file_academictoken_subject_query_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *QueryPrerequisitesByCourseRequest) GetCourseId() string {
+	if x != nil {
+		return x.CourseId
+	}
+	return ""
+}
+
+// QueryPrerequisitesByCourseResponse is the response type for the Query/PrerequisitesByCourse RPC method
+type QueryPrerequisitesByCourseResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Map of subject_id to its prerequisite groups
+	Prerequisites map[string]*PrerequisiteGroups `protobuf:"bytes,1,rep,name=prerequisites,proto3" json:"prerequisites,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+}
+
+func (x *QueryPrerequisitesByCourseResponse) Reset() {
+	*x = QueryPrerequisitesByCourseResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_academictoken_subject_query_proto_msgTypes[13]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryPrerequisitesByCourseResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryPrerequisitesByCourseResponse) ProtoMessage() {}
+
+// Deprecated: Use QueryPrerequisitesByCourseResponse.ProtoReflect.Descriptor instead.
+func (*QueryPrerequisitesByCourseResponse) Descriptor() ([]byte, []int) {
+	return file_academictoken_subject_query_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *QueryPrerequisitesByCourseResponse) GetPrerequisites() map[string]*PrerequisiteGroups {
+	if x != nil {
+		return x.Prerequisites
+	}
+	return nil
+}
+
+// PrerequisiteGroups wraps repeated PrerequisiteGroup for map usage
+type PrerequisiteGroups struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Groups []*PrerequisiteGroup `protobuf:"bytes,1,rep,name=groups,proto3" json:"groups,omitempty"`
+}
+
+func (x *PrerequisiteGroups) Reset() {
+	*x = PrerequisiteGroups{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_academictoken_subject_query_proto_msgTypes[14]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *PrerequisiteGroups) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PrerequisiteGroups) ProtoMessage() {}
+
+// Deprecated: Use PrerequisiteGroups.ProtoReflect.Descriptor instead.
+func (*PrerequisiteGroups) Descriptor() ([]byte, []int) {
+	return file_academictoken_subject_query_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *PrerequisiteGroups) GetGroups() []*PrerequisiteGroup {
+	if x != nil {
+		return x.Groups
+	}
+	return nil
+}
+
 // QuerySubjectsByInstitutionRequest is the request type for the Query/SubjectsByInstitution RPC method
 type QuerySubjectsByInstitutionRequest struct {
 	state         protoimpl.MessageState
@@ -9094,7 +10800,7 @@ type QuerySubjectsByInstitutionRequest struct {
 func (x *QuerySubjectsByInstitutionRequest) Reset() {
 	*x = QuerySubjectsByInstitutionRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_academictoken_subject_query_proto_msgTypes[12]
+		mi := &file_academictoken_subject_query_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9108,7 +10814,7 @@ func (*QuerySubjectsByInstitutionRequest) ProtoMessage() {}
 
 // Deprecated: Use QuerySubjectsByInstitutionRequest.ProtoReflect.Descriptor instead.
 func (*QuerySubjectsByInstitutionRequest) Descriptor() ([]byte, []int) {
-	return file_academictoken_subject_query_proto_rawDescGZIP(), []int{12}
+	return file_academictoken_subject_query_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *QuerySubjectsByInstitutionRequest) GetInstitutionId() string {
@@ -9138,7 +10844,7 @@ type QuerySubjectsByInstitutionResponse struct {
 func (x *QuerySubjectsByInstitutionResponse) Reset() {
 	*x = QuerySubjectsByInstitutionResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_academictoken_subject_query_proto_msgTypes[13]
+		mi := &file_academictoken_subject_query_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9152,7 +10858,7 @@ func (*QuerySubjectsByInstitutionResponse) ProtoMessage() {}
 
 // Deprecated: Use QuerySubjectsByInstitutionResponse.ProtoReflect.Descriptor instead.
 func (*QuerySubjectsByInstitutionResponse) Descriptor() ([]byte, []int) {
-	return file_academictoken_subject_query_proto_rawDescGZIP(), []int{13}
+	return file_academictoken_subject_query_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *QuerySubjectsByInstitutionResponse) GetSubjects() []*SubjectContent {
@@ -9182,7 +10888,7 @@ type QueryCheckPrerequisitesRequest struct {
 func (x *QueryCheckPrerequisitesRequest) Reset() {
 	*x = QueryCheckPrerequisitesRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_academictoken_subject_query_proto_msgTypes[14]
+		mi := &file_academictoken_subject_query_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9196,7 +10902,7 @@ func (*QueryCheckPrerequisitesRequest) ProtoMessage() {}
 
 // Deprecated: Use QueryCheckPrerequisitesRequest.ProtoReflect.Descriptor instead.
 func (*QueryCheckPrerequisitesRequest) Descriptor() ([]byte, []int) {
-	return file_academictoken_subject_query_proto_rawDescGZIP(), []int{14}
+	return file_academictoken_subject_query_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *QueryCheckPrerequisitesRequest) GetStudentId() string {
@@ -9226,7 +10932,7 @@ type QueryCheckPrerequisitesResponse struct {
 func (x *QueryCheckPrerequisitesResponse) Reset() {
 	*x = QueryCheckPrerequisitesResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_academictoken_subject_query_proto_msgTypes[15]
+		mi := &file_academictoken_subject_query_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9240,7 +10946,7 @@ func (*QueryCheckPrerequisitesResponse) ProtoMessage() {}
 
 // Deprecated: Use QueryCheckPrerequisitesResponse.ProtoReflect.Descriptor instead.
 func (*QueryCheckPrerequisitesResponse) Descriptor() ([]byte, []int) {
-	return file_academictoken_subject_query_proto_rawDescGZIP(), []int{15}
+	return file_academictoken_subject_query_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *QueryCheckPrerequisitesResponse) GetIsEligible() bool {
@@ -9271,7 +10977,7 @@ type QueryCheckEquivalenceRequest struct {
 func (x *QueryCheckEquivalenceRequest) Reset() {
 	*x = QueryCheckEquivalenceRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_academictoken_subject_query_proto_msgTypes[16]
+		mi := &file_academictoken_subject_query_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9285,7 +10991,7 @@ func (*QueryCheckEquivalenceRequest) ProtoMessage() {}
 
 // Deprecated: Use QueryCheckEquivalenceRequest.ProtoReflect.Descriptor instead.
 func (*QueryCheckEquivalenceRequest) Descriptor() ([]byte, []int) {
-	return file_academictoken_subject_query_proto_rawDescGZIP(), []int{16}
+	return file_academictoken_subject_query_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *QueryCheckEquivalenceRequest) GetSourceSubjectId() string {
@@ -9322,7 +11028,7 @@ type QueryCheckEquivalenceResponse struct {
 func (x *QueryCheckEquivalenceResponse) Reset() {
 	*x = QueryCheckEquivalenceResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_academictoken_subject_query_proto_msgTypes[17]
+		mi := &file_academictoken_subject_query_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -9336,7 +11042,7 @@ func (*QueryCheckEquivalenceResponse) ProtoMessage() {}
 
 // Deprecated: Use QueryCheckEquivalenceResponse.ProtoReflect.Descriptor instead.
 func (*QueryCheckEquivalenceResponse) Descriptor() ([]byte, []int) {
-	return file_academictoken_subject_query_proto_rawDescGZIP(), []int{17}
+	return file_academictoken_subject_query_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *QueryCheckEquivalenceResponse) GetEquivalencePercent() uint64 {
@@ -9458,177 +11164,217 @@ var file_academictoken_subject_query_proto_rawDesc = []byte{
 	0x27, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x71, 0x75,
 	0x65, 0x72, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x67, 0x65,
 	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x52, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61,
-	0x74, 0x69, 0x6f, 0x6e, 0x22, 0x92, 0x01, 0x0a, 0x21, 0x51, 0x75, 0x65, 0x72, 0x79, 0x53, 0x75,
-	0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x42, 0x79, 0x49, 0x6e, 0x73, 0x74, 0x69, 0x74, 0x75, 0x74,
-	0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x25, 0x0a, 0x0e, 0x69, 0x6e,
-	0x73, 0x74, 0x69, 0x74, 0x75, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x0d, 0x69, 0x6e, 0x73, 0x74, 0x69, 0x74, 0x75, 0x74, 0x69, 0x6f, 0x6e, 0x49,
-	0x64, 0x12, 0x46, 0x0a, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18,
-	0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62,
-	0x61, 0x73, 0x65, 0x2e, 0x71, 0x75, 0x65, 0x72, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61,
-	0x31, 0x2e, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52, 0x0a, 0x70,
-	0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0xb6, 0x01, 0x0a, 0x22, 0x51, 0x75,
-	0x65, 0x72, 0x79, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x42, 0x79, 0x49, 0x6e, 0x73,
-	0x74, 0x69, 0x74, 0x75, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x12, 0x47, 0x0a, 0x08, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x18, 0x01, 0x20, 0x03,
-	0x28, 0x0b, 0x32, 0x25, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b,
-	0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x53, 0x75, 0x62, 0x6a, 0x65,
-	0x63, 0x74, 0x43, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52,
-	0x08, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x12, 0x47, 0x0a, 0x0a, 0x70, 0x61, 0x67,
-	0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e,
-	0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x71, 0x75, 0x65, 0x72,
-	0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x52, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69,
-	0x6f, 0x6e, 0x22, 0x5e, 0x0a, 0x1e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x68, 0x65, 0x63, 0x6b,
-	0x50, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x52, 0x65, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x73, 0x74, 0x75, 0x64, 0x65, 0x6e, 0x74, 0x5f,
-	0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x73, 0x74, 0x75, 0x64, 0x65, 0x6e,
-	0x74, 0x49, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x69,
-	0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74,
-	0x49, 0x64, 0x22, 0x77, 0x0a, 0x1f, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x68, 0x65, 0x63, 0x6b,
-	0x50, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1f, 0x0a, 0x0b, 0x69, 0x73, 0x5f, 0x65, 0x6c, 0x69, 0x67,
-	0x69, 0x62, 0x6c, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x0a, 0x69, 0x73, 0x45, 0x6c,
-	0x69, 0x67, 0x69, 0x62, 0x6c, 0x65, 0x12, 0x33, 0x0a, 0x15, 0x6d, 0x69, 0x73, 0x73, 0x69, 0x6e,
-	0x67, 0x5f, 0x70, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x18,
-	0x02, 0x20, 0x03, 0x28, 0x09, 0x52, 0x14, 0x6d, 0x69, 0x73, 0x73, 0x69, 0x6e, 0x67, 0x50, 0x72,
-	0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x22, 0xa3, 0x01, 0x0a, 0x1c,
-	0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x68, 0x65, 0x63, 0x6b, 0x45, 0x71, 0x75, 0x69, 0x76, 0x61,
-	0x6c, 0x65, 0x6e, 0x63, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x2a, 0x0a, 0x11,
-	0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x5f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x69,
-	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0f, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x53,
-	0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x49, 0x64, 0x12, 0x2a, 0x0a, 0x11, 0x74, 0x61, 0x72, 0x67,
-	0x65, 0x74, 0x5f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x0f, 0x74, 0x61, 0x72, 0x67, 0x65, 0x74, 0x53, 0x75, 0x62, 0x6a, 0x65,
-	0x63, 0x74, 0x49, 0x64, 0x12, 0x2b, 0x0a, 0x11, 0x66, 0x6f, 0x72, 0x63, 0x65, 0x5f, 0x72, 0x65,
-	0x63, 0x61, 0x6c, 0x63, 0x75, 0x6c, 0x61, 0x74, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x08, 0x52,
-	0x10, 0x66, 0x6f, 0x72, 0x63, 0x65, 0x52, 0x65, 0x63, 0x61, 0x6c, 0x63, 0x75, 0x6c, 0x61, 0x74,
-	0x65, 0x22, 0x68, 0x0a, 0x1d, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x68, 0x65, 0x63, 0x6b, 0x45,
-	0x71, 0x75, 0x69, 0x76, 0x61, 0x6c, 0x65, 0x6e, 0x63, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x12, 0x2f, 0x0a, 0x13, 0x65, 0x71, 0x75, 0x69, 0x76, 0x61, 0x6c, 0x65, 0x6e, 0x63,
-	0x65, 0x5f, 0x70, 0x65, 0x72, 0x63, 0x65, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52,
-	0x12, 0x65, 0x71, 0x75, 0x69, 0x76, 0x61, 0x6c, 0x65, 0x6e, 0x63, 0x65, 0x50, 0x65, 0x72, 0x63,
-	0x65, 0x6e, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x32, 0xa2, 0x0d, 0x0a, 0x05,
-	0x51, 0x75, 0x65, 0x72, 0x79, 0x12, 0x86, 0x01, 0x0a, 0x06, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73,
-	0x12, 0x29, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e,
-	0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x61,
-	0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2a, 0x2e, 0x61, 0x63,
-	0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a,
-	0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x25, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x1f, 0x12,
-	0x1d, 0x2f, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2f,
-	0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2f, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x9c,
-	0x01, 0x0a, 0x0a, 0x47, 0x65, 0x74, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x12, 0x2d, 0x2e,
+	0x74, 0x69, 0x6f, 0x6e, 0x22, 0x40, 0x0a, 0x21, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x72, 0x65,
+	0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x42, 0x79, 0x43, 0x6f, 0x75, 0x72,
+	0x73, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1b, 0x0a, 0x09, 0x63, 0x6f, 0x75,
+	0x72, 0x73, 0x65, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x63, 0x6f,
+	0x75, 0x72, 0x73, 0x65, 0x49, 0x64, 0x22, 0x85, 0x02, 0x0a, 0x22, 0x51, 0x75, 0x65, 0x72, 0x79,
+	0x50, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x42, 0x79, 0x43,
+	0x6f, 0x75, 0x72, 0x73, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x72, 0x0a,
+	0x0d, 0x70, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x18, 0x01,
+	0x20, 0x03, 0x28, 0x0b, 0x32, 0x4c, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74,
+	0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65,
+	0x72, 0x79, 0x50, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x42,
+	0x79, 0x43, 0x6f, 0x75, 0x72, 0x73, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e,
+	0x50, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x45, 0x6e, 0x74,
+	0x72, 0x79, 0x52, 0x0d, 0x70, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65,
+	0x73, 0x1a, 0x6b, 0x0a, 0x12, 0x50, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74,
+	0x65, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x3f, 0x0a, 0x05, 0x76, 0x61, 0x6c,
+	0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x29, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65,
+	0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74,
+	0x2e, 0x50, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x47, 0x72, 0x6f,
+	0x75, 0x70, 0x73, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0x56,
+	0x0a, 0x12, 0x50, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x47, 0x72,
+	0x6f, 0x75, 0x70, 0x73, 0x12, 0x40, 0x0a, 0x06, 0x67, 0x72, 0x6f, 0x75, 0x70, 0x73, 0x18, 0x01,
+	0x20, 0x03, 0x28, 0x0b, 0x32, 0x28, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74,
+	0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x50, 0x72, 0x65,
+	0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x47, 0x72, 0x6f, 0x75, 0x70, 0x52, 0x06,
+	0x67, 0x72, 0x6f, 0x75, 0x70, 0x73, 0x22, 0x92, 0x01, 0x0a, 0x21, 0x51, 0x75, 0x65, 0x72, 0x79,
+	0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x42, 0x79, 0x49, 0x6e, 0x73, 0x74, 0x69, 0x74,
+	0x75, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x25, 0x0a, 0x0e,
+	0x69, 0x6e, 0x73, 0x74, 0x69, 0x74, 0x75, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x0d, 0x69, 0x6e, 0x73, 0x74, 0x69, 0x74, 0x75, 0x74, 0x69, 0x6f,
+	0x6e, 0x49, 0x64, 0x12, 0x46, 0x0a, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73,
+	0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x71, 0x75, 0x65, 0x72, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65,
+	0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x52,
+	0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0xb6, 0x01, 0x0a, 0x22,
+	0x51, 0x75, 0x65, 0x72, 0x79, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x42, 0x79, 0x49,
+	0x6e, 0x73, 0x74, 0x69, 0x74, 0x75, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x12, 0x47, 0x0a, 0x08, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x18, 0x01,
+	0x20, 0x03, 0x28, 0x0b, 0x32, 0x25, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74,
+	0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x53, 0x75, 0x62,
+	0x6a, 0x65, 0x63, 0x74, 0x43, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x42, 0x04, 0xc8, 0xde, 0x1f,
+	0x00, 0x52, 0x08, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x12, 0x47, 0x0a, 0x0a, 0x70,
+	0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x27, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x71, 0x75,
+	0x65, 0x72, 0x79, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x50, 0x61, 0x67, 0x65,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x52, 0x0a, 0x70, 0x61, 0x67, 0x69, 0x6e, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x22, 0x5e, 0x0a, 0x1e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x68, 0x65,
+	0x63, 0x6b, 0x50, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x73, 0x74, 0x75, 0x64, 0x65, 0x6e,
+	0x74, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x73, 0x74, 0x75, 0x64,
+	0x65, 0x6e, 0x74, 0x49, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74,
+	0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x73, 0x75, 0x62, 0x6a, 0x65,
+	0x63, 0x74, 0x49, 0x64, 0x22, 0x77, 0x0a, 0x1f, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x68, 0x65,
+	0x63, 0x6b, 0x50, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1f, 0x0a, 0x0b, 0x69, 0x73, 0x5f, 0x65, 0x6c,
+	0x69, 0x67, 0x69, 0x62, 0x6c, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x0a, 0x69, 0x73,
+	0x45, 0x6c, 0x69, 0x67, 0x69, 0x62, 0x6c, 0x65, 0x12, 0x33, 0x0a, 0x15, 0x6d, 0x69, 0x73, 0x73,
+	0x69, 0x6e, 0x67, 0x5f, 0x70, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65,
+	0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x09, 0x52, 0x14, 0x6d, 0x69, 0x73, 0x73, 0x69, 0x6e, 0x67,
+	0x50, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x22, 0xa3, 0x01,
+	0x0a, 0x1c, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x68, 0x65, 0x63, 0x6b, 0x45, 0x71, 0x75, 0x69,
+	0x76, 0x61, 0x6c, 0x65, 0x6e, 0x63, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x2a,
+	0x0a, 0x11, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x5f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74,
+	0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0f, 0x73, 0x6f, 0x75, 0x72, 0x63,
+	0x65, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x49, 0x64, 0x12, 0x2a, 0x0a, 0x11, 0x74, 0x61,
+	0x72, 0x67, 0x65, 0x74, 0x5f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x69, 0x64, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0f, 0x74, 0x61, 0x72, 0x67, 0x65, 0x74, 0x53, 0x75, 0x62,
+	0x6a, 0x65, 0x63, 0x74, 0x49, 0x64, 0x12, 0x2b, 0x0a, 0x11, 0x66, 0x6f, 0x72, 0x63, 0x65, 0x5f,
+	0x72, 0x65, 0x63, 0x61, 0x6c, 0x63, 0x75, 0x6c, 0x61, 0x74, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28,
+	0x08, 0x52, 0x10, 0x66, 0x6f, 0x72, 0x63, 0x65, 0x52, 0x65, 0x63, 0x61, 0x6c, 0x63, 0x75, 0x6c,
+	0x61, 0x74, 0x65, 0x22, 0x68, 0x0a, 0x1d, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x68, 0x65, 0x63,
+	0x6b, 0x45, 0x71, 0x75, 0x69, 0x76, 0x61, 0x6c, 0x65, 0x6e, 0x63, 0x65, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x2f, 0x0a, 0x13, 0x65, 0x71, 0x75, 0x69, 0x76, 0x61, 0x6c, 0x65,
+	0x6e, 0x63, 0x65, 0x5f, 0x70, 0x65, 0x72, 0x63, 0x65, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x04, 0x52, 0x12, 0x65, 0x71, 0x75, 0x69, 0x76, 0x61, 0x6c, 0x65, 0x6e, 0x63, 0x65, 0x50, 0x65,
+	0x72, 0x63, 0x65, 0x6e, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x32, 0xf2, 0x0e,
+	0x0a, 0x05, 0x51, 0x75, 0x65, 0x72, 0x79, 0x12, 0x86, 0x01, 0x0a, 0x06, 0x50, 0x61, 0x72, 0x61,
+	0x6d, 0x73, 0x12, 0x29, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b,
+	0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79,
+	0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2a, 0x2e,
 	0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75,
-	0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x47, 0x65, 0x74, 0x53, 0x75,
-	0x62, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2e, 0x2e, 0x61,
-	0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62,
-	0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x47, 0x65, 0x74, 0x53, 0x75, 0x62,
-	0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x2f, 0x82, 0xd3,
-	0xe4, 0x93, 0x02, 0x29, 0x12, 0x27, 0x2f, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74,
-	0x6f, 0x6b, 0x65, 0x6e, 0x2f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2f, 0x73, 0x75, 0x62,
-	0x6a, 0x65, 0x63, 0x74, 0x73, 0x2f, 0x7b, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x7d, 0x12, 0xad, 0x01,
-	0x0a, 0x0e, 0x47, 0x65, 0x74, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x46, 0x75, 0x6c, 0x6c,
-	0x12, 0x31, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e,
-	0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x47, 0x65,
-	0x74, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x46, 0x75, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x1a, 0x32, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f,
-	0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72,
-	0x79, 0x47, 0x65, 0x74, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x46, 0x75, 0x6c, 0x6c, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x34, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x2e, 0x12,
-	0x2c, 0x2f, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2f,
-	0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73,
-	0x2f, 0x7b, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x7d, 0x2f, 0x66, 0x75, 0x6c, 0x6c, 0x12, 0xe2, 0x01,
-	0x0a, 0x1b, 0x47, 0x65, 0x74, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x57, 0x69, 0x74, 0x68,
-	0x50, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x12, 0x3e, 0x2e,
-	0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75,
-	0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x47, 0x65, 0x74, 0x53, 0x75,
-	0x62, 0x6a, 0x65, 0x63, 0x74, 0x57, 0x69, 0x74, 0x68, 0x50, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75,
-	0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x3f, 0x2e,
-	0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75,
-	0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x47, 0x65, 0x74, 0x53, 0x75,
-	0x62, 0x6a, 0x65, 0x63, 0x74, 0x57, 0x69, 0x74, 0x68, 0x50, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75,
-	0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x42,
-	0x82, 0xd3, 0xe4, 0x93, 0x02, 0x3c, 0x12, 0x3a, 0x2f, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69,
+	0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x61, 0x72, 0x61, 0x6d,
+	0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x25, 0x82, 0xd3, 0xe4, 0x93, 0x02,
+	0x1f, 0x12, 0x1d, 0x2f, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65,
+	0x6e, 0x2f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2f, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73,
+	0x12, 0x9c, 0x01, 0x0a, 0x0a, 0x47, 0x65, 0x74, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x12,
+	0x2d, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e,
+	0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x47, 0x65, 0x74,
+	0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2e,
+	0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73,
+	0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x47, 0x65, 0x74, 0x53,
+	0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x2f,
+	0x82, 0xd3, 0xe4, 0x93, 0x02, 0x29, 0x12, 0x27, 0x2f, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69,
 	0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2f, 0x73,
-	0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x2f, 0x7b, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74,
-	0x5f, 0x69, 0x64, 0x7d, 0x2f, 0x70, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74,
-	0x65, 0x73, 0x12, 0x9a, 0x01, 0x0a, 0x0c, 0x4c, 0x69, 0x73, 0x74, 0x53, 0x75, 0x62, 0x6a, 0x65,
-	0x63, 0x74, 0x73, 0x12, 0x2f, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f,
-	0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72,
-	0x79, 0x4c, 0x69, 0x73, 0x74, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x52, 0x65, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x1a, 0x30, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74,
-	0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65,
-	0x72, 0x79, 0x4c, 0x69, 0x73, 0x74, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x27, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x21, 0x12, 0x1f,
-	0x2f, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2f, 0x73,
-	0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x12,
-	0xba, 0x01, 0x0a, 0x10, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x42, 0x79, 0x43, 0x6f,
-	0x75, 0x72, 0x73, 0x65, 0x12, 0x33, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74,
-	0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65,
-	0x72, 0x79, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x42, 0x79, 0x43, 0x6f, 0x75, 0x72,
-	0x73, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x34, 0x2e, 0x61, 0x63, 0x61, 0x64,
-	0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63,
-	0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x42,
-	0x79, 0x43, 0x6f, 0x75, 0x72, 0x73, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
-	0x3b, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x35, 0x12, 0x33, 0x2f, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d,
-	0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2f,
-	0x63, 0x6f, 0x75, 0x72, 0x73, 0x65, 0x73, 0x2f, 0x7b, 0x63, 0x6f, 0x75, 0x72, 0x73, 0x65, 0x5f,
-	0x69, 0x64, 0x7d, 0x2f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x12, 0xd3, 0x01, 0x0a,
-	0x15, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x42, 0x79, 0x49, 0x6e, 0x73, 0x74, 0x69,
-	0x74, 0x75, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x38, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69,
+	0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x2f, 0x7b, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x7d, 0x12,
+	0xad, 0x01, 0x0a, 0x0e, 0x47, 0x65, 0x74, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x46, 0x75,
+	0x6c, 0x6c, 0x12, 0x31, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b,
+	0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79,
+	0x47, 0x65, 0x74, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x46, 0x75, 0x6c, 0x6c, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x32, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63,
+	0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75,
+	0x65, 0x72, 0x79, 0x47, 0x65, 0x74, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x46, 0x75, 0x6c,
+	0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x34, 0x82, 0xd3, 0xe4, 0x93, 0x02,
+	0x2e, 0x12, 0x2c, 0x2f, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65,
+	0x6e, 0x2f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63,
+	0x74, 0x73, 0x2f, 0x7b, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x7d, 0x2f, 0x66, 0x75, 0x6c, 0x6c, 0x12,
+	0xe2, 0x01, 0x0a, 0x1b, 0x47, 0x65, 0x74, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x57, 0x69,
+	0x74, 0x68, 0x50, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x12,
+	0x3e, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e,
+	0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x47, 0x65, 0x74,
+	0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x57, 0x69, 0x74, 0x68, 0x50, 0x72, 0x65, 0x72, 0x65,
+	0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
+	0x3f, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e,
+	0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x47, 0x65, 0x74,
+	0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x57, 0x69, 0x74, 0x68, 0x50, 0x72, 0x65, 0x72, 0x65,
+	0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x22, 0x42, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x3c, 0x12, 0x3a, 0x2f, 0x61, 0x63, 0x61, 0x64, 0x65,
+	0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74,
+	0x2f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x2f, 0x7b, 0x73, 0x75, 0x62, 0x6a, 0x65,
+	0x63, 0x74, 0x5f, 0x69, 0x64, 0x7d, 0x2f, 0x70, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73,
+	0x69, 0x74, 0x65, 0x73, 0x12, 0x9a, 0x01, 0x0a, 0x0c, 0x4c, 0x69, 0x73, 0x74, 0x53, 0x75, 0x62,
+	0x6a, 0x65, 0x63, 0x74, 0x73, 0x12, 0x2f, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63,
+	0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75,
+	0x65, 0x72, 0x79, 0x4c, 0x69, 0x73, 0x74, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x30, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69,
 	0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51,
-	0x75, 0x65, 0x72, 0x79, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x42, 0x79, 0x49, 0x6e,
-	0x73, 0x74, 0x69, 0x74, 0x75, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x1a, 0x39, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e,
-	0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x53, 0x75,
-	0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x42, 0x79, 0x49, 0x6e, 0x73, 0x74, 0x69, 0x74, 0x75, 0x74,
-	0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x45, 0x82, 0xd3, 0xe4,
-	0x93, 0x02, 0x3f, 0x12, 0x3d, 0x2f, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f,
-	0x6b, 0x65, 0x6e, 0x2f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2f, 0x69, 0x6e, 0x73, 0x74,
-	0x69, 0x74, 0x75, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2f, 0x7b, 0x69, 0x6e, 0x73, 0x74, 0x69, 0x74,
-	0x75, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x69, 0x64, 0x7d, 0x2f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63,
-	0x74, 0x73, 0x12, 0xd1, 0x01, 0x0a, 0x12, 0x43, 0x68, 0x65, 0x63, 0x6b, 0x50, 0x72, 0x65, 0x72,
-	0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x12, 0x35, 0x2e, 0x61, 0x63, 0x61, 0x64,
-	0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63,
-	0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x68, 0x65, 0x63, 0x6b, 0x50, 0x72, 0x65, 0x72,
-	0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x1a, 0x36, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e,
-	0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x68,
-	0x65, 0x63, 0x6b, 0x50, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x4c, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x46,
-	0x12, 0x44, 0x2f, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e,
-	0x2f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2f, 0x63, 0x68, 0x65, 0x63, 0x6b, 0x5f, 0x70,
-	0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x2f, 0x7b, 0x73, 0x74,
-	0x75, 0x64, 0x65, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x7d, 0x2f, 0x7b, 0x73, 0x75, 0x62, 0x6a, 0x65,
-	0x63, 0x74, 0x5f, 0x69, 0x64, 0x7d, 0x12, 0xd7, 0x01, 0x0a, 0x10, 0x43, 0x68, 0x65, 0x63, 0x6b,
-	0x45, 0x71, 0x75, 0x69, 0x76, 0x61, 0x6c, 0x65, 0x6e, 0x63, 0x65, 0x12, 0x33, 0x2e, 0x61, 0x63,
+	0x75, 0x65, 0x72, 0x79, 0x4c, 0x69, 0x73, 0x74, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x27, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x21,
+	0x12, 0x1f, 0x2f, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e,
+	0x2f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74,
+	0x73, 0x12, 0xba, 0x01, 0x0a, 0x10, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x42, 0x79,
+	0x43, 0x6f, 0x75, 0x72, 0x73, 0x65, 0x12, 0x33, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69,
+	0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51,
+	0x75, 0x65, 0x72, 0x79, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x42, 0x79, 0x43, 0x6f,
+	0x75, 0x72, 0x73, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x34, 0x2e, 0x61, 0x63,
 	0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a,
-	0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x68, 0x65, 0x63, 0x6b, 0x45, 0x71,
-	0x75, 0x69, 0x76, 0x61, 0x6c, 0x65, 0x6e, 0x63, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x1a, 0x34, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e,
-	0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x68,
-	0x65, 0x63, 0x6b, 0x45, 0x71, 0x75, 0x69, 0x76, 0x61, 0x6c, 0x65, 0x6e, 0x63, 0x65, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x58, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x52, 0x12, 0x50,
-	0x2f, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2f, 0x73,
-	0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2f, 0x63, 0x68, 0x65, 0x63, 0x6b, 0x5f, 0x65, 0x71, 0x75,
-	0x69, 0x76, 0x61, 0x6c, 0x65, 0x6e, 0x63, 0x65, 0x2f, 0x7b, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65,
-	0x5f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x69, 0x64, 0x7d, 0x2f, 0x7b, 0x74, 0x61,
-	0x72, 0x67, 0x65, 0x74, 0x5f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x69, 0x64, 0x7d,
-	0x42, 0xc5, 0x01, 0x0a, 0x19, 0x63, 0x6f, 0x6d, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69,
-	0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x42, 0x0a,
-	0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x27, 0x61, 0x63,
-	0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2f, 0x61, 0x70, 0x69, 0x2f,
-	0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2f, 0x73, 0x75,
-	0x62, 0x6a, 0x65, 0x63, 0x74, 0xa2, 0x02, 0x03, 0x41, 0x53, 0x58, 0xaa, 0x02, 0x15, 0x41, 0x63,
-	0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x53, 0x75, 0x62, 0x6a,
-	0x65, 0x63, 0x74, 0xca, 0x02, 0x15, 0x41, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f,
-	0x6b, 0x65, 0x6e, 0x5c, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0xe2, 0x02, 0x21, 0x41, 0x63,
-	0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x5c, 0x53, 0x75, 0x62, 0x6a,
-	0x65, 0x63, 0x74, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea,
-	0x02, 0x16, 0x41, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x3a,
-	0x3a, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74,
+	0x73, 0x42, 0x79, 0x43, 0x6f, 0x75, 0x72, 0x73, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x22, 0x3b, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x35, 0x12, 0x33, 0x2f, 0x61, 0x63, 0x61, 0x64,
+	0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63,
+	0x74, 0x2f, 0x63, 0x6f, 0x75, 0x72, 0x73, 0x65, 0x73, 0x2f, 0x7b, 0x63, 0x6f, 0x75, 0x72, 0x73,
+	0x65, 0x5f, 0x69, 0x64, 0x7d, 0x2f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x12, 0xcd,
+	0x01, 0x0a, 0x15, 0x50, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73,
+	0x42, 0x79, 0x43, 0x6f, 0x75, 0x72, 0x73, 0x65, 0x12, 0x38, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65,
+	0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74,
+	0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69,
+	0x74, 0x65, 0x73, 0x42, 0x79, 0x43, 0x6f, 0x75, 0x72, 0x73, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x1a, 0x39, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b,
+	0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79,
+	0x50, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x42, 0x79, 0x43,
+	0x6f, 0x75, 0x72, 0x73, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x3f, 0x82,
+	0xd3, 0xe4, 0x93, 0x02, 0x39, 0x12, 0x37, 0x2f, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63,
+	0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2f, 0x70, 0x72,
+	0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x2f, 0x63, 0x6f, 0x75, 0x72,
+	0x73, 0x65, 0x2f, 0x7b, 0x63, 0x6f, 0x75, 0x72, 0x73, 0x65, 0x5f, 0x69, 0x64, 0x7d, 0x12, 0xd3,
+	0x01, 0x0a, 0x15, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x42, 0x79, 0x49, 0x6e, 0x73,
+	0x74, 0x69, 0x74, 0x75, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x38, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65,
+	0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74,
+	0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x42, 0x79,
+	0x49, 0x6e, 0x73, 0x74, 0x69, 0x74, 0x75, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x1a, 0x39, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b,
+	0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79,
+	0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x73, 0x42, 0x79, 0x49, 0x6e, 0x73, 0x74, 0x69, 0x74,
+	0x75, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x45, 0x82,
+	0xd3, 0xe4, 0x93, 0x02, 0x3f, 0x12, 0x3d, 0x2f, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63,
+	0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2f, 0x69, 0x6e,
+	0x73, 0x74, 0x69, 0x74, 0x75, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2f, 0x7b, 0x69, 0x6e, 0x73, 0x74,
+	0x69, 0x74, 0x75, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x69, 0x64, 0x7d, 0x2f, 0x73, 0x75, 0x62, 0x6a,
+	0x65, 0x63, 0x74, 0x73, 0x12, 0xd1, 0x01, 0x0a, 0x12, 0x43, 0x68, 0x65, 0x63, 0x6b, 0x50, 0x72,
+	0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x12, 0x35, 0x2e, 0x61, 0x63,
+	0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a,
+	0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x68, 0x65, 0x63, 0x6b, 0x50, 0x72,
+	0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x1a, 0x36, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b,
+	0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79,
+	0x43, 0x68, 0x65, 0x63, 0x6b, 0x50, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74,
+	0x65, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x4c, 0x82, 0xd3, 0xe4, 0x93,
+	0x02, 0x46, 0x12, 0x44, 0x2f, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b,
+	0x65, 0x6e, 0x2f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2f, 0x63, 0x68, 0x65, 0x63, 0x6b,
+	0x5f, 0x70, 0x72, 0x65, 0x72, 0x65, 0x71, 0x75, 0x69, 0x73, 0x69, 0x74, 0x65, 0x73, 0x2f, 0x7b,
+	0x73, 0x74, 0x75, 0x64, 0x65, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x7d, 0x2f, 0x7b, 0x73, 0x75, 0x62,
+	0x6a, 0x65, 0x63, 0x74, 0x5f, 0x69, 0x64, 0x7d, 0x12, 0xd7, 0x01, 0x0a, 0x10, 0x43, 0x68, 0x65,
+	0x63, 0x6b, 0x45, 0x71, 0x75, 0x69, 0x76, 0x61, 0x6c, 0x65, 0x6e, 0x63, 0x65, 0x12, 0x33, 0x2e,
+	0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75,
+	0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x68, 0x65, 0x63, 0x6b,
+	0x45, 0x71, 0x75, 0x69, 0x76, 0x61, 0x6c, 0x65, 0x6e, 0x63, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x1a, 0x34, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b,
+	0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79,
+	0x43, 0x68, 0x65, 0x63, 0x6b, 0x45, 0x71, 0x75, 0x69, 0x76, 0x61, 0x6c, 0x65, 0x6e, 0x63, 0x65,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x58, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x52,
+	0x12, 0x50, 0x2f, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e,
+	0x2f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x2f, 0x63, 0x68, 0x65, 0x63, 0x6b, 0x5f, 0x65,
+	0x71, 0x75, 0x69, 0x76, 0x61, 0x6c, 0x65, 0x6e, 0x63, 0x65, 0x2f, 0x7b, 0x73, 0x6f, 0x75, 0x72,
+	0x63, 0x65, 0x5f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x69, 0x64, 0x7d, 0x2f, 0x7b,
+	0x74, 0x61, 0x72, 0x67, 0x65, 0x74, 0x5f, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x69,
+	0x64, 0x7d, 0x42, 0xc5, 0x01, 0x0a, 0x19, 0x63, 0x6f, 0x6d, 0x2e, 0x61, 0x63, 0x61, 0x64, 0x65,
+	0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74,
+	0x42, 0x0a, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x27,
+	0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2f, 0x61, 0x70,
+	0x69, 0x2f, 0x61, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2f,
+	0x73, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0xa2, 0x02, 0x03, 0x41, 0x53, 0x58, 0xaa, 0x02, 0x15,
+	0x41, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x2e, 0x53, 0x75,
+	0x62, 0x6a, 0x65, 0x63, 0x74, 0xca, 0x02, 0x15, 0x41, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63,
+	0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x5c, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0xe2, 0x02, 0x21,
+	0x41, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x5c, 0x53, 0x75,
+	0x62, 0x6a, 0x65, 0x63, 0x74, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74,
+	0x61, 0xea, 0x02, 0x16, 0x41, 0x63, 0x61, 0x64, 0x65, 0x6d, 0x69, 0x63, 0x74, 0x6f, 0x6b, 0x65,
+	0x6e, 0x3a, 0x3a, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x33,
 }
 
 var (
@@ -9643,7 +11389,7 @@ func file_academictoken_subject_query_proto_rawDescGZIP() []byte {
 	return file_academictoken_subject_query_proto_rawDescData
 }
 
-var file_academictoken_subject_query_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
+var file_academictoken_subject_query_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
 var file_academictoken_subject_query_proto_goTypes = []interface{}{
 	(*QueryParamsRequest)(nil),                       // 0: academictoken.subject.QueryParamsRequest
 	(*QueryParamsResponse)(nil),                      // 1: academictoken.subject.QueryParamsResponse
@@ -9657,55 +11403,65 @@ var file_academictoken_subject_query_proto_goTypes = []interface{}{
 	(*QueryListSubjectsResponse)(nil),                // 9: academictoken.subject.QueryListSubjectsResponse
 	(*QuerySubjectsByCourseRequest)(nil),             // 10: academictoken.subject.QuerySubjectsByCourseRequest
 	(*QuerySubjectsByCourseResponse)(nil),            // 11: academictoken.subject.QuerySubjectsByCourseResponse
-	(*QuerySubjectsByInstitutionRequest)(nil),        // 12: academictoken.subject.QuerySubjectsByInstitutionRequest
-	(*QuerySubjectsByInstitutionResponse)(nil),       // 13: academictoken.subject.QuerySubjectsByInstitutionResponse
-	(*QueryCheckPrerequisitesRequest)(nil),           // 14: academictoken.subject.QueryCheckPrerequisitesRequest
-	(*QueryCheckPrerequisitesResponse)(nil),          // 15: academictoken.subject.QueryCheckPrerequisitesResponse
-	(*QueryCheckEquivalenceRequest)(nil),             // 16: academictoken.subject.QueryCheckEquivalenceRequest
-	(*QueryCheckEquivalenceResponse)(nil),            // 17: academictoken.subject.QueryCheckEquivalenceResponse
-	(*Params)(nil),                                   // 18: academictoken.subject.Params
-	(*SubjectContent)(nil),                           // 19: academictoken.subject.SubjectContent
-	(*SubjectWithPrerequisites)(nil),                 // 20: academictoken.subject.SubjectWithPrerequisites
-	(*v1beta1.PageRequest)(nil),                      // 21: cosmos.base.query.v1beta1.PageRequest
-	(*v1beta1.PageResponse)(nil),                     // 22: cosmos.base.query.v1beta1.PageResponse
+	(*QueryPrerequisitesByCourseRequest)(nil),        // 12: academictoken.subject.QueryPrerequisitesByCourseRequest
+	(*QueryPrerequisitesByCourseResponse)(nil),       // 13: academictoken.subject.QueryPrerequisitesByCourseResponse
+	(*PrerequisiteGroups)(nil),                       // 14: academictoken.subject.PrerequisiteGroups
+	(*QuerySubjectsByInstitutionRequest)(nil),        // 15: academictoken.subject.QuerySubjectsByInstitutionRequest
+	(*QuerySubjectsByInstitutionResponse)(nil),       // 16: academictoken.subject.QuerySubjectsByInstitutionResponse
+	(*QueryCheckPrerequisitesRequest)(nil),           // 17: academictoken.subject.QueryCheckPrerequisitesRequest
+	(*QueryCheckPrerequisitesResponse)(nil),          // 18: academictoken.subject.QueryCheckPrerequisitesResponse
+	(*QueryCheckEquivalenceRequest)(nil),             // 19: academictoken.subject.QueryCheckEquivalenceRequest
+	(*QueryCheckEquivalenceResponse)(nil),            // 20: academictoken.subject.QueryCheckEquivalenceResponse
+	nil,                                              // 21: academictoken.subject.QueryPrerequisitesByCourseResponse.PrerequisitesEntry
+	(*Params)(nil),                                   // 22: academictoken.subject.Params
+	(*SubjectContent)(nil),                           // 23: academictoken.subject.SubjectContent
+	(*SubjectWithPrerequisites)(nil),                 // 24: academictoken.subject.SubjectWithPrerequisites
+	(*v1beta1.PageRequest)(nil),                      // 25: cosmos.base.query.v1beta1.PageRequest
+	(*v1beta1.PageResponse)(nil),                     // 26: cosmos.base.query.v1beta1.PageResponse
+	(*PrerequisiteGroup)(nil),                        // 27: academictoken.subject.PrerequisiteGroup
 }
 var file_academictoken_subject_query_proto_depIdxs = []int32{
-	18, // 0: academictoken.subject.QueryParamsResponse.params:type_name -> academictoken.subject.Params
-	19, // 1: academictoken.subject.QueryGetSubjectResponse.subject:type_name -> academictoken.subject.SubjectContent
-	19, // 2: academictoken.subject.QueryGetSubjectFullResponse.subject:type_name -> academictoken.subject.SubjectContent
-	20, // 3: academictoken.subject.QueryGetSubjectWithPrerequisitesResponse.subject_with_prerequisites:type_name -> academictoken.subject.SubjectWithPrerequisites
-	21, // 4: academictoken.subject.QueryListSubjectsRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
-	19, // 5: academictoken.subject.QueryListSubjectsResponse.subjects:type_name -> academictoken.subject.SubjectContent
-	22, // 6: academictoken.subject.QueryListSubjectsResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
-	21, // 7: academictoken.subject.QuerySubjectsByCourseRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
-	19, // 8: academictoken.subject.QuerySubjectsByCourseResponse.subjects:type_name -> academictoken.subject.SubjectContent
-	22, // 9: academictoken.subject.QuerySubjectsByCourseResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
-	21, // 10: academictoken.subject.QuerySubjectsByInstitutionRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
-	19, // 11: academictoken.subject.QuerySubjectsByInstitutionResponse.subjects:type_name -> academictoken.subject.SubjectContent
-	22, // 12: academictoken.subject.QuerySubjectsByInstitutionResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
-	0,  // 13: academictoken.subject.Query.Params:input_type -> academictoken.subject.QueryParamsRequest
-	2,  // 14: academictoken.subject.Query.GetSubject:input_type -> academictoken.subject.QueryGetSubjectRequest
-	4,  // 15: academictoken.subject.Query.GetSubjectFull:input_type -> academictoken.subject.QueryGetSubjectFullRequest
-	6,  // 16: academictoken.subject.Query.GetSubjectWithPrerequisites:input_type -> academictoken.subject.QueryGetSubjectWithPrerequisitesRequest
-	8,  // 17: academictoken.subject.Query.ListSubjects:input_type -> academictoken.subject.QueryListSubjectsRequest
-	10, // 18: academictoken.subject.Query.SubjectsByCourse:input_type -> academictoken.subject.QuerySubjectsByCourseRequest
-	12, // 19: academictoken.subject.Query.SubjectsByInstitution:input_type -> academictoken.subject.QuerySubjectsByInstitutionRequest
-	14, // 20: academictoken.subject.Query.CheckPrerequisites:input_type -> academictoken.subject.QueryCheckPrerequisitesRequest
-	16, // 21: academictoken.subject.Query.CheckEquivalence:input_type -> academictoken.subject.QueryCheckEquivalenceRequest
-	1,  // 22: academictoken.subject.Query.Params:output_type -> academictoken.subject.QueryParamsResponse
-	3,  // 23: academictoken.subject.Query.GetSubject:output_type -> academictoken.subject.QueryGetSubjectResponse
-	5,  // 24: academictoken.subject.Query.GetSubjectFull:output_type -> academictoken.subject.QueryGetSubjectFullResponse
-	7,  // 25: academictoken.subject.Query.GetSubjectWithPrerequisites:output_type -> academictoken.subject.QueryGetSubjectWithPrerequisitesResponse
-	9,  // 26: academictoken.subject.Query.ListSubjects:output_type -> academictoken.subject.QueryListSubjectsResponse
-	11, // 27: academictoken.subject.Query.SubjectsByCourse:output_type -> academictoken.subject.QuerySubjectsByCourseResponse
-	13, // 28: academictoken.subject.Query.SubjectsByInstitution:output_type -> academictoken.subject.QuerySubjectsByInstitutionResponse
-	15, // 29: academictoken.subject.Query.CheckPrerequisites:output_type -> academictoken.subject.QueryCheckPrerequisitesResponse
-	17, // 30: academictoken.subject.Query.CheckEquivalence:output_type -> academictoken.subject.QueryCheckEquivalenceResponse
-	22, // [22:31] is the sub-list for method output_type
-	13, // [13:22] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	22, // 0: academictoken.subject.QueryParamsResponse.params:type_name -> academictoken.subject.Params
+	23, // 1: academictoken.subject.QueryGetSubjectResponse.subject:type_name -> academictoken.subject.SubjectContent
+	23, // 2: academictoken.subject.QueryGetSubjectFullResponse.subject:type_name -> academictoken.subject.SubjectContent
+	24, // 3: academictoken.subject.QueryGetSubjectWithPrerequisitesResponse.subject_with_prerequisites:type_name -> academictoken.subject.SubjectWithPrerequisites
+	25, // 4: academictoken.subject.QueryListSubjectsRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
+	23, // 5: academictoken.subject.QueryListSubjectsResponse.subjects:type_name -> academictoken.subject.SubjectContent
+	26, // 6: academictoken.subject.QueryListSubjectsResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
+	25, // 7: academictoken.subject.QuerySubjectsByCourseRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
+	23, // 8: academictoken.subject.QuerySubjectsByCourseResponse.subjects:type_name -> academictoken.subject.SubjectContent
+	26, // 9: academictoken.subject.QuerySubjectsByCourseResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
+	21, // 10: academictoken.subject.QueryPrerequisitesByCourseResponse.prerequisites:type_name -> academictoken.subject.QueryPrerequisitesByCourseResponse.PrerequisitesEntry
+	27, // 11: academictoken.subject.PrerequisiteGroups.groups:type_name -> academictoken.subject.PrerequisiteGroup
+	25, // 12: academictoken.subject.QuerySubjectsByInstitutionRequest.pagination:type_name -> cosmos.base.query.v1beta1.PageRequest
+	23, // 13: academictoken.subject.QuerySubjectsByInstitutionResponse.subjects:type_name -> academictoken.subject.SubjectContent
+	26, // 14: academictoken.subject.QuerySubjectsByInstitutionResponse.pagination:type_name -> cosmos.base.query.v1beta1.PageResponse
+	14, // 15: academictoken.subject.QueryPrerequisitesByCourseResponse.PrerequisitesEntry.value:type_name -> academictoken.subject.PrerequisiteGroups
+	0,  // 16: academictoken.subject.Query.Params:input_type -> academictoken.subject.QueryParamsRequest
+	2,  // 17: academictoken.subject.Query.GetSubject:input_type -> academictoken.subject.QueryGetSubjectRequest
+	4,  // 18: academictoken.subject.Query.GetSubjectFull:input_type -> academictoken.subject.QueryGetSubjectFullRequest
+	6,  // 19: academictoken.subject.Query.GetSubjectWithPrerequisites:input_type -> academictoken.subject.QueryGetSubjectWithPrerequisitesRequest
+	8,  // 20: academictoken.subject.Query.ListSubjects:input_type -> academictoken.subject.QueryListSubjectsRequest
+	10, // 21: academictoken.subject.Query.SubjectsByCourse:input_type -> academictoken.subject.QuerySubjectsByCourseRequest
+	12, // 22: academictoken.subject.Query.PrerequisitesByCourse:input_type -> academictoken.subject.QueryPrerequisitesByCourseRequest
+	15, // 23: academictoken.subject.Query.SubjectsByInstitution:input_type -> academictoken.subject.QuerySubjectsByInstitutionRequest
+	17, // 24: academictoken.subject.Query.CheckPrerequisites:input_type -> academictoken.subject.QueryCheckPrerequisitesRequest
+	19, // 25: academictoken.subject.Query.CheckEquivalence:input_type -> academictoken.subject.QueryCheckEquivalenceRequest
+	1,  // 26: academictoken.subject.Query.Params:output_type -> academictoken.subject.QueryParamsResponse
+	3,  // 27: academictoken.subject.Query.GetSubject:output_type -> academictoken.subject.QueryGetSubjectResponse
+	5,  // 28: academictoken.subject.Query.GetSubjectFull:output_type -> academictoken.subject.QueryGetSubjectFullResponse
+	7,  // 29: academictoken.subject.Query.GetSubjectWithPrerequisites:output_type -> academictoken.subject.QueryGetSubjectWithPrerequisitesResponse
+	9,  // 30: academictoken.subject.Query.ListSubjects:output_type -> academictoken.subject.QueryListSubjectsResponse
+	11, // 31: academictoken.subject.Query.SubjectsByCourse:output_type -> academictoken.subject.QuerySubjectsByCourseResponse
+	13, // 32: academictoken.subject.Query.PrerequisitesByCourse:output_type -> academictoken.subject.QueryPrerequisitesByCourseResponse
+	16, // 33: academictoken.subject.Query.SubjectsByInstitution:output_type -> academictoken.subject.QuerySubjectsByInstitutionResponse
+	18, // 34: academictoken.subject.Query.CheckPrerequisites:output_type -> academictoken.subject.QueryCheckPrerequisitesResponse
+	20, // 35: academictoken.subject.Query.CheckEquivalence:output_type -> academictoken.subject.QueryCheckEquivalenceResponse
+	26, // [26:36] is the sub-list for method output_type
+	16, // [16:26] is the sub-list for method input_type
+	16, // [16:16] is the sub-list for extension type_name
+	16, // [16:16] is the sub-list for extension extendee
+	0,  // [0:16] is the sub-list for field type_name
 }
 
 func init() { file_academictoken_subject_query_proto_init() }
@@ -9863,7 +11619,7 @@ func file_academictoken_subject_query_proto_init() {
 			}
 		}
 		file_academictoken_subject_query_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QuerySubjectsByInstitutionRequest); i {
+			switch v := v.(*QueryPrerequisitesByCourseRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -9875,7 +11631,7 @@ func file_academictoken_subject_query_proto_init() {
 			}
 		}
 		file_academictoken_subject_query_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QuerySubjectsByInstitutionResponse); i {
+			switch v := v.(*QueryPrerequisitesByCourseResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -9887,7 +11643,7 @@ func file_academictoken_subject_query_proto_init() {
 			}
 		}
 		file_academictoken_subject_query_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryCheckPrerequisitesRequest); i {
+			switch v := v.(*PrerequisiteGroups); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -9899,7 +11655,7 @@ func file_academictoken_subject_query_proto_init() {
 			}
 		}
 		file_academictoken_subject_query_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryCheckPrerequisitesResponse); i {
+			switch v := v.(*QuerySubjectsByInstitutionRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -9911,7 +11667,7 @@ func file_academictoken_subject_query_proto_init() {
 			}
 		}
 		file_academictoken_subject_query_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryCheckEquivalenceRequest); i {
+			switch v := v.(*QuerySubjectsByInstitutionResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -9923,6 +11679,42 @@ func file_academictoken_subject_query_proto_init() {
 			}
 		}
 		file_academictoken_subject_query_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryCheckPrerequisitesRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_academictoken_subject_query_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryCheckPrerequisitesResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_academictoken_subject_query_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryCheckEquivalenceRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_academictoken_subject_query_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*QueryCheckEquivalenceResponse); i {
 			case 0:
 				return &v.state
@@ -9941,7 +11733,7 @@ func file_academictoken_subject_query_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_academictoken_subject_query_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   18,
+			NumMessages:   22,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

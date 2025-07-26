@@ -85,7 +85,9 @@ export default function StudentPortal() {
   }, [subjects, showNotification, connection.connected])
 
   // Map NFTs for UI
-  const studentNFTs = mockNFTs.map((nft, index) => ({
+  const studentNFTs = mockNFTs.map((nft, index) => {
+    console.log(`Mapping NFT ${index}:`, nft.id);
+    return {
     id: index + 1,
     subject: nft.metadata?.subject || 'Unknown Subject',
     code: subjects.find(s => s.id === nft.subjectId)?.code || 'N/A',
@@ -95,7 +97,8 @@ export default function StudentPortal() {
     status: 'completed' as const,
     nftHash: nft.nftHash || 'mock-hash',
     subjectId: nft.subjectId || 'unknown'
-  }))
+    };
+  })
 
   // Available subjects (not completed)
   const availableSubjects = subjects.filter(subject => 

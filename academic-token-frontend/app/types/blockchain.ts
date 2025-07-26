@@ -1,29 +1,42 @@
 export interface Institution {
-  id: string;
+  index: string;
+  address: string;
   name: string;
-  code: string;
-  country: string;
-  createdAt: string;
+  code?: string;
+  country?: string;
+  isAuthorized: string;
+  creator: string;
+  createdAt?: string;
 }
 
 export interface Course {
-  id: string;
-  institutionId: string;
+  index: string;
+  institution: string;
   name: string;
   code: string;
-  duration: number;
-  totalCredits: number;
+  description: string;
+  totalCredits: string;
+  degreeLevel: string;
+  duration?: number;
 }
 
 export interface Subject {
-  id: string;
-  courseId: string;
-  institutionId: string;
-  name: string;
+  index: string;
+  subjectId: string;
+  institution: string;
+  course_id: string;
+  title: string;
   code: string;
-  credits: number;
-  syllabus: string;
-  metadata: string;
+  workloadHours: string;
+  credits: string;
+  description: string;
+  contentHash: string;
+  subjectType: string;
+  knowledgeArea: string;
+  ipfsLink: string;
+  creator: string;
+  syllabus?: string;
+  metadata?: string;
 }
 
 export interface Student {
@@ -54,9 +67,11 @@ export interface AcademicNFT {
 
 export interface DegreeEligibility {
   eligible: boolean;
-  completedCredits: number;
-  requiredCredits: number;
-  missingSubjects: string[];
+  completedCredits?: number;
+  requiredCredits?: number;
+  missingSubjects?: string[];
+  message?: string;
+  graduationStatus?: any; // Will be defined by the graduation_status proto message
 }
 
 export interface EquivalenceRequest {

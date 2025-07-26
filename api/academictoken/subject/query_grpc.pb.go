@@ -25,6 +25,7 @@ const (
 	Query_GetSubjectWithPrerequisites_FullMethodName = "/academictoken.subject.Query/GetSubjectWithPrerequisites"
 	Query_ListSubjects_FullMethodName                = "/academictoken.subject.Query/ListSubjects"
 	Query_SubjectsByCourse_FullMethodName            = "/academictoken.subject.Query/SubjectsByCourse"
+	Query_PrerequisitesByCourse_FullMethodName       = "/academictoken.subject.Query/PrerequisitesByCourse"
 	Query_SubjectsByInstitution_FullMethodName       = "/academictoken.subject.Query/SubjectsByInstitution"
 	Query_CheckPrerequisites_FullMethodName          = "/academictoken.subject.Query/CheckPrerequisites"
 	Query_CheckEquivalence_FullMethodName            = "/academictoken.subject.Query/CheckEquivalence"
@@ -46,6 +47,8 @@ type QueryClient interface {
 	ListSubjects(ctx context.Context, in *QueryListSubjectsRequest, opts ...grpc.CallOption) (*QueryListSubjectsResponse, error)
 	// SubjectsByCourse lists all subjects for a specific course
 	SubjectsByCourse(ctx context.Context, in *QuerySubjectsByCourseRequest, opts ...grpc.CallOption) (*QuerySubjectsByCourseResponse, error)
+	// PrerequisitesByCourse lists all prerequisites for subjects in a specific course
+	PrerequisitesByCourse(ctx context.Context, in *QueryPrerequisitesByCourseRequest, opts ...grpc.CallOption) (*QueryPrerequisitesByCourseResponse, error)
 	// SubjectsByInstitution lists all subjects for a specific institution
 	SubjectsByInstitution(ctx context.Context, in *QuerySubjectsByInstitutionRequest, opts ...grpc.CallOption) (*QuerySubjectsByInstitutionResponse, error)
 	// CheckPrerequisites checks if a student meets the prerequisites for a subject via CosmWasm contract
@@ -116,6 +119,15 @@ func (c *queryClient) SubjectsByCourse(ctx context.Context, in *QuerySubjectsByC
 	return out, nil
 }
 
+func (c *queryClient) PrerequisitesByCourse(ctx context.Context, in *QueryPrerequisitesByCourseRequest, opts ...grpc.CallOption) (*QueryPrerequisitesByCourseResponse, error) {
+	out := new(QueryPrerequisitesByCourseResponse)
+	err := c.cc.Invoke(ctx, Query_PrerequisitesByCourse_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *queryClient) SubjectsByInstitution(ctx context.Context, in *QuerySubjectsByInstitutionRequest, opts ...grpc.CallOption) (*QuerySubjectsByInstitutionResponse, error) {
 	out := new(QuerySubjectsByInstitutionResponse)
 	err := c.cc.Invoke(ctx, Query_SubjectsByInstitution_FullMethodName, in, out, opts...)
@@ -159,6 +171,8 @@ type QueryServer interface {
 	ListSubjects(context.Context, *QueryListSubjectsRequest) (*QueryListSubjectsResponse, error)
 	// SubjectsByCourse lists all subjects for a specific course
 	SubjectsByCourse(context.Context, *QuerySubjectsByCourseRequest) (*QuerySubjectsByCourseResponse, error)
+	// PrerequisitesByCourse lists all prerequisites for subjects in a specific course
+	PrerequisitesByCourse(context.Context, *QueryPrerequisitesByCourseRequest) (*QueryPrerequisitesByCourseResponse, error)
 	// SubjectsByInstitution lists all subjects for a specific institution
 	SubjectsByInstitution(context.Context, *QuerySubjectsByInstitutionRequest) (*QuerySubjectsByInstitutionResponse, error)
 	// CheckPrerequisites checks if a student meets the prerequisites for a subject via CosmWasm contract
@@ -189,6 +203,9 @@ func (UnimplementedQueryServer) ListSubjects(context.Context, *QueryListSubjects
 }
 func (UnimplementedQueryServer) SubjectsByCourse(context.Context, *QuerySubjectsByCourseRequest) (*QuerySubjectsByCourseResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubjectsByCourse not implemented")
+}
+func (UnimplementedQueryServer) PrerequisitesByCourse(context.Context, *QueryPrerequisitesByCourseRequest) (*QueryPrerequisitesByCourseResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PrerequisitesByCourse not implemented")
 }
 func (UnimplementedQueryServer) SubjectsByInstitution(context.Context, *QuerySubjectsByInstitutionRequest) (*QuerySubjectsByInstitutionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SubjectsByInstitution not implemented")
@@ -320,6 +337,24 @@ func _Query_SubjectsByCourse_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_PrerequisitesByCourse_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryPrerequisitesByCourseRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).PrerequisitesByCourse(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_PrerequisitesByCourse_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).PrerequisitesByCourse(ctx, req.(*QueryPrerequisitesByCourseRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Query_SubjectsByInstitution_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(QuerySubjectsByInstitutionRequest)
 	if err := dec(in); err != nil {
@@ -404,6 +439,10 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SubjectsByCourse",
 			Handler:    _Query_SubjectsByCourse_Handler,
+		},
+		{
+			MethodName: "PrerequisitesByCourse",
+			Handler:    _Query_PrerequisitesByCourse_Handler,
 		},
 		{
 			MethodName: "SubjectsByInstitution",

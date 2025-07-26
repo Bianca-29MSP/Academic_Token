@@ -416,7 +416,7 @@ sleep 2
 # Subjects for Electrical Engineering (UNICAMP)
 echo "Creating subjects for Electrical Engineering..."
 academictokend tx subject create-subject \
-  "institution-3" "course-7" "Circuitos Elétricos" "CIRC1" "90" "6" \
+  "institution-3" "course-6" "Circuitos Elétricos" "CIRC1" "90" "6" \
   "Análise de circuitos elétricos básicos" "required" "Engineering" \
   --objectives "Analisar circuitos DC e AC" \
   --objectives "Aplicar leis de Kirchhoff" \
@@ -429,7 +429,7 @@ academictokend tx subject create-subject \
 sleep 2
 
 academictokend tx subject create-subject \
-  "institution-3" "course-7" "Eletrônica Digital" "ELETDIG" "75" "5" \
+  "institution-3" "course-6" "Eletrônica Digital" "ELETDIG" "75" "5" \
   "Sistemas digitais e microprocessadores" "required" "Engineering" \
   --objectives "Projetar circuitos digitais" \
   --objectives "Programar microcontroladores" \

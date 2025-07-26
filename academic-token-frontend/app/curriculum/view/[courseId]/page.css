@@ -1,0 +1,121 @@
+/* page.css - Curriculum View Page styles */
+.curriculum-view {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.curriculum-header {
+  background-color: white;
+  padding: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+}
+
+.curriculum-header h1 {
+  margin: 0 0 12px 0;
+  color: #333;
+}
+
+.curriculum-info {
+  display: flex;
+  gap: 24px;
+  font-size: 0.875rem;
+  color: #666;
+  flex-wrap: wrap;
+}
+
+.curriculum-info span {
+  padding: 4px 12px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+}
+
+.loading-container, .error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.loading, .error {
+  font-size: 1.25rem;
+  color: #666;
+  padding: 24px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.error {
+  color: #f44336;
+}
+
+/* Warnings Styles */
+.warnings-container {
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 0 20px 24px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.warnings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.warnings-header h3 {
+  margin: 0;
+  color: #856404;
+  font-size: 1.125rem;
+}
+
+.close-warnings {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #856404;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.close-warnings:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.warnings-content {
+  color: #856404;
+}
+
+.warnings-explanation {
+  margin-bottom: 12px;
+  font-size: 0.875rem;
+}
+
+.warnings-list {
+  margin: 12px 0;
+  padding-left: 24px;
+}
+
+.warnings-list li {
+  margin-bottom: 8px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.warnings-note {
+  margin-top: 16px;
+  font-size: 0.875rem;
+  padding-top: 16px;
+  border-top: 1px solid #ffeeba;
+}

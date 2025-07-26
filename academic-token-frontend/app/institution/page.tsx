@@ -301,7 +301,7 @@ export default function InstitutionDashboard() {
               
               <div className="space-y-2 max-h-40 overflow-y-auto">
                 {subjects.slice(0, 5).map((subject, index) => (
-                  <div key={subject.id || index} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                  <div key={subject.id || `subject-${index}`} className="flex items-center justify-between p-2 bg-gray-50 rounded">
                     <div className="flex-1">
                       <div className="flex items-center space-x-2">
                         <span className="font-semibold text-sm">{subject.code}</span>

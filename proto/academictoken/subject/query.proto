@@ -44,6 +44,11 @@ service Query {
     option (google.api.http).get = "/academictoken/subject/courses/{course_id}/subjects";
   }
 
+  // PrerequisitesByCourse lists all prerequisites for subjects in a specific course
+  rpc PrerequisitesByCourse(QueryPrerequisitesByCourseRequest) returns (QueryPrerequisitesByCourseResponse) {
+    option (google.api.http).get = "/academictoken/subject/prerequisites/course/{course_id}";
+  }
+
   // SubjectsByInstitution lists all subjects for a specific institution
   rpc SubjectsByInstitution(QuerySubjectsByInstitutionRequest) returns (QuerySubjectsByInstitutionResponse) {
     option (google.api.http).get = "/academictoken/subject/institutions/{institution_id}/subjects";
@@ -124,6 +129,22 @@ message QuerySubjectsByCourseRequest {
 message QuerySubjectsByCourseResponse {
   repeated SubjectContent subjects = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// QueryPrerequisitesByCourseRequest is the request type for the Query/PrerequisitesByCourse RPC method
+message QueryPrerequisitesByCourseRequest {
+  string course_id = 1;
+}
+
+// QueryPrerequisitesByCourseResponse is the response type for the Query/PrerequisitesByCourse RPC method
+message QueryPrerequisitesByCourseResponse {
+  // Map of subject_id to its prerequisite groups
+  map<string, PrerequisiteGroups> prerequisites = 1;
+}
+
+// PrerequisiteGroups wraps repeated PrerequisiteGroup for map usage
+message PrerequisiteGroups {
+  repeated PrerequisiteGroup groups = 1;
 }
 
 // QuerySubjectsByInstitutionRequest is the request type for the Query/SubjectsByInstitution RPC method
